@@ -1,5 +1,7 @@
 # A wrapper for OpenBSD's bcrypt/crypt_blowfish password-hashing algorithm.
-require "ext/bcrypt_ext"
+
+$: << "ext"
+require "bcrypt_ext"
 require "openssl"
 
 # A Ruby library implementing OpenBSD's bcrypt()/crypt_blowfish algorithm for

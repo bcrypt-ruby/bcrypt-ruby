@@ -1,4 +1,5 @@
 #include "ruby.h"
+#include "bcrypt.h"
 
 VALUE mBCrypt;
 VALUE mBCryptInternals;
@@ -6,7 +7,7 @@ VALUE mBCryptInternals;
 /* Given a logarithmic cost parameter, generates a salt for use with +bc_crypt+.
  */
 static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
-	return rb_str_new2((char *)bcrypt_gensalt(NUM2INT(cost), RSTRING(seed)->ptr));
+	return rb_str_new2((char *)bcrypt_gensalt(NUM2INT(cost), (u_int8_t *)RSTRING(seed)->ptr));
 }
 
 /* Given a secret and a salt, generates a salted hash (which you can then store safely).
