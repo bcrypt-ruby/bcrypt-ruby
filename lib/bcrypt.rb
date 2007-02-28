@@ -16,25 +16,28 @@ module BCrypt
     class InvalidCost < Exception; end
   end
   
-  # The default computational expense parameter.
-  DEFAULT_COST = 10
-  
-  module Internals # :nodoc:
-    # contains the C-level methods and other internally bits
+  # A Ruby wrapper for the bcrypt() extension calls.
+  class Engine
+    DEFAULT_COST    = 10 # The default computational expense parameter.
+    MAX_SALT_LENGTH = 16 # Maximum possible size of bcrypt() salts.
     
-    # Maximum length of salts.
-    MAX_SALT_LENGTH = 16
+    # C-level routines which, if they don't get the right input, will crash the
+    # hell out of the Ruby process.
+    private_class_method :__bc_salt
+    private_class_method :__bc_crypt
     
-    # Wrap this in some error checking otherwise it'll explode.
-    def _bc_crypt(key, salt)
+    # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
+    # a bcrypt() password hash.
+    def self.hash(secret, salt)
       if valid_salt?(salt)
-        __bc_crypt(key, salt)
+        __bc_crypt(secret, salt)
       else
         raise Errors::InvalidSalt.new("invalid salt")
       end
     end
     
-    def _bc_salt(cost = DEFAULT_COST)
+    # Generates a random salt with a given computational cost.
+    def self.generate_salt(cost = DEFAULT_COST)
       if cost.to_i > 0
         __bc_salt(cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
       else
@@ -42,8 +45,9 @@ module BCrypt
       end
     end
     
-    def valid_salt?(s)
-      s =~ /^\$[0-9a-z]{2,}\$[0-9]{2,}\$[A-Za-z0-9\.\/]{22,}$/
+    # Returns true if +salt+ is a valid bcrypt() salt, false if not.
+    def self.valid_salt?(salt)
+      salt =~ /^\$[0-9a-z]{2,}\$[0-9]{2,}\$[A-Za-z0-9\.\/]{22,}$/
     end
   end
   
@@ -109,11 +113,9 @@ module BCrypt
       # Example:
       # 
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
-      def create(secret, options = { :cost => DEFAULT_COST })
-        Password.new(_bc_crypt(secret, _bc_salt(options[:cost])))
+      def create(secret, options = { :cost => BCrypt::Engine::DEFAULT_COST })
+        Password.new(BCrypt::Engine.hash(secret, BCrypt::Engine.generate_salt(options[:cost])))
       end
-    private
-      include Internals
     end
     
     # Initializes a BCrypt::Password instance with the data from a stored hash.
@@ -130,7 +132,7 @@ module BCrypt
     
     # Compares a potential secret against the hash. Returns true if the secret is the original secret, false otherwise.
     def ==(secret)
-      self.exactly_equals(self.class._bc_crypt(secret, @salt))
+      self.exactly_equals(BCrypt::Engine.hash(secret, @salt))
     end
     
   private

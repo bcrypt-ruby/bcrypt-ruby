@@ -1,35 +1,33 @@
 require File.join(File.dirname(__FILE__), "..", "spec_helper")
 
 context "Generating BCrypt salts" do
-  include BCrypt::Internals
   
   specify "should produce strings" do
-    _bc_salt.should be_an_instance_of(String)
+    BCrypt::Engine.generate_salt.should be_an_instance_of(String)
   end
   
   specify "should produce random data" do
-    _bc_salt.should_not equal(_bc_salt)
+    BCrypt::Engine.generate_salt.should_not equal(BCrypt::Engine.generate_salt)
   end
   
   specify "should raise a InvalidCostError if the cost parameter isn't numeric" do
-    lambda { _bc_salt('woo') }.should raise_error(BCrypt::Errors::InvalidCost)
+    lambda { BCrypt::Engine.generate_salt('woo') }.should raise_error(BCrypt::Errors::InvalidCost)
   end
 end
 
 context "Generating BCrypt hashes" do
-  include BCrypt::Internals
   
   setup do
-    @salt = _bc_salt
+    @salt = BCrypt::Engine.generate_salt(5)
     @password = "woo"
   end
   
   specify "should produce a string" do
-    _bc_crypt(@password, @salt).should be_an_instance_of(String)
+    BCrypt::Engine.hash(@password, @salt).should be_an_instance_of(String)
   end
   
   specify "should raise an InvalidSaltError if the salt is invalid" do
-    lambda { _bc_crypt(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
+    lambda { BCrypt::Engine.hash(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
   end
   
   specify "should be interoperable with other implementations" do
@@ -42,7 +40,7 @@ context "Generating BCrypt hashes" do
       ["0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "$2a$05$abcdefghijklmnopqrstuu", "$2a$05$abcdefghijklmnopqrstuu5s2v8.iXieOjg/.AySBTTZIIVFJeBui"]
     ]
     for secret, salt, test_vector in test_vectors
-      _bc_crypt(secret, salt).should eql(test_vector)
+      BCrypt::Engine.hash(secret, salt).should eql(test_vector)
     end
   end
 end
