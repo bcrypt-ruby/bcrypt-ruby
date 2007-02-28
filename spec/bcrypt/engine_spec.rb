@@ -1,5 +1,13 @@
 require File.join(File.dirname(__FILE__), "..", "spec_helper")
 
+context "The BCrypt engine" do
+  specify "should calculate the optimal cost factor to fit in a specific time" do
+    first = BCrypt::Engine.calibrate(100)
+    second = BCrypt::Engine.calibrate(300)
+    second.should >(first + 1)
+  end
+end
+
 context "Generating BCrypt salts" do
   
   specify "should produce strings" do

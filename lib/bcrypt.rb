@@ -49,26 +49,26 @@ module BCrypt
     def self.valid_salt?(salt)
       salt =~ /^\$[0-9a-z]{2,}\$[0-9]{2,}\$[A-Za-z0-9\.\/]{22,}$/
     end
-  end
-  
-  # Returns the cost factor which will result in computation times less than +upper_time_limit_in_ms+.
-  # 
-  # Example:
-  # 
-  #   BCrypt.calibrate(200)  #=> 10
-  #   BCrypt.calibrate(1000) #=> 12
-  # 
-  #   # should take less than 200ms
-  #   BCrypt::Password.create("woo", :cost => 10)
-  # 
-  #   # should take less than 1000ms
-  #   BCrypt::Password.create("woo", :cost => 12)
-  def self.calibrate(upper_time_limit_in_ms)
-    40.times do |i|
-      start_time = Time.now
-      Password.create("testing testing", :cost => i+1)
-      end_time = Time.now - start_time
-      return i if end_time * 1_000 > upper_time_limit_in_ms
+    
+    # Returns the cost factor which will result in computation times less than +upper_time_limit_in_ms+.
+    # 
+    # Example:
+    # 
+    #   BCrypt.calibrate(200)  #=> 10
+    #   BCrypt.calibrate(1000) #=> 12
+    # 
+    #   # should take less than 200ms
+    #   BCrypt::Password.create("woo", :cost => 10)
+    # 
+    #   # should take less than 1000ms
+    #   BCrypt::Password.create("woo", :cost => 12)
+    def self.calibrate(upper_time_limit_in_ms)
+      40.times do |i|
+        start_time = Time.now
+        Password.create("testing testing", :cost => i+1)
+        end_time = Time.now - start_time
+        return i if end_time * 1_000 > upper_time_limit_in_ms
+      end
     end
   end
   
@@ -128,12 +128,11 @@ module BCrypt
       end
     end
     
-    alias_method :exactly_equals, :==
-    
     # Compares a potential secret against the hash. Returns true if the secret is the original secret, false otherwise.
     def ==(secret)
-      self.exactly_equals(BCrypt::Engine.hash(secret, @salt))
+      super(BCrypt::Engine.hash(secret, @salt))
     end
+    alias_method :is_password?, :==
     
   private
     # Returns true if +h+ is a valid hash.
