@@ -45,9 +45,11 @@ end
 spec = Gem::Specification.new do |s|
   s.name = PKG_NAME
   s.version = PKG_VERSION
-  s.summary = "Blah."
+  s.summary = "OpenBSD's bcrypt() password hashing algorithm."
   s.description = <<-EOF
-    Woot.
+    bcrypt() is a sophisticated and secure hash algorithm designed by The OpenBSD project
+    for hashing passwords. bcrypt-ruby provides a simple, humane wrapper for safely handling
+    passwords.
   EOF
 
   s.files = PKG_FILES.to_a
