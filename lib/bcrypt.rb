@@ -15,8 +15,10 @@ module BCrypt
   
   # A Ruby wrapper for the bcrypt() extension calls.
   class Engine
-    DEFAULT_COST    = 10 # The default computational expense parameter.
-    MAX_SALT_LENGTH = 16 # Maximum possible size of bcrypt() salts.
+    # The default computational expense parameter.
+    DEFAULT_COST    = 10
+    # Maximum possible size of bcrypt() salts.
+    MAX_SALT_LENGTH = 16
     
     # C-level routines which, if they don't get the right input, will crash the
     # hell out of the Ruby process.
@@ -91,10 +93,14 @@ module BCrypt
   #   @db_password == "a paltry guess"  #=> false
   # 
   class Password < String
-    attr_reader :hash     # The hash portion of the stored password hash.
-    attr_reader :salt     # The salt of the store password hash (including version and cost).
-    attr_reader :version  # The version of the bcrypt() algorithm used to create the hash.
-    attr_reader :cost     # The cost factor used to create the hash.
+    # The hash portion of the stored password hash.
+    attr_reader :hash
+    # The salt of the store password hash (including version and cost).
+    attr_reader :salt
+    # The version of the bcrypt() algorithm used to create the hash.
+    attr_reader :version
+    # The cost factor used to create the hash.
+    attr_reader :cost
     
     class << self
       # Hashes a secret, returning a BCrypt::Password instance. Takes an optional <tt>:cost</tt> option, which is a
