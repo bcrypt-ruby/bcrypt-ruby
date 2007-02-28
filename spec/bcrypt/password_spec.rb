@@ -4,7 +4,7 @@ context "Creating a hashed password" do
   
   setup do
     @secret = "wheedle"
-    @password = BCrypt::Password.create(@secret)
+    @password = BCrypt::Password.create(@secret, :cost => 4)
   end
   
   specify "should return a BCrypt::Password" do

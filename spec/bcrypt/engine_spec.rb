@@ -21,12 +21,16 @@ context "Generating BCrypt salts" do
   specify "should raise a InvalidCostError if the cost parameter isn't numeric" do
     lambda { BCrypt::Engine.generate_salt('woo') }.should raise_error(BCrypt::Errors::InvalidCost)
   end
+  
+  specify "should raise a InvalidCostError if the cost parameter isn't greater than 0" do
+    lambda { BCrypt::Engine.generate_salt(-1) }.should raise_error(BCrypt::Errors::InvalidCost)
+  end
 end
 
 context "Generating BCrypt hashes" do
   
   setup do
-    @salt = BCrypt::Engine.generate_salt(5)
+    @salt = BCrypt::Engine.generate_salt(4)
     @password = "woo"
   end
   
