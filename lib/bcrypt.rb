@@ -8,12 +8,9 @@ require "openssl"
 # hashing passwords.
 module BCrypt
   module Errors # :nodoc:
-    # The salt parameter provided to bcrypt() is invalid.
-    class InvalidSalt < Exception; end
-    # The hash parameter provided to bcrypt() is invalid.
-    class InvalidHash < Exception; end
-    # The cost parameter provided to bcrypt() is invalid.
-    class InvalidCost < Exception; end
+    class InvalidSalt < Exception; end  # The salt parameter provided to bcrypt() is invalid.
+    class InvalidHash < Exception; end  # The hash parameter provided to bcrypt() is invalid.
+    class InvalidCost < Exception; end  # The cost parameter provided to bcrypt() is invalid.
   end
   
   # A Ruby wrapper for the bcrypt() extension calls.
@@ -94,14 +91,10 @@ module BCrypt
   #   @db_password == "a paltry guess"  #=> false
   # 
   class Password < String
-    # The hash portion of the stored password hash.
-    attr_reader :hash
-    # The salt of the store password hash (including version and cost).
-    attr_reader :salt
-    # The version of the bcrypt() algorithm used to create the hash.
-    attr_reader :version
-    # The cost factor used to create the hash.
-    attr_reader :cost
+    attr_reader :hash     # The hash portion of the stored password hash.
+    attr_reader :salt     # The salt of the store password hash (including version and cost).
+    attr_reader :version  # The version of the bcrypt() algorithm used to create the hash.
+    attr_reader :cost     # The cost factor used to create the hash.
     
     class << self
       # Hashes a secret, returning a BCrypt::Password instance. Takes an optional <tt>:cost</tt> option, which is a
