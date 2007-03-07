@@ -1,0 +1,6 @@
+1.0.0  Feb 27 2007
+ - Initial release
+ 
+2.0.0
+ - Refactored out BCrypt::Internals into more useful BCrypt::Engine
+ - Added validation of secrets -- nil is not healthy.

@@ -38,8 +38,12 @@ context "Generating BCrypt hashes" do
     BCrypt::Engine.hash(@password, @salt).should be_an_instance_of(String)
   end
   
-  specify "should raise an InvalidSaltError if the salt is invalid" do
+  specify "should raise an InvalidSalt error if the salt is invalid" do
     lambda { BCrypt::Engine.hash(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
+  end
+  
+  specify "should raise an InvalidSecret error if the secret is invalid" do
+    lambda { BCrypt::Engine.hash(nil, @salt) }.should raise_error(BCrypt::Errors::InvalidSecret)
   end
   
   specify "should be interoperable with other implementations" do

@@ -8,9 +8,10 @@ require "openssl"
 # hashing passwords.
 module BCrypt
   module Errors # :nodoc:
-    class InvalidSalt < Exception; end  # The salt parameter provided to bcrypt() is invalid.
-    class InvalidHash < Exception; end  # The hash parameter provided to bcrypt() is invalid.
-    class InvalidCost < Exception; end  # The cost parameter provided to bcrypt() is invalid.
+    class InvalidSalt   < Exception; end  # The salt parameter provided to bcrypt() is invalid.
+    class InvalidHash   < Exception; end  # The hash parameter provided to bcrypt() is invalid.
+    class InvalidCost   < Exception; end  # The cost parameter provided to bcrypt() is invalid.
+    class InvalidSecret < Exception; end  # The secret parameter provided to bcrypt() is invalid.
   end
   
   # A Ruby wrapper for the bcrypt() extension calls.
@@ -28,10 +29,14 @@ module BCrypt
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
     def self.hash(secret, salt)
-      if valid_salt?(salt)
-        __bc_crypt(secret, salt)
+      if valid_secret?(secret)
+        if valid_salt?(salt)
+          __bc_crypt(secret, salt)
+        else
+          raise Errors::InvalidSalt.new("invalid salt")
+        end
       else
-        raise Errors::InvalidSalt.new("invalid salt")
+        raise Errors::InvalidSecret.new("invalid secret")
       end
     end
     
@@ -47,6 +52,11 @@ module BCrypt
     # Returns true if +salt+ is a valid bcrypt() salt, false if not.
     def self.valid_salt?(salt)
       salt =~ /^\$[0-9a-z]{2,}\$[0-9]{2,}\$[A-Za-z0-9\.\/]{22,}$/
+    end
+    
+    # Returns true if +secret+ is a valid bcrypt() secret, false if not.
+    def self.valid_secret?(secret)
+      !secret.nil?
     end
     
     # Returns the cost factor which will result in computation times less than +upper_time_limit_in_ms+.
