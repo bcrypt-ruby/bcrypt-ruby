@@ -1,12 +1,11 @@
 # A wrapper for OpenBSD's bcrypt/crypt_blowfish password-hashing algorithm.
 
-$: << "ext"
-require "bcrypt_ext"
+require "ext/bcrypt_ext"
 require "openssl"
 
 # A Ruby library implementing OpenBSD's bcrypt()/crypt_blowfish algorithm for
 # hashing passwords.
-module BCrypt
+module BCrypt  
   module Errors # :nodoc:
     class InvalidSalt   < Exception; end  # The salt parameter provided to bcrypt() is invalid.
     class InvalidHash   < Exception; end  # The hash parameter provided to bcrypt() is invalid.

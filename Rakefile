@@ -23,7 +23,7 @@ CLEAN.include(
   "ext/*.so"  
 )
 CLOBBER.include(
-  "doc"
+  "doc/coverage"
 )
 
 task :default => [:spec]
@@ -33,19 +33,21 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.spec_opts = ['--color','--backtrace','--diff']
   t.rcov = true
-  t.rcov_dir = 'doc/output/coverage'
+  t.rcov_dir = 'doc/coverage'
   t.rcov_opts = ['--exclude', 'spec\/spec,spec\/.*_spec.rb']
 end
 
-desc "Run all specs and store html output in doc/output/report.html"
-Spec::Rake::SpecTask.new('spec_html') do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.spec_opts = ['--diff','--format html','--backtrace','--out doc/output/report.html']
+namespace :spec do
+  desc "Run all specs and store html output in doc/specs.html"
+  Spec::Rake::SpecTask.new('html') do |t|
+    t.spec_files = FileList['spec/**/*_spec.rb']
+    t.spec_opts = ['--diff','--format html','--backtrace','--out doc/specs.html']
+  end
 end
 
 desc 'Generate RDoc'
 rd = Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'doc/output/rdoc'
+  rdoc.rdoc_dir = 'doc/rdoc'
   rdoc.options << '--title' << 'bcrypt-ruby' << '--line-numbers' << '--inline-source' << '--main' << 'README'
   rdoc.template = ENV['TEMPLATE'] if ENV['TEMPLATE']
   rdoc.rdoc_files.include('README', 'COPYING', 'CHANGELOG', 'lib/**/*.rb')
