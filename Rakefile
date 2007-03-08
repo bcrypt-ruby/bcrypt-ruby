@@ -4,6 +4,7 @@ require 'rake/gempackagetask'
 require 'rake/contrib/rubyforgepublisher'
 require 'rake/clean'
 require 'rake/rdoctask'
+require "benchmark"
 
 PKG_NAME = "bcrypt-ruby"
 PKG_VERSION   = "2.0.0"
@@ -16,6 +17,14 @@ PKG_FILES = FileList[
   'ext/*.h',
   'ext/*.rb'
 ]
+CLEAN.include(
+  "ext/*.o",
+  "ext/*.bundle",
+  "ext/*.so"  
+)
+CLOBBER.include(
+  "doc"
+)
 
 task :default => [:spec]
 
@@ -39,7 +48,7 @@ rd = Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'doc/output/rdoc'
   rdoc.options << '--title' << 'bcrypt-ruby' << '--line-numbers' << '--inline-source' << '--main' << 'README'
   rdoc.template = ENV['TEMPLATE'] if ENV['TEMPLATE']
-  rdoc.rdoc_files.include('README', 'COPYING', 'lib/**/*.rb')
+  rdoc.rdoc_files.include('README', 'COPYING', 'CHANGELOG', 'lib/**/*.rb')
 end
 
 spec = Gem::Specification.new do |s|
@@ -73,8 +82,19 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_tar = true
 end
 
-task :compile do
+task :compile => [:clean] do
   Dir.chdir('./ext')
   system "ruby extconf.rb"
   system "make"
+end
+
+task :benchmark do
+  TESTS = 100
+  TEST_PWD = "this is a test"
+  require "lib/bcrypt"
+  Benchmark.bmbm do |results|
+    4.upto(10) do |n|
+      results.report("cost #{n}:") { TESTS.times { BCrypt::Password.create(TEST_PWD, :cost => n) } }
+    end
+  end
 end
