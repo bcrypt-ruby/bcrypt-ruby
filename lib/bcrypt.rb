@@ -6,8 +6,8 @@ require "openssl"
 
 # A Ruby library implementing OpenBSD's bcrypt()/crypt_blowfish algorithm for
 # hashing passwords.
-module BCrypt  
-  module Errors # :nodoc:
+module BCrypt
+  module Errors
     class InvalidSalt   < Exception; end  # The salt parameter provided to bcrypt() is invalid.
     class InvalidHash   < Exception; end  # The hash parameter provided to bcrypt() is invalid.
     class InvalidCost   < Exception; end  # The cost parameter provided to bcrypt() is invalid.
