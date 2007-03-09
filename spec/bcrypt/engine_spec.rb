@@ -43,8 +43,8 @@ context "Generating BCrypt hashes" do
   end
   
   specify "should raise an InvalidSecret error if the secret is invalid" do
-    lambda { BCrypt::Engine.hash(nil, @salt) }.should raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Engine.hash(false, @salt) }.should raise_error(BCrypt::Errors::InvalidSecret)
+    lambda { BCrypt::Engine.hash(nil, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    lambda { BCrypt::Engine.hash(false, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
   end
   
   specify "should be interoperable with other implementations" do

@@ -15,8 +15,10 @@ context "Creating a hashed password" do
     lambda { BCrypt::Password.new(@password) }.should_not raise_error
   end
   
-  specify "should raise an InvalidSecret exception if the secret is nil" do
-    lambda { BCrypt::Password.create(nil) }.should raise_error(BCrypt::Errors::InvalidSecret)
+  specify "should behave normally if the secret not a string" do
+    lambda { BCrypt::Password.create(nil) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    lambda { BCrypt::Password.create({:woo => "yeah"}) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    lambda { BCrypt::Password.create(false) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
   end
 end
 

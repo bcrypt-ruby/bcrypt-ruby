@@ -31,7 +31,7 @@ module BCrypt
     def self.hash(secret, salt)
       if valid_secret?(secret)
         if valid_salt?(salt)
-          __bc_crypt(secret, salt)
+          __bc_crypt(secret.to_s, salt)
         else
           raise Errors::InvalidSalt.new("invalid salt")
         end
@@ -56,7 +56,7 @@ module BCrypt
     
     # Returns true if +secret+ is a valid bcrypt() secret, false if not.
     def self.valid_secret?(secret)
-      !secret.nil?
+      secret.respond_to?(:to_s)
     end
     
     # Returns the cost factor which will result in computation times less than +upper_time_limit_in_ms+.
