@@ -26,16 +26,16 @@ You'll need a working compiler. (Win32 folks should use Cygwin or um, something 
   require 'bcrypt'
   
   class User < ActiveRecord::Base
-    # users.hash in the database is a :string
+    # users.password_hash in the database is a :string
     include BCrypt
     
     def password
-      @password ||= Password.new(hash)
+      @password ||= Password.new(password_hash)
     end
     
     def password=(new_password)
       @password = Password.create(new_password)
-      self.hash = @password
+      self.password_hash = @password
     end
     
   end
