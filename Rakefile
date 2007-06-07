@@ -84,12 +84,14 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_tar = true
 end
 
+desc "Clean, then compile the extension."
 task :compile => [:clean] do
   Dir.chdir('./ext')
   system "ruby extconf.rb"
   system "make"
 end
 
+desc "Run a set of benchmarks on the compiled extension."
 task :benchmark do
   TESTS = 100
   TEST_PWD = "this is a test"
