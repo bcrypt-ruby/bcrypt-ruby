@@ -1,4 +1,5 @@
 #include "ruby.h"
+#include "blf.h"
 
 char   *bcrypt_gensalt(u_int8_t, u_int8_t *);
 char   *bcrypt(const char *, const char *);
