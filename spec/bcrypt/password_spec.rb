@@ -33,7 +33,7 @@ context "Reading a hashed password" do
     password.version.should eql("2a")
     password.cost.should equal(5)
     password.salt.should eql("$2a$05$CCCCCCCCCCCCCCCCCCCCC.")
-    password.to_s.should_eql @hash
+    password.to_s.should eql(@hash)
   end
   
   specify "should raise an InvalidHashError when given an invalid hash" do
