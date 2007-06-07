@@ -10,3 +10,7 @@
 2.0.1  Mar 09 2007
  - Fixed load path issues
  - Fixed crashes when hashing weird values (e.g., false, etc.)
+
+2.0.2  Jun 06 2007
+ - Fixed example code in the README [Winson]
+ - Fixed Solaris compatibility [Jeremy LaTrasse, Twitter crew]
