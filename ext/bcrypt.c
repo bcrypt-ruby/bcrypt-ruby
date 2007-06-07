@@ -65,16 +65,11 @@
 
 /* Add this type so we'll compile nicely on Solaris.
    Thanks to Jeremy LaTrasse and the Twitter crew. */
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
-#ifdef HAVE_SYS_TYPES_STD
-	typedef int8_t int8;
-	typedef u_int8_t uint8;
-	typedef int16_t int16;
-	typedef u_int16_t uint16;
-	typedef int32_t int32;
-	typedef u_int32_t uint32;
+#ifdef __sun
+	#define u_int8_t uint8_t
+	#define u_int16_t uint16_t
+	#define u_int32_t uint32_t
+	#define u_int64_t uint64_t
 #endif
 
 /* This implementation is adaptable to current computing power.
