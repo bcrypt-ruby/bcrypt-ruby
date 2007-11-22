@@ -14,3 +14,6 @@
 2.0.2  Jun 06 2007
  - Fixed example code in the README [Winson]
  - Fixed Solaris compatibility [Jeremy LaTrasse, Twitter crew]
+
+SVN Blah
+ - Made exception classes descend from StandardError, not Exception [Dan42]

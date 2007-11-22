@@ -8,10 +8,10 @@ require "openssl"
 # hashing passwords.
 module BCrypt
   module Errors
-    class InvalidSalt   < Exception; end  # The salt parameter provided to bcrypt() is invalid.
-    class InvalidHash   < Exception; end  # The hash parameter provided to bcrypt() is invalid.
-    class InvalidCost   < Exception; end  # The cost parameter provided to bcrypt() is invalid.
-    class InvalidSecret < Exception; end  # The secret parameter provided to bcrypt() is invalid.
+    class InvalidSalt   < StandardError; end  # The salt parameter provided to bcrypt() is invalid.
+    class InvalidHash   < StandardError; end  # The hash parameter provided to bcrypt() is invalid.
+    class InvalidCost   < StandardError; end  # The cost parameter provided to bcrypt() is invalid.
+    class InvalidSecret < StandardError; end  # The secret parameter provided to bcrypt() is invalid.
   end
   
   # A Ruby wrapper for the bcrypt() extension calls.
