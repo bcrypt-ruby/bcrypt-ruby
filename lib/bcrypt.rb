@@ -28,7 +28,7 @@ module BCrypt
     
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
-    def self.hash(secret, salt)
+    def self.hash_secret(secret, salt)
       if valid_secret?(secret)
         if valid_salt?(salt)
           __bc_crypt(secret.to_s, salt)
@@ -123,7 +123,7 @@ module BCrypt
       # 
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
       def create(secret, options = { :cost => BCrypt::Engine::DEFAULT_COST })
-        Password.new(BCrypt::Engine.hash(secret, BCrypt::Engine.generate_salt(options[:cost])))
+        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(options[:cost])))
       end
     end
     
@@ -139,7 +139,7 @@ module BCrypt
     
     # Compares a potential secret against the hash. Returns true if the secret is the original secret, false otherwise.
     def ==(secret)
-      super(BCrypt::Engine.hash(secret, @salt))
+      super(BCrypt::Engine.hash_secret(secret, @salt))
     end
     alias_method :is_password?, :==
     

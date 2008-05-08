@@ -15,5 +15,7 @@
  - Fixed example code in the README [Winson]
  - Fixed Solaris compatibility [Jeremy LaTrasse, Twitter crew]
 
-SVN Blah
+HEAD
  - Made exception classes descend from StandardError, not Exception [Dan42]
+ - Changed BCrypt::Engine.hash to BCrypt::Engine.hash_secret to avoid Merb
+   sorting issues. [Lee Pope]

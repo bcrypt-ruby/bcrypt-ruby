@@ -35,16 +35,16 @@ context "Generating BCrypt hashes" do
   end
   
   specify "should produce a string" do
-    BCrypt::Engine.hash(@password, @salt).should be_an_instance_of(String)
+    BCrypt::Engine.hash_secret(@password, @salt).should be_an_instance_of(String)
   end
   
   specify "should raise an InvalidSalt error if the salt is invalid" do
-    lambda { BCrypt::Engine.hash(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
+    lambda { BCrypt::Engine.hash_secret(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
   end
   
   specify "should raise an InvalidSecret error if the secret is invalid" do
-    lambda { BCrypt::Engine.hash(nil, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Engine.hash(false, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    lambda { BCrypt::Engine.hash_secret(nil, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    lambda { BCrypt::Engine.hash_secret(false, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
   end
   
   specify "should be interoperable with other implementations" do
@@ -57,7 +57,7 @@ context "Generating BCrypt hashes" do
       ["0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "$2a$05$abcdefghijklmnopqrstuu", "$2a$05$abcdefghijklmnopqrstuu5s2v8.iXieOjg/.AySBTTZIIVFJeBui"]
     ]
     for secret, salt, test_vector in test_vectors
-      BCrypt::Engine.hash(secret, salt).should eql(test_vector)
+      BCrypt::Engine.hash_secret(secret, salt).should eql(test_vector)
     end
   end
 end
