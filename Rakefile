@@ -26,7 +26,7 @@ CLOBBER.include(
   "doc/coverage"
 )
 
-task :default => [:spec]
+task :default => [:compile, :spec]
 
 desc "Run all specs"
 Spec::Rake::SpecTask.new do |t|
@@ -89,6 +89,7 @@ task :compile => [:clean] do
   Dir.chdir('./ext')
   system "ruby extconf.rb"
   system "make"
+  Dir.chdir('..')
 end
 
 desc "Run a set of benchmarks on the compiled extension."
