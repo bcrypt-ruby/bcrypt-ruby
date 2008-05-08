@@ -7,7 +7,7 @@ require 'rake/rdoctask'
 require "benchmark"
 
 PKG_NAME = "bcrypt-ruby"
-PKG_VERSION   = "2.0.2"
+PKG_VERSION   = "2.0.3"
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 PKG_FILES = FileList[
   '[A-Z]*',
@@ -72,8 +72,7 @@ spec = Gem::Specification.new do |s|
   
   s.extensions = FileList["ext/extconf.rb"].to_a
   
-  s.autorequire = 'bcrypt'
-  s.author = ["Coda Hale"]
+  s.authors = ["Coda Hale"]
   s.email = "coda.hale@gmail.com"
   s.homepage = "http://bcrypt-ruby.rubyforge.org"
   s.rubyforge_project = "bcrypt-ruby"
