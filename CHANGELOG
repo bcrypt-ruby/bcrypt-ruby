@@ -19,3 +19,7 @@
  - Made exception classes descend from StandardError, not Exception [Dan42]
  - Changed BCrypt::Engine.hash to BCrypt::Engine.hash_secret to avoid Merb
    sorting issues. [Lee Pope]
+
+2.0.4  Mar 09 2009
+  - Added Ruby 1.9 compatibility. [Genki Takiuchi]
+  - Fixed segfaults on some different types of empty strings. [Mike Pomraning]
