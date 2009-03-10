@@ -16,7 +16,8 @@ static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
 /* Given a secret and a salt, generates a salted hash (which you can then store safely).
  */
 static VALUE bc_crypt(VALUE self, VALUE key, VALUE salt) {
-	return rb_str_new2((char *)bcrypt(RSTRING_PTR(key), (char *)RSTRING_PTR(salt)));
+	const char * safeguarded = RSTRING_PTR(key) ? RSTRING_PTR(key) : "";
+	return rb_str_new2((char *)bcrypt(safeguarded, (char *)RSTRING_PTR(salt)));
 }
 
 /* Create the BCrypt and BCrypt::Internals modules, and populate them with methods. */

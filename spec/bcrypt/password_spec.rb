@@ -20,6 +20,12 @@ context "Creating a hashed password" do
     lambda { BCrypt::Password.create({:woo => "yeah"}) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
     lambda { BCrypt::Password.create(false) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
   end
+  
+  specify "should tolerate empty string secrets" do
+    lambda { BCrypt::Password.create( "\n".chop  ) }.should_not raise_error
+    lambda { BCrypt::Password.create( ""         ) }.should_not raise_error
+    lambda { BCrypt::Password.create( String.new ) }.should_not raise_error
+  end
 end
 
 context "Reading a hashed password" do
