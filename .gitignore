@@ -2,3 +2,4 @@ ext/*.o
 ext/*.bundle
 ext/Makefile
 doc
+pkg
