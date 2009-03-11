@@ -23,3 +23,6 @@
 2.0.4  Mar 09 2009
   - Added Ruby 1.9 compatibility. [Genki Takiuchi]
   - Fixed segfaults on some different types of empty strings. [Mike Pomraning]
+
+2.0.5  Mar 11 2009
+  - Fixed Ruby 1.8.5 compatibility. [Mike Pomraning]
