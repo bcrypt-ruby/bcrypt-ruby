@@ -7,6 +7,12 @@ char   *bcrypt(const char *, const char *);
 VALUE mBCrypt;
 VALUE cBCryptEngine;
 
+/* Define RSTRING_PTR for Ruby 1.8.5, ruby-core's idea of a point release is
+   insane. */
+#ifndef RSTRING_PTR
+#  define    RSTRING_PTR(s)  (RSTRING(s)->ptr)
+#endif
+
 /* Given a logarithmic cost parameter, generates a salt for use with +bc_crypt+.
  */
 static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
