@@ -15,7 +15,9 @@ PKG_FILES = FileList[
   'spec/**/*.rb', 
   'ext/*.c',
   'ext/*.h',
-  'ext/*.rb'
+  'ext/*.rb',
+  'ext/jruby/bcrypt_jruby/BCrypt.java',
+  'ext/jruby/bcrypt_jruby/BCrypt.class'
 ]
 CLEAN.include(
   "ext/*.o",
@@ -81,11 +83,30 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_tar = true
 end
 
-desc "Clean, then compile the extension."
-task :compile => [:clean] do
-  Dir.chdir('ext') do
-    ruby "extconf.rb"
-    sh "make"
+desc "Clean, then compile the extension that's native to the current Ruby compiler."
+if RUBY_PLATFORM == "java"
+  task :compile => 'compile:jruby'
+else
+  task :compile => 'compile:mri'
+end
+
+namespace :compile do
+  desc "CLean, then compile all extensions"
+  task :all => [:mri, :jruby]
+  
+  desc "Clean, then compile the MRI extension"
+  task :mri => :clean do
+    Dir.chdir('ext') do
+      ruby "extconf.rb"
+      sh "make"
+    end
+  end
+  
+  desc "Clean, then compile the JRuby extension"
+  task :jruby => :clean do
+    Dir.chdir('ext/jruby/bcrypt_jruby') do
+      sh "javac BCrypt.java"
+    end
   end
 end
 

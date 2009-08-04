@@ -1,8 +1,14 @@
 # A wrapper for OpenBSD's bcrypt/crypt_blowfish password-hashing algorithm.
 
-$: << "ext"
-require "bcrypt_ext"
-require "openssl"
+if RUBY_PLATFORM == "java"
+  require 'java'
+  $CLASSPATH << File.expand_path(File.join(File.dirname(__FILE__), "..", "ext", "jruby"))
+else
+  $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "..", "ext")))
+  puts $LOAD_PATH
+  require "bcrypt_ext"
+  require "openssl"
+end
 
 # A Ruby library implementing OpenBSD's bcrypt()/crypt_blowfish algorithm for
 # hashing passwords.
@@ -14,24 +20,32 @@ module BCrypt
     class InvalidSecret < StandardError; end  # The secret parameter provided to bcrypt() is invalid.
   end
   
-  # A Ruby wrapper for the bcrypt() extension calls.
+  # A Ruby wrapper for the bcrypt() C extension calls and the Java calls.
   class Engine
     # The default computational expense parameter.
     DEFAULT_COST    = 10
+    # The minimum cost supported by the algorithm.
+    MIN_COST        = 4
     # Maximum possible size of bcrypt() salts.
     MAX_SALT_LENGTH = 16
     
-    # C-level routines which, if they don't get the right input, will crash the
-    # hell out of the Ruby process.
-    private_class_method :__bc_salt
-    private_class_method :__bc_crypt
+    if RUBY_PLATFORM != "java"
+      # C-level routines which, if they don't get the right input, will crash the
+      # hell out of the Ruby process.
+      private_class_method :__bc_salt
+      private_class_method :__bc_crypt
+    end
     
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
     def self.hash_secret(secret, salt)
       if valid_secret?(secret)
         if valid_salt?(salt)
-          __bc_crypt(secret.to_s, salt)
+          if RUBY_PLATFORM == "java"
+            Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s, salt.to_s)
+          else
+            __bc_crypt(secret.to_s, salt)
+          end
         else
           raise Errors::InvalidSalt.new("invalid salt")
         end
@@ -42,8 +56,16 @@ module BCrypt
     
     # Generates a random salt with a given computational cost.
     def self.generate_salt(cost = DEFAULT_COST)
-      if cost.to_i > 0
-        __bc_salt(cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
+      cost = cost.to_i
+      if cost > 0
+        if cost < MIN_COST
+          cost = MIN_COST
+        end
+        if RUBY_PLATFORM == "java"
+          Java.bcrypt_jruby.BCrypt.gensalt(cost)
+        else
+          __bc_salt(cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
+        end
       else
         raise Errors::InvalidCost.new("cost must be numeric and > 0")
       end
