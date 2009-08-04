@@ -3,3 +3,4 @@ ext/*.bundle
 ext/Makefile
 doc
 pkg
+*.class
