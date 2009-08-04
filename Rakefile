@@ -40,7 +40,7 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.spec_opts = ['--color','--backtrace','--diff']
   t.rcov = true
   t.rcov_dir = 'doc/coverage'
-  t.rcov_opts = ['--exclude', 'spec\/spec,spec\/.*_spec.rb']
+  t.rcov_opts = ['--exclude', 'rspec,diff-lcs,rcov,_spec,_helper']
 end
 
 desc 'Generate RDoc'
