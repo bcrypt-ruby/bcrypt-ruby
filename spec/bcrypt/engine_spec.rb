@@ -29,7 +29,7 @@ end
 
 context "Generating BCrypt hashes" do
   
-  setup do
+  before :each do
     @salt = BCrypt::Engine.generate_salt(4)
     @password = "woo"
   end

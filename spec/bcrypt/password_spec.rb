@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), "..", "spec_helper")
 
 context "Creating a hashed password" do
   
-  setup do
+  before :each do
     @secret = "wheedle"
     @password = BCrypt::Password.create(@secret, :cost => 4)
   end
@@ -29,7 +29,7 @@ context "Creating a hashed password" do
 end
 
 context "Reading a hashed password" do
-  setup do
+  before :each do
     @secret = "U*U"
     @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
   end
@@ -48,7 +48,7 @@ context "Reading a hashed password" do
 end
 
 context "Comparing a hashed password with a secret" do
-  setup do
+  before :each do
     @secret = "U*U"
     @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
     @password = BCrypt::Password.create(@secret)

@@ -32,17 +32,15 @@ desc "Run all specs"
 Spec::Rake::SpecTask.new do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
   t.spec_opts = ['--color','--backtrace','--diff']
+end
+
+desc "Run all specs, with coverage testing"
+Spec::Rake::SpecTask.new(:rcov) do |t|
+  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_opts = ['--color','--backtrace','--diff']
   t.rcov = true
   t.rcov_dir = 'doc/coverage'
   t.rcov_opts = ['--exclude', 'spec\/spec,spec\/.*_spec.rb']
-end
-
-namespace :spec do
-  desc "Run all specs and store html output in doc/specs.html"
-  Spec::Rake::SpecTask.new('html') do |t|
-    t.spec_files = FileList['spec/**/*_spec.rb']
-    t.spec_opts = ['--diff','--format html','--backtrace','--out doc/specs.html']
-  end
 end
 
 desc 'Generate RDoc'
