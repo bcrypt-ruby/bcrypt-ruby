@@ -27,6 +27,16 @@ context "Generating BCrypt salts" do
   end
 end
 
+context "Autodetecting of salt cost" do
+  
+  specify "should work" do
+    BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou").should == 8
+    BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu").should == 5
+    BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.").should == 13
+  end
+  
+end
+
 context "Generating BCrypt hashes" do
   
   class MyInvalidSecret

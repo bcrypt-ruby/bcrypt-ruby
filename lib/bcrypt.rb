@@ -38,13 +38,17 @@ module BCrypt
     
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
-    def self.hash_secret(secret, salt)
+    def self.hash_secret(secret, salt, cost = nil)
       if valid_secret?(secret)
         if valid_salt?(salt)
+          if cost.nil?
+            cost = autodetect_cost(salt)
+          end
+          
           if RUBY_PLATFORM == "java"
             Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s, salt.to_s)
           else
-            __bc_crypt(secret.to_s, salt)
+            __bc_crypt(secret.to_s, salt, cost)
           end
         else
           raise Errors::InvalidSalt.new("invalid salt")
@@ -101,6 +105,11 @@ module BCrypt
         return i if end_time * 1_000 > upper_time_limit_in_ms
       end
     end
+    
+    # Autodetects the cost from the salt string.
+    def self.autodetect_cost(salt)
+      salt[4..5].to_i
+    end
   end
   
   # A password management class which allows you to safely store users' passwords and compare them.
@@ -145,7 +154,7 @@ module BCrypt
       # 
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
       def create(secret, options = { :cost => BCrypt::Engine::DEFAULT_COST })
-        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(options[:cost])))
+        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(options[:cost]), options[:cost]))
       end
     end
     
