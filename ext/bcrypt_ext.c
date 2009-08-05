@@ -1,11 +1,8 @@
 #include "ruby.h"
-#include "blf.h"
+#include "bcrypt.h"
 
-char   *bcrypt_gensalt(u_int8_t, u_int8_t *);
-char   *bcrypt(const char *, const char *);
-
-VALUE mBCrypt;
-VALUE cBCryptEngine;
+static VALUE mBCrypt;
+static VALUE cBCryptEngine;
 
 /* Define RSTRING_PTR for Ruby 1.8.5, ruby-core's idea of a point release is
    insane. */
@@ -13,20 +10,68 @@ VALUE cBCryptEngine;
 #  define    RSTRING_PTR(s)  (RSTRING(s)->ptr)
 #endif
 
+#ifdef RUBY_VM
+#  define RUBY_1_9
+#endif
+
+#ifdef RUBY_1_9
+
+	/* When on Ruby 1.9+, we will want to unlock the GIL while performing
+	 * expensive calculations, for greater concurrency.
+	 */
+	
+	typedef struct {
+		char       *output;
+		const char *key;
+		const char *salt;
+	} BCryptArguments;
+	
+	static VALUE bcrypt_wrapper(void *_args) {
+		BCryptArguments *args = (BCryptArguments *)_args;
+		return (VALUE)bcrypt(args->output, args->key, args->salt);
+	}
+
+#endif /* RUBY_1_9 */
+
 /* Given a logarithmic cost parameter, generates a salt for use with +bc_crypt+.
  */
 static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
-	return rb_str_new2((char *)bcrypt_gensalt(NUM2INT(cost), (u_int8_t *)RSTRING_PTR(seed)));
+	int icost = NUM2INT(cost);
+	char salt[BCRYPT_SALT_OUTPUT_SIZE];
+	
+	bcrypt_gensalt(salt, icost, (u_int8_t *)RSTRING_PTR(seed));
+	return rb_str_new2(salt);
 }
 
 /* Given a secret and a salt, generates a salted hash (which you can then store safely).
  */
 static VALUE bc_crypt(VALUE self, VALUE key, VALUE salt) {
 	const char * safeguarded = RSTRING_PTR(key) ? RSTRING_PTR(key) : "";
-	return rb_str_new2((char *)bcrypt(safeguarded, (char *)RSTRING_PTR(salt)));
+	char output[BCRYPT_OUTPUT_SIZE];
+	
+	#ifdef RUBY_1_9
+		BCryptArguments args;
+		VALUE ret;
+		
+		args.output = output;
+		args.key    = safeguarded;
+		args.salt   = RSTRING_PTR(salt);
+		ret = rb_thread_blocking_region(bcrypt_wrapper, &args, RUBY_UBF_IO, 0);
+		if (ret != (VALUE) 0) {
+			return rb_str_new2(output);
+		} else {
+			return Qnil;
+		}
+	#else
+		if (bcrypt(output, safeguarded, (char *)RSTRING_PTR(salt)) != NULL) {
+			return rb_str_new2(output);
+		} else {
+			return Qnil;
+		}
+	#endif
 }
 
-/* Create the BCrypt and BCrypt::Internals modules, and populate them with methods. */
+/* Create the BCrypt and BCrypt::Engine modules, and populate them with methods. */
 void Init_bcrypt_ext(){
 	mBCrypt = rb_define_module("BCrypt");
 	cBCryptEngine = rb_define_class_under(mBCrypt, "Engine", rb_cObject);

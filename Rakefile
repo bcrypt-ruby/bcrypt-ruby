@@ -114,7 +114,7 @@ desc "Run a set of benchmarks on the compiled extension."
 task :benchmark do
   TESTS = 100
   TEST_PWD = "this is a test"
-  require "lib/bcrypt"
+  require File.expand_path(File.join(File.dirname(__FILE__), "lib", "bcrypt"))
   Benchmark.bmbm do |results|
     4.upto(10) do |n|
       results.report("cost #{n}:") { TESTS.times { BCrypt::Password.create(TEST_PWD, :cost => n) } }

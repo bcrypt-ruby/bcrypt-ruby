@@ -1,6 +1,11 @@
 /*	$OpenBSD: bcrypt.c,v 1.22 2007/02/20 01:44:16 ray Exp $	*/
 
 /*
+ * Modified by <hongli@phusion.nl> on 2009-08-05:
+ *
+ *   - Got rid of the global variables; they're not thread-safe.
+ *     Modified the functions to accept local buffers instead.
+ *
  * Modified by <coda.hale@gmail.com> on 2007-02-27:
  *
  *   - Changed bcrypt_gensalt to accept a random seed as a parameter,
@@ -62,26 +67,16 @@
 #include <sys/types.h>
 #include <string.h>
 #include "blf.h"
+#include "bcrypt.h"
 
 /* This implementation is adaptable to current computing power.
  * You can have up to 2^31 rounds which should be enough for some
  * time to come.
  */
 
-#define BCRYPT_VERSION '2'
-#define BCRYPT_MAXSALT 16	/* Precomputation is just so nice */
-#define BCRYPT_BLOCKS 6		/* Ciphertext blocks */
-#define BCRYPT_MINROUNDS 16	/* we have log2(rounds) in salt */
-
-char   *bcrypt_gensalt(u_int8_t, u_int8_t *);
-
 static void encode_salt(char *, u_int8_t *, u_int16_t, u_int8_t);
 static void encode_base64(u_int8_t *, u_int8_t *, u_int16_t);
 static void decode_base64(u_int8_t *, u_int16_t, u_int8_t *);
-
-static char    encrypted[_PASSWORD_LEN];
-static char    gsalt[7 + (BCRYPT_MAXSALT * 4 + 2) / 3 + 1];
-static char    error[] = ":";
 
 const static u_int8_t Base64Code[] =
 "./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -155,22 +150,22 @@ encode_salt(char *salt, u_int8_t *csalt, u_int16_t clen, u_int8_t logr)
    seems sensible.
  */
 
-char *
-bcrypt_gensalt(u_int8_t log_rounds, u_int8_t *rseed)
+char   *
+bcrypt_gensalt(char *output, u_int8_t log_rounds, u_int8_t *rseed)
 {
 	if (log_rounds < 4)
 		log_rounds = 4;
 	else if (log_rounds > 31)
 		log_rounds = 31;
 
-	encode_salt(gsalt, rseed, BCRYPT_MAXSALT, log_rounds);
-	return gsalt;
+	encode_salt(output, rseed, BCRYPT_MAXSALT, log_rounds);
+	return output;
 }
 /* We handle $Vers$log2(NumRounds)$salt+passwd$
    i.e. $2$04$iwouldntknowwhattosayetKdJ6iFtacBqJdKe6aW7ou */
 
 char   *
-bcrypt(const char *key, const char *salt)
+bcrypt(char *output, const char *key, const char *salt)
 {
 	blf_ctx state;
 	u_int32_t rounds, i, k;
@@ -185,8 +180,7 @@ bcrypt(const char *key, const char *salt)
 	salt++;
 
 	if (*salt > BCRYPT_VERSION) {
-		/* How do I handle errors ? Return ':' */
-		return error;
+		return NULL;
 	}
 
 	/* Check for minor versions */
@@ -198,7 +192,7 @@ bcrypt(const char *key, const char *salt)
 			 salt++;
 			 break;
 		 default:
-			 return error;
+			 return NULL;
 		 }
 	} else
 		 minor = 0;
@@ -208,21 +202,21 @@ bcrypt(const char *key, const char *salt)
 
 	if (salt[2] != '$')
 		/* Out of sync with passwd entry */
-		return error;
+		return NULL;
 
 	/* Computer power doesn't increase linear, 2^x should be fine */
 	n = atoi(salt);
 	if (n > 31 || n < 0)
-		return error;
+		return NULL;
 	logr = (u_int8_t)n;
 	if ((rounds = (u_int32_t) 1 << logr) < BCRYPT_MINROUNDS)
-		return error;
+		return NULL;
 
 	/* Discard num rounds + "$" identifier */
 	salt += 3;
 
 	if (strlen(salt) * 3 / 4 < BCRYPT_MAXSALT)
-		return error;
+		return NULL;
 
 	/* We dont want the base64 salt but the raw data */
 	decode_base64(csalt, BCRYPT_MAXSALT, (u_int8_t *) salt);
@@ -259,18 +253,18 @@ bcrypt(const char *key, const char *salt)
 
 
 	i = 0;
-	encrypted[i++] = '$';
-	encrypted[i++] = BCRYPT_VERSION;
+	output[i++] = '$';
+	output[i++] = BCRYPT_VERSION;
 	if (minor)
-		encrypted[i++] = minor;
-	encrypted[i++] = '$';
+		output[i++] = minor;
+	output[i++] = '$';
 
-	snprintf(encrypted + i, 4, "%2.2u$", logr);
+	snprintf(output + i, 4, "%2.2u$", logr);
 
-	encode_base64((u_int8_t *) encrypted + i + 3, csalt, BCRYPT_MAXSALT);
-	encode_base64((u_int8_t *) encrypted + strlen(encrypted), ciphertext,
+	encode_base64((u_int8_t *) output + i + 3, csalt, BCRYPT_MAXSALT);
+	encode_base64((u_int8_t *) output + strlen(output), ciphertext,
 	    4 * BCRYPT_BLOCKS - 1);
-	return encrypted;
+	return output;
 }
 
 static void
