@@ -4,8 +4,7 @@ if RUBY_PLATFORM == "java"
   require 'java'
   $CLASSPATH << File.expand_path(File.join(File.dirname(__FILE__), "..", "ext", "jruby"))
 else
-  $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "..", "ext")))
-  puts $LOAD_PATH
+  $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "..", "ext", "mri")))
   require "bcrypt_ext"
   require "openssl"
 end

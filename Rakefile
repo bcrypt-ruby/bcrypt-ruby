@@ -13,18 +13,20 @@ PKG_FILES = FileList[
   '[A-Z]*',
   'lib/**/*.rb', 
   'spec/**/*.rb', 
-  'ext/*.c',
-  'ext/*.h',
-  'ext/*.rb',
+  'ext/mri/*.c',
+  'ext/mri/*.h',
+  'ext/mri/*.rb',
   'ext/jruby/bcrypt_jruby/BCrypt.java',
   'ext/jruby/bcrypt_jruby/BCrypt.class'
 ]
 CLEAN.include(
-  "ext/*.o",
-  "ext/*.bundle",
-  "ext/*.so"  
+  "ext/mri/*.o",
+  "ext/mri/*.bundle",
+  "ext/mri/*.so",
+  "ext/jruby/bcrypt_jruby/*.class"
 )
 CLOBBER.include(
+  "ext/mri/Makefile",
   "doc/coverage"
 )
 
@@ -70,7 +72,7 @@ spec = Gem::Specification.new do |s|
   s.rdoc_options = rd.options
   s.extra_rdoc_files = rd.rdoc_files.to_a
   
-  s.extensions = FileList["ext/extconf.rb"].to_a
+  s.extensions = FileList["ext/mri/extconf.rb"].to_a
   
   s.authors = ["Coda Hale"]
   s.email = "coda.hale@gmail.com"
@@ -96,7 +98,7 @@ namespace :compile do
   
   desc "Clean, then compile the MRI extension"
   task :mri => :clean do
-    Dir.chdir('ext') do
+    Dir.chdir('ext/mri') do
       ruby "extconf.rb"
       sh "make"
     end

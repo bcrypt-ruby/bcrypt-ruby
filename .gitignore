@@ -1,6 +1,7 @@
-ext/*.o
-ext/*.bundle
-ext/Makefile
+*.o
+*.bundle
+*.so
+ext/mri/Makefile
 doc
 pkg
 *.class
