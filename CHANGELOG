@@ -26,3 +26,9 @@
 
 2.0.5  Mar 11 2009
   - Fixed Ruby 1.8.5 compatibility. [Mike Pomraning]
+
+2.1.0  Aug 12 2009
+  - Improved code coverage, unit tests, and build chain. [Hongli Lai]
+  - Ruby 1.9 compatibility fixes. [Hongli Lai]
+  - JRuby support, using Damien Miller's jBCrypt. [Hongli Lai]
+  - Ruby 1.9 GIL releasing for high-cost hashes. [Hongli Lai]
