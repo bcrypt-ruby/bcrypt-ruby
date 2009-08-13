@@ -79,6 +79,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://bcrypt-ruby.rubyforge.org"
   s.rubyforge_project = "bcrypt-ruby"
 end
+task :gem => ["compile:jruby"]
 
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_zip = true
