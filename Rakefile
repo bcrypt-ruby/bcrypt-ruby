@@ -27,7 +27,8 @@ CLEAN.include(
 )
 CLOBBER.include(
   "ext/mri/Makefile",
-  "doc/coverage"
+  "doc/coverage",
+  "pkg"
 )
 
 task :default => [:compile, :spec]
@@ -79,7 +80,10 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://bcrypt-ruby.rubyforge.org"
   s.rubyforge_project = "bcrypt-ruby"
 end
-task :gem => ["compile:jruby"]
+
+file 'ext/jruby/bcrypt_jruby/BCrypt.class' => ["ext/jruby/bcrypt_jruby/BCrypt.java"] do
+  Rake::Task['compile:jruby'].invoke
+end
 
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_zip = true
