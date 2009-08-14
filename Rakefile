@@ -7,7 +7,7 @@ require 'rake/rdoctask'
 require "benchmark"
 
 PKG_NAME = "bcrypt-ruby"
-PKG_VERSION   = "2.1.0"
+PKG_VERSION   = "2.1.1"
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 PKG_FILES = FileList[
   '[A-Z]*',
