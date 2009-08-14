@@ -112,7 +112,7 @@ namespace :compile do
   desc "Clean, then compile the JRuby extension"
   task :jruby => :clean do
     Dir.chdir('ext/jruby/bcrypt_jruby') do
-      sh "javac BCrypt.java"
+      sh "javac -source 1.4 -target 1.4 BCrypt.java"
     end
   end
 end
