@@ -31,6 +31,8 @@
 #ifndef _BCRYPT_H_
 #define _BCRYPT_H_
 
+#include <stdint.h>
+
 #define BCRYPT_VERSION '2'
 #define BCRYPT_MAXSALT 16	/* Precomputation is just so nice */
 #define BCRYPT_BLOCKS 6		/* Ciphertext blocks */
@@ -49,7 +51,7 @@
  *        cryptographically secure random source.
  * Returns: output
  */
-char *bcrypt_gensalt(char *output, u_int8_t log_rounds, u_int8_t *rseed);
+char *bcrypt_gensalt(char *output, uint8_t log_rounds, uint8_t *rseed);
 
 /*
  * Given a secret and a salt, generates a salted hash (which you can then store safely).

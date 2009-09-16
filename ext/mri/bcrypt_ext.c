@@ -41,7 +41,7 @@ static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
 	int icost = NUM2INT(cost);
 	char salt[BCRYPT_SALT_OUTPUT_SIZE];
 	
-	bcrypt_gensalt(salt, icost, (u_int8_t *)RSTRING_PTR(seed));
+	bcrypt_gensalt(salt, icost, (uint8_t *)RSTRING_PTR(seed));
 	return rb_str_new2(salt);
 }
 
