@@ -4,8 +4,14 @@ if RUBY_PLATFORM == "java"
   require 'java'
   $CLASSPATH << File.expand_path(File.join(File.dirname(__FILE__), "..", "ext", "jruby"))
 else
-  $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "..", "ext", "mri")))
-  require "bcrypt_ext"
+  begin
+    require "bcrypt_ext"
+  rescue LoadError
+    extdir = File.expand_path(File.join(File.dirname(__FILE__), "..", "ext", "mri"))
+    $LOAD_PATH.unshift(extdir) if File.directory?(extdir) && !$LOAD_PATH.include?(extdir)
+    require "bcrypt_ext"
+  end
+
   require "openssl"
 end
 
