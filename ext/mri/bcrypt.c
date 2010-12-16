@@ -150,7 +150,7 @@ encode_salt(char *salt, uint8_t *csalt, uint16_t clen, uint8_t logr)
  */
 
 char   *
-bcrypt_gensalt(char *output, uint8_t log_rounds, uint8_t *rseed)
+rubybcrypt_gensalt(char *output, uint8_t log_rounds, uint8_t *rseed)
 {
 	if (log_rounds < 4)
 		log_rounds = 4;
@@ -164,7 +164,7 @@ bcrypt_gensalt(char *output, uint8_t log_rounds, uint8_t *rseed)
    i.e. $2$04$iwouldntknowwhattosayetKdJ6iFtacBqJdKe6aW7ou */
 
 char   *
-bcrypt(char *output, const char *key, const char *salt)
+rubybcrypt(char *output, const char *key, const char *salt)
 {
 	blf_ctx state;
 	uint32_t rounds, i, k;
