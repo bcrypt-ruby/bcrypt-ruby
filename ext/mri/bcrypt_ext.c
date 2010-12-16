@@ -30,7 +30,7 @@ static VALUE cBCryptEngine;
 	
 	static VALUE bcrypt_wrapper(void *_args) {
 		BCryptArguments *args = (BCryptArguments *)_args;
-		return (VALUE)bcrypt(args->output, args->key, args->salt);
+		return (VALUE)ruby_bcrypt(args->output, args->key, args->salt);
 	}
 
 #endif /* RUBY_1_9 */
@@ -41,7 +41,7 @@ static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
 	int icost = NUM2INT(cost);
 	char salt[BCRYPT_SALT_OUTPUT_SIZE];
 	
-	bcrypt_gensalt(salt, icost, (uint8_t *)RSTRING_PTR(seed));
+	ruby_bcrypt_gensalt(salt, icost, (uint8_t *)RSTRING_PTR(seed));
 	return rb_str_new2(salt);
 }
 
@@ -70,7 +70,7 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE salt, VALUE cost) {
 		/* otherwise, fallback to the non-GIL-unlocking code, just like on Ruby 1.8 */
 	#endif
 	
-	if (bcrypt(output, safeguarded, (char *)RSTRING_PTR(salt)) != NULL) {
+	if (ruby_bcrypt(output, safeguarded, (char *)RSTRING_PTR(salt)) != NULL) {
 		return rb_str_new2(output);
 	} else {
 		return Qnil;
