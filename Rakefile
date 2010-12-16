@@ -1,4 +1,4 @@
-gem "rspec"
+gem "rspec", "1"
 require "spec/rake/spectask"
 require 'rake/gempackagetask'
 require 'rake/contrib/rubyforgepublisher'
