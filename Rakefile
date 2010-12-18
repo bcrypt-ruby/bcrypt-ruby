@@ -1,6 +1,7 @@
-gem "rspec"
 require "spec/rake/spectask"
 require 'rake/gempackagetask'
+require 'rake/extensiontask'
+require 'rake/javaextensiontask'
 require 'rake/contrib/rubyforgepublisher'
 require 'rake/clean'
 require 'rake/rdoctask'
@@ -16,8 +17,7 @@ PKG_FILES = FileList[
   'ext/mri/*.c',
   'ext/mri/*.h',
   'ext/mri/*.rb',
-  'ext/jruby/bcrypt_jruby/BCrypt.java',
-  'ext/jruby/bcrypt_jruby/BCrypt.class'
+  'ext/jruby/bcrypt_jruby/BCrypt.java'
 ]
 CLEAN.include(
   "ext/mri/*.o",
@@ -68,6 +68,7 @@ spec = Gem::Specification.new do |s|
 
   s.files = PKG_FILES.to_a
   s.require_path = 'lib'
+  s.add_development_dependency 'rake-compiler'
 
   s.has_rdoc = true
   s.rdoc_options = rd.options
@@ -81,40 +82,37 @@ spec = Gem::Specification.new do |s|
   s.rubyforge_project = "bcrypt-ruby"
 end
 
-file 'ext/jruby/bcrypt_jruby/BCrypt.class' => ["ext/jruby/bcrypt_jruby/BCrypt.java"] do
-  Rake::Task['compile:jruby'].invoke
-end
-
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_zip = true
   pkg.need_tar = true
 end
 
-desc "Clean, then compile the extension that's native to the current Ruby compiler."
-if RUBY_PLATFORM == "java"
-  task :compile => 'compile:jruby'
+if RUBY_PLATFORM =~ /java/
+  Rake::JavaExtensionTask.new('bcrypt_ext', spec) do |ext|
+    ext.ext_dir = 'ext/jruby'
+  end
 else
-  task :compile => 'compile:mri'
+  Rake::ExtensionTask.new("bcrypt_ext", spec) do |ext|
+    ext.ext_dir = 'ext/mri'
+    ext.cross_compile = true
+    ext.cross_platform = ['x86-mingw32', 'x86-mswin32-60']
+
+    # inject 1.8/1.9 pure-ruby entry point
+    ext.cross_compiling do |spec|
+      spec.files += ["lib/#{ext.name}.rb"]
+    end
+  end
 end
 
-namespace :compile do
-  desc "CLean, then compile all extensions"
-  task :all => [:mri, :jruby]
-  
-  desc "Clean, then compile the MRI extension"
-  task :mri => :clean do
-    Dir.chdir('ext/mri') do
-      ruby "extconf.rb"
-      sh "make"
-    end
+# Entry point for fat-binary gems on win32
+file("lib/bcrypt_ext.rb") do |t|
+  File.open(t.name, 'wb') do |f|
+    f.write <<-eoruby
+RUBY_VERSION =~ /(\\d+.\\d+)/
+require "\#{$1}/#{File.basename(t.name, '.rb')}"
+    eoruby
   end
-  
-  desc "Clean, then compile the JRuby extension"
-  task :jruby => :clean do
-    Dir.chdir('ext/jruby/bcrypt_jruby') do
-      sh "javac -source 1.4 -target 1.4 BCrypt.java"
-    end
-  end
+  at_exit{ FileUtils.rm t.name if File.exists?(t.name) }
 end
 
 desc "Run a set of benchmarks on the compiled extension."
