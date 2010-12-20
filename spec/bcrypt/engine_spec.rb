@@ -9,63 +9,63 @@ describe "The BCrypt engine" do
 end
 
 describe "Generating BCrypt salts" do
-  
+
   specify "should produce strings" do
     BCrypt::Engine.generate_salt.should be_an_instance_of(String)
   end
-  
+
   specify "should produce random data" do
     BCrypt::Engine.generate_salt.should_not equal(BCrypt::Engine.generate_salt)
   end
-  
+
   specify "should raise a InvalidCostError if the cost parameter isn't numeric" do
     lambda { BCrypt::Engine.generate_salt('woo') }.should raise_error(BCrypt::Errors::InvalidCost)
   end
-  
+
   specify "should raise a InvalidCostError if the cost parameter isn't greater than 0" do
     lambda { BCrypt::Engine.generate_salt(-1) }.should raise_error(BCrypt::Errors::InvalidCost)
   end
 end
 
 describe "Autodetecting of salt cost" do
-  
+
   specify "should work" do
     BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou").should == 8
     BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu").should == 5
     BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.").should == 13
   end
-  
+
 end
 
 describe "Generating BCrypt hashes" do
-  
+
   class MyInvalidSecret
     undef to_s
   end
-  
+
   before :each do
     @salt = BCrypt::Engine.generate_salt(4)
     @password = "woo"
   end
-  
+
   specify "should produce a string" do
     BCrypt::Engine.hash_secret(@password, @salt).should be_an_instance_of(String)
   end
-  
+
   specify "should raise an InvalidSalt error if the salt is invalid" do
     lambda { BCrypt::Engine.hash_secret(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
   end
-  
+
   specify "should raise an InvalidSecret error if the secret is invalid" do
     lambda { BCrypt::Engine.hash_secret(MyInvalidSecret.new, @salt) }.should raise_error(BCrypt::Errors::InvalidSecret)
     lambda { BCrypt::Engine.hash_secret(nil, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
     lambda { BCrypt::Engine.hash_secret(false, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
   end
-  
+
   specify "should call #to_s on the secret and use the return value as the actual secret data" do
     BCrypt::Engine.hash_secret(false, @salt).should == BCrypt::Engine.hash_secret("false", @salt)
   end
-  
+
   specify "should be interoperable with other implementations" do
     # test vectors from the OpenWall implementation <http://www.openwall.com/crypt/>
     test_vectors = [
