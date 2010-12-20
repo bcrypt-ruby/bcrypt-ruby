@@ -77,10 +77,10 @@ static void encode_salt(char *, uint8_t *, uint16_t, uint8_t);
 static void encode_base64(uint8_t *, uint8_t *, uint16_t);
 static void decode_base64(uint8_t *, uint16_t, uint8_t *);
 
-const static uint8_t Base64Code[] =
+static const uint8_t Base64Code[] =
 "./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-const static uint8_t index_64[128] = {
+static const uint8_t index_64[128] = {
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
