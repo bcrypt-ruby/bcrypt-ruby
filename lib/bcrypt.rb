@@ -184,7 +184,7 @@ module BCrypt
     # Splits +h+ into version, cost, salt, and hash and returns them in that order.
     def split_hash(h)
       b, v, c, mash = h.split('$')
-      return v, c.to_i, h[0, 29], mash[-31, 31]
+      return v, c.to_i, h[0, 29].to_str, mash[-31, 31]
     end
   end
 end
