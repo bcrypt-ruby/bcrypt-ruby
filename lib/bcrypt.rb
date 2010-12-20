@@ -133,7 +133,7 @@ module BCrypt
   #
   class Password < String
     # The hash portion of the stored password hash.
-    attr_reader :hash
+    attr_reader :checksum
     # The salt of the store password hash (including version and cost).
     attr_reader :salt
     # The version of the bcrypt() algorithm used to create the hash.
@@ -160,7 +160,7 @@ module BCrypt
     def initialize(raw_hash)
       if valid_hash?(raw_hash)
         self.replace(raw_hash)
-        @version, @cost, @salt, @hash = split_hash(self)
+        @version, @cost, @salt, @checksum = split_hash(self)
       else
         raise Errors::InvalidHash.new("invalid hash")
       end
@@ -184,7 +184,7 @@ module BCrypt
     # Splits +h+ into version, cost, salt, and hash and returns them in that order.
     def split_hash(h)
       b, v, c, mash = h.split('$')
-      return v, c.to_i, h[0, 29].to_str, mash[-31, 31]
+      return v, c.to_i, h[0, 29].to_str, mash[-31, 31].to_str
     end
   end
 end
