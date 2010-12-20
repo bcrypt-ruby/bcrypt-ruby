@@ -1,1 +1,1 @@
-gem 'rake-compiler', '>= 0.7.5'
+gemspec
