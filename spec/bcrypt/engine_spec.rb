@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
 
-context "The BCrypt engine" do
+describe "The BCrypt engine" do
   specify "should calculate the optimal cost factor to fit in a specific time" do
     first = BCrypt::Engine.calibrate(100)
     second = BCrypt::Engine.calibrate(400)
@@ -8,7 +8,7 @@ context "The BCrypt engine" do
   end
 end
 
-context "Generating BCrypt salts" do
+describe "Generating BCrypt salts" do
   
   specify "should produce strings" do
     BCrypt::Engine.generate_salt.should be_an_instance_of(String)
@@ -27,7 +27,7 @@ context "Generating BCrypt salts" do
   end
 end
 
-context "Autodetecting of salt cost" do
+describe "Autodetecting of salt cost" do
   
   specify "should work" do
     BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou").should == 8
@@ -37,7 +37,7 @@ context "Autodetecting of salt cost" do
   
 end
 
-context "Generating BCrypt hashes" do
+describe "Generating BCrypt hashes" do
   
   class MyInvalidSecret
     undef to_s

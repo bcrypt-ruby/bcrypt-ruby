@@ -1,11 +1,11 @@
-require "spec/rake/spectask"
+require 'rspec/core/rake_task'
 require 'rake/gempackagetask'
 require 'rake/extensiontask'
 require 'rake/javaextensiontask'
 require 'rake/contrib/rubyforgepublisher'
 require 'rake/clean'
 require 'rake/rdoctask'
-require "benchmark"
+require 'benchmark'
 
 PKG_NAME = "bcrypt-ruby"
 PKG_VERSION   = "2.1.2"
@@ -34,17 +34,15 @@ CLOBBER.include(
 task :default => [:compile, :spec]
 
 desc "Run all specs"
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.spec_opts = ['--color','--backtrace','--diff']
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = 'spec/**/*_spec.rb'
 end
 
 desc "Run all specs, with coverage testing"
-Spec::Rake::SpecTask.new(:rcov) do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-  t.spec_opts = ['--color','--backtrace','--diff']
+RSpec::Core::RakeTask.new(:rcov) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
   t.rcov = true
-  t.rcov_dir = 'doc/coverage'
+  t.rcov_path = 'doc/coverage'
   t.rcov_opts = ['--exclude', 'rspec,diff-lcs,rcov,_spec,_helper']
 end
 

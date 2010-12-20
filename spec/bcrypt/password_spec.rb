@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
 
-context "Creating a hashed password" do
+describe "Creating a hashed password" do
   
   before :each do
     @secret = "wheedle"
@@ -28,7 +28,7 @@ context "Creating a hashed password" do
   end
 end
 
-context "Reading a hashed password" do
+describe "Reading a hashed password" do
   before :each do
     @secret = "U*U"
     @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
@@ -47,7 +47,7 @@ context "Reading a hashed password" do
   end
 end
 
-context "Comparing a hashed password with a secret" do
+describe "Comparing a hashed password with a secret" do
   before :each do
     @secret = "U*U"
     @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
