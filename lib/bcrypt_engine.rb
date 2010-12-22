@@ -2,10 +2,6 @@ require 'ffi'
 
 module BCrypt
   class Engine
-    class Uint8Ptr < FFI::Struct
-      layout :value, :uint8
-    end
-
     extend FFI::Library
 
     BCRYPT_MAXSALT = 16
