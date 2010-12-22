@@ -16,17 +16,17 @@ elsif RUBY_ENGINE == "maglev"
     f.puts <<-MAKEFILE
 CFLAGS = -fPIC
 OBJS = bcrypt.o blowfish.o
-DLIB = bcrypt.so
+DLIB = bcrypt_ext.so
 OS ?= $(strip $(shell uname -s | tr '[:upper:]' '[:lower:]'))
 ifeq ($(OS),darwin)
-	DLIB = bcrypt.bundle
+	DLIB = bcrypt_ext.bundle
 endif
 
 all: $(OBJS)
 	cc -shared -o $(DLIB) $(OBJS)
 
 clean:
-	$(RM) $(OBJS) bcrypt.so
+	$(RM) $(OBJS) bcrypt_ext.so
     MAKEFILE
   end
   exit 0
