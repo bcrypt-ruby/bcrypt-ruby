@@ -8,7 +8,7 @@ module BCrypt
     BCRYPT_SALT_OUTPUT_SIZE = 7 + (BCRYPT_MAXSALT * 4 + 2) / 3 + 1
     BCRYPT_OUTPUT_SIZE = 128
 
-    ffi_lib File.expand_path("../bcrypt_ext.so", __FILE__)
+    ffi_lib File.expand_path("../bcrypt_ext", __FILE__)
 
     attach_function :ruby_bcrypt, [:buffer_out, :string, :string], :string
     attach_function :ruby_bcrypt_gensalt, [:buffer_out, :uint8, :pointer], :string
