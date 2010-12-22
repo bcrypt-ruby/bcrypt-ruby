@@ -147,24 +147,31 @@ encode_salt(char *salt, uint8_t *csalt, uint16_t clen, uint8_t logr)
 /* Generates a salt for this version of crypt.
    Since versions may change. Keeping this here
    seems sensible.
- */
+   output: the computed salt will be stored here. This buffer must be
+           at least BCRYPT_SALT_OUTPUT_SIZE bytes. The result will be
+           null-terminated.
+
+*/
 
 char   *
-ruby_bcrypt_gensalt(char *output, uint8_t log_rounds, uint8_t *rseed)
+ruby_bcrypt_gensalt(uint8_t log_rounds, uint8_t *rseed)
 {
-	if (log_rounds < 4)
-		log_rounds = 4;
-	else if (log_rounds > 31)
-		log_rounds = 31;
+	char* output = (char*)calloc(sizeof(char), BCRYPT_SALT_OUTPUT_SIZE);
+	if (output) {
+		if (log_rounds < 4)
+			log_rounds = 4;
+		else if (log_rounds > 31)
+			log_rounds = 31;
 
-	encode_salt(output, rseed, BCRYPT_MAXSALT, log_rounds);
+		encode_salt(output, rseed, BCRYPT_MAXSALT, log_rounds);
+	}
 	return output;
 }
 /* We handle $Vers$log2(NumRounds)$salt+passwd$
    i.e. $2$04$iwouldntknowwhattosayetKdJ6iFtacBqJdKe6aW7ou */
 
 char   *
-ruby_bcrypt(char *output, const char *key, const char *salt)
+ruby_bcrypt(const char *key, const char *salt)
 {
 	blf_ctx state;
 	uint32_t rounds, i, k;
@@ -250,19 +257,22 @@ ruby_bcrypt(char *output, const char *key, const char *salt)
 		ciphertext[4 * i + 0] = cdata[i] & 0xff;
 	}
 
+	char* output = (char*)calloc(sizeof(char), BCRYPT_OUTPUT_SIZE);
 
-	i = 0;
-	output[i++] = '$';
-	output[i++] = BCRYPT_VERSION;
-	if (minor)
-		output[i++] = minor;
-	output[i++] = '$';
+	if (output) {
+		i = 0;
+		output[i++] = '$';
+		output[i++] = BCRYPT_VERSION;
+		if (minor)
+			output[i++] = minor;
+		output[i++] = '$';
 
-	snprintf(output + i, 4, "%2.2u$", logr);
+		snprintf(output + i, 4, "%2.2u$", logr);
 
-	encode_base64((uint8_t *) output + i + 3, csalt, BCRYPT_MAXSALT);
-	encode_base64((uint8_t *) output + strlen(output), ciphertext,
-	    4 * BCRYPT_BLOCKS - 1);
+		encode_base64((uint8_t *) output + i + 3, csalt, BCRYPT_MAXSALT);
+		encode_base64((uint8_t *) output + strlen(output), ciphertext,
+		    4 * BCRYPT_BLOCKS - 1);
+	}
 	return output;
 }
 
