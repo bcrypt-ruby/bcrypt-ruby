@@ -6,7 +6,11 @@ else
   require "openssl"
 end
 
-require 'bcrypt_ext'
+if RUBY_ENGINE == "maglev"
+  require 'bcrypt_engine'
+else
+  require 'bcrypt_ext'
+end
 
 # A Ruby library implementing OpenBSD's bcrypt()/crypt_blowfish algorithm for
 # hashing passwords.
