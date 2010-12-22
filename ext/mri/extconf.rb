@@ -24,7 +24,8 @@ endif
 
 all: $(OBJS)
 	cc -shared -o $(DLIB) $(OBJS)
-
+install:
+	install $(DLIB) "../../lib/"
 clean:
 	$(RM) $(OBJS) bcrypt_ext.so
     MAKEFILE
