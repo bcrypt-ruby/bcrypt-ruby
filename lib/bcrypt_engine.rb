@@ -15,8 +15,8 @@ module BCrypt
 
     def self.__bc_salt(cost, seed)
       buffer_out = FFI::Buffer.alloc_out(BCRYPT_SALT_OUTPUT_SIZE, 1)
-      seed_ptr = FFI::MemoryPointer.new(:uint8, 1)
-      seed_ptr.int8_put(0, seed % 255)
+      seed_ptr = FFI::MemoryPointer.new(:uint8, BCRYPT_MAXSALT)
+      seed.bytes.to_a.each_with_index { |b, i| seed_ptr.int8_put(i, b) }
       out = ruby_bcrypt_gensalt(buffer_out, cost, seed_ptr)
       seed_ptr.free
       buffer_out.free
