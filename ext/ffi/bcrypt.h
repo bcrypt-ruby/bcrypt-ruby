@@ -48,7 +48,7 @@
  *        cryptographically secure random source.
  * Returns: output
  */
-char *ruby_bcrypt_gensalt(uint8_t log_rounds, uint8_t *rseed);
+char *ruby_bcrypt_gensalt(uint8_t log_rounds, uint8_t rseed);
 
 /*
  * Given a secret and a salt, generates a salted hash (which you can then store safely).

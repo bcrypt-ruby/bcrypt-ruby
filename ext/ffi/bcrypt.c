@@ -154,7 +154,7 @@ encode_salt(char *salt, uint8_t *csalt, uint16_t clen, uint8_t logr)
 */
 
 char   *
-ruby_bcrypt_gensalt(uint8_t log_rounds, uint8_t *rseed)
+ruby_bcrypt_gensalt(uint8_t log_rounds, uint8_t rseed)
 {
 	char* output = (char*)calloc(sizeof(char), BCRYPT_SALT_OUTPUT_SIZE);
 	if (output) {
@@ -163,7 +163,7 @@ ruby_bcrypt_gensalt(uint8_t log_rounds, uint8_t *rseed)
 		else if (log_rounds > 31)
 			log_rounds = 31;
 
-		encode_salt(output, rseed, BCRYPT_MAXSALT, log_rounds);
+		encode_salt(output, &rseed, BCRYPT_MAXSALT, log_rounds);
 	}
 	return output;
 }

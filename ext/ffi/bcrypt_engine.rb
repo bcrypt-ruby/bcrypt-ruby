@@ -15,7 +15,7 @@ module BCrypt
 
     def self.__bc_crypt(key, salt, cost)
       out = ruby_bcrypt(key || "", salt)
-      out && out.any? ? output : nil
+      out && out.any? ? out : nil
     end
   end
 end
