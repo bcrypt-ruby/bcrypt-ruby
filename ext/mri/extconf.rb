@@ -19,7 +19,7 @@ OBJS = bcrypt.o blowfish.o
 DLIB = bcrypt_ext.so
 OS ?= $(strip $(shell uname -s | tr '[:upper:]' '[:lower:]'))
 ifeq ($(OS),darwin)
-	DLIB = bcrypt_ext.bundle
+	DLIB = bcrypt_ext.dylib
 endif
 
 all: $(OBJS)
