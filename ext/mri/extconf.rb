@@ -20,6 +20,7 @@ DLIB = bcrypt_ext.so
 OS ?= $(strip $(shell uname -s | tr '[:upper:]' '[:lower:]'))
 ifeq ($(OS),darwin)
 	DLIB = bcrypt_ext.dylib
+	CFLAGS += -dynamiclib
 endif
 
 all: $(OBJS)
