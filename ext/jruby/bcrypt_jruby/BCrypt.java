@@ -63,7 +63,7 @@ import java.security.SecureRandom;
  */
 public class BCrypt {
 	// BCrypt parameters
-	private static int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
+	private static final int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
 	private static final int BCRYPT_SALT_LEN = 16;
 
 	// Blowfish parameters
@@ -655,13 +655,14 @@ public class BCrypt {
 
 		if (salt.charAt(0) != '$' || salt.charAt(1) != '2')
 			throw new IllegalArgumentException ("Invalid salt version");
-		if (salt.charAt(1) != '$') {
+		if (salt.charAt(2) == '$')
+			off = 3;
+		else {
 			minor = salt.charAt(2);
 			if (minor != 'a' || salt.charAt(3) != '$')
 				throw new IllegalArgumentException ("Invalid salt revision");
 			off = 4;
-		} else
-			off = 3;
+		}
 
 		// Extract number of rounds
 		if (salt.charAt(off + 2) > '$')
@@ -670,10 +671,9 @@ public class BCrypt {
 
 		real_salt = salt.substring(off + 3, off + 25);
 		try {
-			passwordb = (password + (minor >= 'a' ? "\000" : "")).getBytes("US-ASCII");
+			passwordb = (password + (minor >= 'a' ? "\000" : "")).getBytes("UTF-8");
 		} catch (UnsupportedEncodingException uee) {
-			// The JDK guarantees that US-ASCII is supported.
-			throw new AssertionError("US-ASCII is not supported");
+			throw new AssertionError("UTF-8 is not supported");
 		}
 
 		saltb = decode_base64(real_salt, BCRYPT_SALT_LEN);

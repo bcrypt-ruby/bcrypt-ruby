@@ -172,4 +172,23 @@ public class TestBCrypt extends TestCase {
 		}
 		System.out.println("");
 	}
+
+	/**
+	 * Test for correct hashing of non-US-ASCII passwords
+	 */
+	public void testInternationalChars() {
+		System.out.print("BCrypt.hashpw w/ international chars: ");
+		String pw1 = "ππππππππ";
+		String pw2 = "????????";
+
+		String h1 = BCrypt.hashpw(pw1, BCrypt.gensalt());
+		assertFalse(BCrypt.checkpw(pw2, h1));
+		System.out.print(".");
+
+		String h2 = BCrypt.hashpw(pw2, BCrypt.gensalt());
+		assertFalse(BCrypt.checkpw(pw1, h2));
+		System.out.print(".");
+		System.out.println("");
+	}
+
 }
