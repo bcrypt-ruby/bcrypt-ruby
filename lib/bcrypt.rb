@@ -6,7 +6,7 @@ else
   require "openssl"
 end
 
-if RUBY_ENGINE == "maglev"
+if defined?(RUBY_ENGINE) and RUBY_ENGINE == "maglev"
   require 'bcrypt_engine'
 else
   require 'bcrypt_ext'
