@@ -65,3 +65,12 @@ describe "Comparing a hashed password with a secret" do
     (@password == "@secret").should be(false)
   end
 end
+
+describe "Validating a generated salt" do
+  specify "should not accept an invalid salt" do
+    BCrypt::Engine.valid_salt?("invalid").should eq(false)
+  end
+  specify "should accept a valid salt" do
+    BCrypt::Engine.valid_salt?(BCrypt::Engine.generate_salt).should eq(true)
+  end
+end
