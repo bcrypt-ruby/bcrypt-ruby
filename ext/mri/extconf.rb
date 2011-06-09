@@ -35,6 +35,6 @@ clean:
 else
   require "mkmf"
   dir_config("bcrypt_ext")
-  CONFIG['CC'] << " -Wall "
+  CONFIG['CC'] << " -Wall " if ! CONFIG['GCC'].nil?
   create_makefile("bcrypt_ext")
 end
