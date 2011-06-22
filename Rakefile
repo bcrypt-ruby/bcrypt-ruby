@@ -25,6 +25,7 @@ task :default => [:compile, :spec]
 desc "Run all specs"
 RSpec::Core::RakeTask.new do |t|
   t.pattern = 'spec/**/*_spec.rb'
+  t.ruby_opts = '-w'
 end
 
 desc "Run all specs, with coverage testing"
