@@ -50,7 +50,7 @@ module BCrypt
           if RUBY_PLATFORM == "java"
             Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s, salt.to_s)
           else
-            __bc_crypt(secret.to_s, salt, cost)
+            __bc_crypt(secret.to_s, salt)
           end
         else
           raise Errors::InvalidSalt.new("invalid salt")
@@ -70,7 +70,8 @@ module BCrypt
         if RUBY_PLATFORM == "java"
           Java.bcrypt_jruby.BCrypt.gensalt(cost)
         else
-          __bc_salt(cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
+          prefix = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
+          __bc_salt(prefix, cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
         end
       else
         raise Errors::InvalidCost.new("cost must be numeric and > 0")

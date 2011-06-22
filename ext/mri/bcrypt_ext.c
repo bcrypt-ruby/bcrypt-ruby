@@ -1,14 +1,8 @@
-#include "ruby.h"
-#include "bcrypt.h"
+#include <ruby.h>
+#include <ow-crypt.h>
 
 static VALUE mBCrypt;
 static VALUE cBCryptEngine;
-
-/* Define RSTRING_PTR for Ruby 1.8.5, ruby-core's idea of a point release is
-   insane. */
-#ifndef RSTRING_PTR
-#  define    RSTRING_PTR(s)  (RSTRING(s)->ptr)
-#endif
 
 #ifdef RUBY_VM
 #  define RUBY_1_9
@@ -37,44 +31,50 @@ static VALUE bcrypt_wrapper(void *_args) {
 
 /* Given a logarithmic cost parameter, generates a salt for use with +bc_crypt+.
 */
-static VALUE bc_salt(VALUE self, VALUE cost, VALUE seed) {
-    int icost = NUM2INT(cost);
-    char salt[BCRYPT_SALT_OUTPUT_SIZE];
+static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
+    char * salt;
+    VALUE str_salt;
 
-    ruby_bcrypt_gensalt(salt, icost, (uint8_t *)RSTRING_PTR(seed));
-    return rb_str_new2(salt);
+    salt = crypt_gensalt_ra(
+	    StringValuePtr(prefix),
+	    NUM2ULONG(count),
+	    NIL_P(input) ? NULL : StringValuePtr(input),
+	    NIL_P(input) ? 0 : rb_str_strlen(input));
+
+    if(!salt) return Qnil;
+
+    str_salt = rb_str_new2(salt);
+    free(salt);
+
+    return str_salt;
 }
 
 /* Given a secret and a salt, generates a salted hash (which you can then store safely).
 */
-static VALUE bc_crypt(VALUE self, VALUE key, VALUE salt, VALUE cost) {
-    const char * safeguarded = RSTRING_PTR(key) ? RSTRING_PTR(key) : "";
-    char output[BCRYPT_OUTPUT_SIZE];
+static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
+    char * value;
+    void * data;
+    int size;
+    VALUE out;
 
-#ifdef RUBY_1_9
-    int icost = NUM2INT(cost);
-    if (icost >= GIL_UNLOCK_COST_THRESHOLD) {
-	BCryptArguments args;
-	VALUE ret;
+    data = NULL;
+    size = 0xDEADBEEF;
 
-	args.output = output;
-	args.key    = safeguarded;
-	args.salt   = RSTRING_PTR(salt);
-	ret = rb_thread_blocking_region(bcrypt_wrapper, &args, RUBY_UBF_IO, 0);
-	if (ret != (VALUE) 0) {
-	    return rb_str_new2(output);
-	} else {
-	    return Qnil;
-	}
-    }
-    /* otherwise, fallback to the non-GIL-unlocking code, just like on Ruby 1.8 */
-#endif
+    if(NIL_P(key) || NIL_P(setting)) return Qnil;
 
-    if (ruby_bcrypt(output, safeguarded, (char *)RSTRING_PTR(salt)) != NULL) {
-	return rb_str_new2(output);
-    } else {
-	return Qnil;
-    }
+    value = crypt_ra(
+	    NIL_P(key) ? NULL : StringValuePtr(key),
+	    NIL_P(setting) ? NULL : StringValuePtr(setting),
+	    &data,
+	    &size);
+
+    if(!value) return Qnil;
+
+    out = rb_str_new(data, size - 1);
+
+    free(data);
+
+    return out;
 }
 
 /* Create the BCrypt and BCrypt::Engine modules, and populate them with methods. */
@@ -82,8 +82,8 @@ void Init_bcrypt_ext(){
     mBCrypt = rb_define_module("BCrypt");
     cBCryptEngine = rb_define_class_under(mBCrypt, "Engine", rb_cObject);
 
-    rb_define_singleton_method(cBCryptEngine, "__bc_salt", bc_salt, 2);
-    rb_define_singleton_method(cBCryptEngine, "__bc_crypt", bc_crypt, 3);
+    rb_define_singleton_method(cBCryptEngine, "__bc_salt", bc_salt, 3);
+    rb_define_singleton_method(cBCryptEngine, "__bc_crypt", bc_crypt, 2);
 }
 
 /* vim: set noet sws=4 sw=4: */
