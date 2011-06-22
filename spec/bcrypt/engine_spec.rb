@@ -30,9 +30,9 @@ end
 describe "Autodetecting of salt cost" do
 
   specify "should work" do
-    BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou").should == 8
-    BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu").should == 5
-    BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.").should == 13
+    BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou").should eq 8
+    BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu").should eq 5
+    BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.").should eq 13
   end
 
 end

@@ -39,9 +39,9 @@ describe "Reading a hashed password" do
     password.version.should eql("2a")
     password.cost.should equal(5)
     password.salt.should eql("$2a$05$CCCCCCCCCCCCCCCCCCCCC.")
-    password.salt.class.should == String
+    password.salt.class.should eq String
     password.checksum.should eq("E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW")
-    password.checksum.class.should == String
+    password.checksum.class.should eq String
     password.to_s.should eql(@hash)
   end
 
