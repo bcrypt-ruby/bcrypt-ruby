@@ -9,7 +9,7 @@ if RUBY_PLATFORM == "java"
     f.puts "\t@true"
   end
   exit 0
-elsif RUBY_ENGINE == "maglev"
+elsif defined?(RUBY_ENGINE) && RUBY_ENGINE == "maglev"
   # Maglev doesn't support C extensions, fall back to compiling an FFI usable
   # library
   File.open('Makefile', 'w') do |f|

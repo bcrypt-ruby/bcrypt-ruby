@@ -39,7 +39,7 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
 	    StringValuePtr(prefix),
 	    NUM2ULONG(count),
 	    NIL_P(input) ? NULL : StringValuePtr(input),
-	    NIL_P(input) ? 0 : rb_str_strlen(input));
+	    NIL_P(input) ? 0 : RSTRING_LEN(input));
 
     if(!salt) return Qnil;
 
