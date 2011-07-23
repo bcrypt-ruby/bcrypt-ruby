@@ -35,6 +35,5 @@ clean:
 else
   require "mkmf"
   dir_config("bcrypt_ext")
-  CONFIG['CC'] << " -Wall "
   create_makefile("bcrypt_ext")
 end
