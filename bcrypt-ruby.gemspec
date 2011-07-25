@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec'
 
   s.has_rdoc = true
-  s.rdoc_options += ['--title', 'bcrypt-ruby', '--line-numbers', '--inline-source', '--main', 'README']
-  s.extra_rdoc_files += ['README', 'COPYING', 'CHANGELOG', *Dir['lib/**/*.rb']]
+  s.rdoc_options += ['--title', 'bcrypt-ruby', '--line-numbers', '--inline-source', '--main', 'README.md']
+  s.extra_rdoc_files += ['README.md', 'COPYING', 'CHANGELOG', *Dir['lib/**/*.rb']]
 
   s.extensions = 'ext/mri/extconf.rb'
 
