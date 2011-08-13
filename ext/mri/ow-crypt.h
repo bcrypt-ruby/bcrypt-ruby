@@ -7,10 +7,11 @@
 #define _OW_CRYPT_H
 
 #undef __CONST
-#ifdef __GNUC__
+#if defined __GNUC__
 #define __CONST __const
+#elif defined _MSC_VER
+#define __CONST const
 #else
-#define __CONST
 #endif
 
 #ifndef __SKIP_GNU
