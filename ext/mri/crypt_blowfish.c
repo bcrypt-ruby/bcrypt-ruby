@@ -52,10 +52,7 @@
  */
 #define BF_SELF_TEST
 
-#ifdef __i386__
-#define BF_ASM				1
-#define BF_SCALE			1
-#elif defined(__x86_64__) || defined(__alpha__) || defined(__hppa__)
+#if defined(__x86_64__) || defined(__alpha__) || defined(__hppa__)
 #define BF_ASM				0
 #define BF_SCALE			1
 #else
@@ -377,13 +374,7 @@ static unsigned char BF_atoi64[0x60] = {
  */
 static void clean(void *data, int size)
 {
-#if BF_ASM
-	extern void _BF_clean(void *data);
-#endif
 	memset(data, 0, size);
-#if BF_ASM
-	_BF_clean(data);
-#endif
 }
 
 #define BF_safe_atoi64(dst, src) \
@@ -530,10 +521,6 @@ static void BF_swap(BF_word *x, int count)
 	R = L; \
 	L = tmp4 ^ data.ctx.P[BF_N + 1];
 
-#if BF_ASM
-#define BF_body() \
-	_BF_body_r(&data.ctx);
-#else
 #define BF_body() \
 	L = R = 0; \
 	ptr = data.ctx.P; \
@@ -551,7 +538,6 @@ static void BF_swap(BF_word *x, int count)
 		*(ptr - 2) = L; \
 		*(ptr - 1) = R; \
 	} while (ptr < &data.ctx.S[3][0xFF]);
-#endif
 
 static void BF_set_key(__CONST char *key, BF_key expanded, BF_key initial,
     int sign_extension_bug)
@@ -581,9 +567,6 @@ static char *BF_crypt(__CONST char *key, __CONST char *setting,
 	char *output, int size,
 	BF_word min)
 {
-#if BF_ASM
-	extern void _BF_body_r(BF_ctx *ctx);
-#endif
 	struct {
 		BF_ctx ctx;
 		BF_key expanded_key;
