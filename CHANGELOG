@@ -38,3 +38,7 @@
 
 2.1.2  Sep 16 2009
   - Fixed support for Solaris, OpenSolaris.
+
+3.0.0 Aug 24, 2011
+  - Bcrypt C implementation replaced with a public domain implementation.
+  - License changed to MIT
