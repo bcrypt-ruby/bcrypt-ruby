@@ -23,6 +23,8 @@
 #endif
 #endif
 
+#include <util.h>
+
 #define CRYPT_OUTPUT_SIZE		(7 + 22 + 31 + 1)
 #define CRYPT_GENSALT_OUTPUT_SIZE	(7 + 22 + 1)
 
@@ -234,7 +236,7 @@ char *__crypt_gensalt_ra(__CONST char *prefix, unsigned long count,
 		input, size, output, sizeof(output));
 
 	if (retval) {
-		retval = strdup(retval);
+		retval = ruby_strdup(retval);
 #ifndef __GLIBC__
 		/* strdup(3) on glibc sets errno, so we don't need to bother */
 		if (!retval)
