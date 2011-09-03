@@ -19,8 +19,6 @@ Gem::Specification.new do |s|
   s.rdoc_options += ['--title', 'bcrypt-ruby', '--line-numbers', '--inline-source', '--main', 'README.md']
   s.extra_rdoc_files += ['README.md', 'COPYING', 'CHANGELOG', *Dir['lib/**/*.rb']]
 
-  s.extensions = 'ext/mri/extconf.rb'
-
   s.authors = ["Coda Hale"]
   s.email = "coda.hale@gmail.com"
   s.homepage = "http://bcrypt-ruby.rubyforge.org"
