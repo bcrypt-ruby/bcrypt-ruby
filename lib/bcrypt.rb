@@ -157,6 +157,7 @@ module BCrypt
       #
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
       def create(secret, options = { :cost => BCrypt::Engine::DEFAULT_COST })
+        raise ArgumentError if options[:cost] > 31
         Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(options[:cost]), options[:cost]))
       end
     end

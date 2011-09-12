@@ -42,3 +42,6 @@
 3.0.0 Aug 24, 2011
   - Bcrypt C implementation replaced with a public domain implementation.
   - License changed to MIT
+
+3.0.1
+  - create raises an exception if the cost is higher than 31. GH #27

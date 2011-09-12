@@ -34,6 +34,12 @@ describe "Reading a hashed password" do
     @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
   end
 
+  specify "the cost is too damn high" do
+    lambda {
+      BCrypt::Password.create("hello", :cost => 32)
+    }.should raise_error(ArgumentError)
+  end
+
   specify "should read the version, cost, salt, and hash" do
     password = BCrypt::Password.new(@hash)
     password.version.should eql("2a")
