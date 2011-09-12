@@ -23,6 +23,7 @@
 #endif
 #endif
 
+#include <ruby.h>
 #include <util.h>
 
 #define CRYPT_OUTPUT_SIZE		(7 + 22 + 31 + 1)
