@@ -88,8 +88,8 @@ module BCrypt
     #
     # Example:
     #
-    #   BCrypt.calibrate(200)  #=> 10
-    #   BCrypt.calibrate(1000) #=> 12
+    #   BCrypt::Engine.calibrate(200)  #=> 10
+    #   BCrypt::Engine.calibrate(1000) #=> 12
     #
     #   # should take less than 200ms
     #   BCrypt::Password.create("woo", :cost => 10)
