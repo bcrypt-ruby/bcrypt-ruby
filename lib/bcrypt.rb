@@ -170,7 +170,13 @@ module BCrypt
 
     # Compares a potential secret against the hash. Returns true if the secret is the original secret, false otherwise.
     def ==(secret)
-      super(BCrypt::Engine.hash_secret(secret, @salt))
+      hash = BCrypt::Engine.hash_secret(secret, @salt)
+      return false if self.empty? || hash.empty? || self.bytesize != hash.bytesize
+      l = self.unpack "C#{self.bytesize}"
+
+      res = 0
+      hash.each_byte { |byte| res |= byte ^ l.shift }
+      res == 0
     end
     alias_method :is_password?, :==
 
