@@ -1,15 +1,19 @@
 PATH
   remote: .
   specs:
-    bcrypt-ruby (3.0.0)
+    bcrypt-ruby (3.0.1)
 
 GEM
   remote: http://rubygems.org/
   specs:
     diff-lcs (1.1.2)
+    json (1.7.3)
+    json (1.7.3-java)
     rake (0.8.7)
     rake-compiler (0.7.5)
       rake
+    rdoc (3.12)
+      json (~> 1.4)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -26,4 +30,5 @@ PLATFORMS
 DEPENDENCIES
   bcrypt-ruby!
   rake-compiler
+  rdoc
   rspec
