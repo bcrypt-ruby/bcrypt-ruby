@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake-compiler'
   s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rdoc'
 
   s.has_rdoc = true
   s.rdoc_options += ['--title', 'bcrypt-ruby', '--line-numbers', '--inline-source', '--main', 'README.md']

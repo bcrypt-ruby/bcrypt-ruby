@@ -1,10 +1,10 @@
 require 'rspec/core/rake_task'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'rake/extensiontask'
 require 'rake/javaextensiontask'
 require 'rake/contrib/rubyforgepublisher'
 require 'rake/clean'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'benchmark'
 
 CLEAN.include(
@@ -37,14 +37,14 @@ RSpec::Core::RakeTask.new(:rcov) do |t|
 end
 
 desc 'Generate RDoc'
-rd = Rake::RDocTask.new do |rdoc|
+RDoc::Task.new do |rdoc|
   rdoc.rdoc_dir = 'doc/rdoc'
   rdoc.options += GEMSPEC.rdoc_options
   rdoc.template = ENV['TEMPLATE'] if ENV['TEMPLATE']
   rdoc.rdoc_files.include(*GEMSPEC.extra_rdoc_files)
 end
 
-Rake::GemPackageTask.new(GEMSPEC) do |pkg|
+Gem::PackageTask.new(GEMSPEC) do |pkg|
   pkg.need_zip = true
   pkg.need_tar = true
 end
