@@ -80,3 +80,12 @@ describe "Validating a generated salt" do
     BCrypt::Engine.valid_salt?(BCrypt::Engine.generate_salt).should eq(true)
   end
 end
+
+describe "Validating a password hash" do
+  specify "should not accept an invalid password" do
+    BCrypt::Password.valid_hash?("i_am_so_not_valid").should be_false
+  end
+  specify "should accept a valid password" do
+    BCrypt::Password.valid_hash?(BCrypt::Password.create "i_am_so_valid").should be_true
+  end
+end

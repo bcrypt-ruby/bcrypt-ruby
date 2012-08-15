@@ -156,6 +156,10 @@ module BCrypt
         raise ArgumentError if options[:cost] > 31
         Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(options[:cost]), options[:cost]))
       end
+
+      def valid_hash?(h)
+        h =~ /^\$[0-9a-z]{2}\$[0-9]{2}\$[A-Za-z0-9\.\/]{53}$/
+      end
     end
 
     # Initializes a BCrypt::Password instance with the data from a stored hash.
@@ -175,9 +179,10 @@ module BCrypt
     alias_method :is_password?, :==
 
   private
+
     # Returns true if +h+ is a valid hash.
     def valid_hash?(h)
-      h =~ /^\$[0-9a-z]{2}\$[0-9]{2}\$[A-Za-z0-9\.\/]{53}$/
+      self.class.valid_hash?(h)
     end
 
     # call-seq:
