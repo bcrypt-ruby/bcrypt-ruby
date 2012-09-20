@@ -164,7 +164,7 @@ module BCrypt
         self.replace(raw_hash)
         @version, @cost, @salt, @checksum = split_hash(self)
       else
-        raise Errors::InvalidHash.new("invalid hash")
+        raise Errors::InvalidHash.new("invalid hash: <#{raw_hash}>")
       end
     end
 
