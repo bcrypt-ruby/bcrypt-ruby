@@ -15,6 +15,10 @@ describe "Creating a hashed password" do
     lambda { BCrypt::Password.new(@password) }.should_not raise_error
   end
 
+  specify "should raise an InvalidHash error if the hash is invalid" do
+    lambda { BCrypt::Password.new("79V5biR6fOmJzqDKO4PScOmtVpY=") }.should raise_error(BCrypt::Errors::InvalidHash)
+  end
+
   specify "should behave normally if the secret is not a string" do
     lambda { BCrypt::Password.create(nil) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
     lambda { BCrypt::Password.create({:woo => "yeah"}) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
