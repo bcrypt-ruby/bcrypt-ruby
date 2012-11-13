@@ -40,6 +40,14 @@ describe "Reading a hashed password" do
     }.should raise_error(ArgumentError)
   end
 
+  specify "the cost should be set to the default if nil" do
+    BCrypt::Password.create("hello", :cost => nil).cost.should equal(BCrypt::Engine::DEFAULT_COST)
+  end
+
+  specify "the cost should be set to the default if empty hash" do
+    BCrypt::Password.create("hello", {}).cost.should equal(BCrypt::Engine::DEFAULT_COST)
+  end
+
   specify "should read the version, cost, salt, and hash" do
     password = BCrypt::Password.new(@hash)
     password.version.should eql("2a")
