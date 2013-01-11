@@ -64,11 +64,11 @@ describe "Comparing a hashed password with a secret" do
   end
 
   specify "should compare successfully to the original secret" do
-    (@password == @secret).should be(true)
+    (@password.is_password?(@secret)).should be(true)
   end
 
   specify "should compare unsuccessfully to anything besides original secret" do
-    (@password == "@secret").should be(false)
+    (@password.is_password?("@secret")).should be(false)
   end
 end
 
