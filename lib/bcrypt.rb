@@ -117,7 +117,7 @@ module BCrypt
   #
   #   include BCrypt
   #
-  #   # hash a user's password  
+  #   # hash a user's password
   #   @password = Password.create("my grand secret")
   #   @password #=> "$2a$10$GtKs1Kbsig8ULHZzO1h2TetZfhO4Fmlxphp8bVKnUlZCBYYClPohG"
   #
@@ -152,9 +152,10 @@ module BCrypt
       # Example:
       #
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
-      def create(secret, options = { :cost => BCrypt::Engine::DEFAULT_COST })
-        raise ArgumentError if options[:cost] > 31
-        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(options[:cost]), options[:cost]))
+      def create(secret, options = {})
+        cost = options[:cost] || BCrypt::Engine::DEFAULT_COST
+        raise ArgumentError if cost > 31
+        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(cost), cost))
       end
 
       def valid_hash?(h)
