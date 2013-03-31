@@ -11,11 +11,13 @@ require 'bcrypt_ext'
 # A Ruby library implementing OpenBSD's bcrypt()/crypt_blowfish algorithm for
 # hashing passwords.
 module BCrypt
+
+  class Error < StandardError; end
   module Errors
-    class InvalidSalt   < StandardError; end  # The salt parameter provided to bcrypt() is invalid.
-    class InvalidHash   < StandardError; end  # The hash parameter provided to bcrypt() is invalid.
-    class InvalidCost   < StandardError; end  # The cost parameter provided to bcrypt() is invalid.
-    class InvalidSecret < StandardError; end  # The secret parameter provided to bcrypt() is invalid.
+    class InvalidSalt   < BCrypt::Error; end  # The salt parameter provided to bcrypt() is invalid.
+    class InvalidHash   < BCrypt::Error; end  # The hash parameter provided to bcrypt() is invalid.
+    class InvalidCost   < BCrypt::Error; end  # The cost parameter provided to bcrypt() is invalid.
+    class InvalidSecret < BCrypt::Error; end  # The secret parameter provided to bcrypt() is invalid.
   end
 
   # A Ruby wrapper for the bcrypt() C extension calls and the Java calls.
