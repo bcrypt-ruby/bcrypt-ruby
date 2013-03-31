@@ -54,6 +54,14 @@ describe "Reading a hashed password" do
   specify "should raise an InvalidHashError when given an invalid hash" do
     lambda { BCrypt::Password.new('weedle') }.should raise_error(BCrypt::Errors::InvalidHash)
   end
+
+  specify "should return true when passed a valid BCrypt::Password hash" do
+    BCrypt::Password.valid_password_hash?( BCrypt::Password.create("i_am_so_valid") ).should be_true
+  end
+
+  specify "should return false when passed an invalid BCrypt::Password hash" do
+    BCrypt::Password.valid_password_hash?("i_am_so_not_valid").should be_false
+  end
 end
 
 describe "Comparing a hashed password with a secret" do
