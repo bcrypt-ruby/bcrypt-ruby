@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.email = "coda.hale@gmail.com"
   s.homepage = "http://bcrypt-ruby.rubyforge.org"
   s.rubyforge_project = "bcrypt-ruby"
+  s.license = "MIT"
 end
