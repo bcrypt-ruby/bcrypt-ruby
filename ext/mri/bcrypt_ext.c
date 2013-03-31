@@ -22,10 +22,10 @@ typedef struct {
     const char *salt;
 } BCryptArguments;
 
-static VALUE bcrypt_wrapper(void *_args) {
-    BCryptArguments *args = (BCryptArguments *)_args;
-    return (VALUE)ruby_bcrypt(args->output, args->key, args->salt);
-}
+//static VALUE bcrypt_wrapper(void *_args) {
+//    BCryptArguments *args = (BCryptArguments *)_args;
+//    return (VALUE)ruby_bcrypt(args->output, args->key, args->salt);
+//}
 
 #endif /* RUBY_1_9 */
 

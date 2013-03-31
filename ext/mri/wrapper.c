@@ -24,7 +24,7 @@
 #endif
 
 #include <ruby.h>
-#include <util.h>
+#include <ruby/util.h>
 
 #define CRYPT_OUTPUT_SIZE		(7 + 22 + 31 + 1)
 #define CRYPT_GENSALT_OUTPUT_SIZE	(7 + 22 + 1)
