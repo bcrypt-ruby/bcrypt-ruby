@@ -11,6 +11,7 @@ if RUBY_PLATFORM == "java"
   exit 0
 else
   require "mkmf"
+  have_header('ruby/util.h')
   dir_config("bcrypt_ext")
   create_makefile("bcrypt_ext")
 end
