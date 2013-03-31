@@ -4,31 +4,6 @@
 static VALUE mBCrypt;
 static VALUE cBCryptEngine;
 
-#ifdef RUBY_VM
-#  define RUBY_1_9
-#endif
-
-#ifdef RUBY_1_9
-
-/* When on Ruby 1.9+, we will want to unlock the GIL while performing
- * expensive calculations, for greater concurrency. Do not do this for
- * cheap calculations because locking/unlocking the GIL incurs some overhead as well.
- */
-#define GIL_UNLOCK_COST_THRESHOLD 9
-
-typedef struct {
-    char       *output;
-    const char *key;
-    const char *salt;
-} BCryptArguments;
-
-static VALUE bcrypt_wrapper(void *_args) {
-    BCryptArguments *args = (BCryptArguments *)_args;
-    return (VALUE)ruby_bcrypt(args->output, args->key, args->salt);
-}
-
-#endif /* RUBY_1_9 */
-
 /* Given a logarithmic cost parameter, generates a salt for use with +bc_crypt+.
 */
 static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
