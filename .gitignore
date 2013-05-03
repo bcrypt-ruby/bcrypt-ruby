@@ -6,3 +6,4 @@ doc
 pkg
 *.class
 tmp/
+Gemfile.lock
