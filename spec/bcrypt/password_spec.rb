@@ -48,6 +48,15 @@ describe "Reading a hashed password" do
     BCrypt::Password.create("hello", {}).cost.should equal(BCrypt::Engine::DEFAULT_COST)
   end
 
+  specify "the cost should be set to the passed value if provided" do
+    BCrypt::Password.create("hello", :cost => 5).cost.should equal(5)
+  end
+
+  specify "the cost should be set to the global value if set" do
+    BCrypt::Engine.cost = 5
+    BCrypt::Password.create("hello").cost.should equal(5)
+  end
+
   specify "should read the version, cost, salt, and hash" do
     password = BCrypt::Password.new(@hash)
     password.version.should eql("2a")
