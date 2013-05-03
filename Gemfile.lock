@@ -4,7 +4,7 @@ PATH
     bcrypt-ruby (3.0.1)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     diff-lcs (1.1.2)
     json (1.7.3)
