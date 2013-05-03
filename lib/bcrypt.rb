@@ -36,6 +36,11 @@ module BCrypt
       private_class_method :__bc_crypt
     end
 
+    class << self
+      attr_accessor :cost
+    end
+    self.cost = DEFAULT_COST
+
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
     def self.hash_secret(secret, salt, cost = nil)
@@ -59,7 +64,7 @@ module BCrypt
     end
 
     # Generates a random salt with a given computational cost.
-    def self.generate_salt(cost = DEFAULT_COST)
+    def self.generate_salt(cost = self.cost)
       cost = cost.to_i
       if cost > 0
         if cost < MIN_COST
@@ -155,7 +160,7 @@ module BCrypt
       #
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
       def create(secret, options = {})
-        cost = options[:cost] || BCrypt::Engine::DEFAULT_COST
+        cost = options[:cost] || BCrypt::Engine.cost
         raise ArgumentError if cost > 31
         Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(cost), cost))
       end
