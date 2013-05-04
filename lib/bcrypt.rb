@@ -38,10 +38,25 @@ module BCrypt
 
     @cost = nil
 
+    # Returns the cost factor that will be used if one is not specified when
+    # creating a password hash.  Defaults to DEFAULT_COST if not set.
     def self.cost
       @cost || DEFAULT_COST
     end
 
+    # Set a default cost factor that will be used if one is not specified when
+    # creating a password hash.
+    #
+    # Example:
+    #
+    #   BCrypt::Engine::DEFAULT_COST            #=> 10
+    #   BCrypt::Password.create('secret').cost  #=> 10
+    #
+    #   BCrypt::Engine.cost = 8
+    #   BCrypt::Password.create('secret').cost  #=> 8
+    #
+    #   # cost can still be overridden as needed
+    #   BCrypt::Password.create('secret', :cost => 6).cost  #=> 6
     def self.cost=(cost)
       @cost = cost
     end
