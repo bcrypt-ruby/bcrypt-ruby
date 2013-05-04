@@ -169,6 +169,20 @@ The default cost factor used by bcrypt-ruby is 10, which is fine for session-bas
 stateless authentication architecture (e.g., HTTP Basic Auth), you will want to lower the cost factor to reduce your
 server load and keep your request times down. This will lower the security provided you, but there are few alternatives.
 
+To change the default cost factor used by bcrypt-ruby, use `BCrypt::Engine.cost = new_value`:
+
+    BCrypt::Password.create('secret').cost
+      #=> 10, the default provided by bcrypt-ruby
+
+    # set a new default cost
+    BCrypt::Engine.cost = 8
+    BCrypt::Password.create('secret').cost
+      #=> 8
+
+The default cost can be overridden as needed by passing an options hash with a different cost:
+
+    BCrypt::Password.create('secret', :cost => 6).cost  #=> 6
+
 ## More Information
 
 `bcrypt()` is currently used as the default password storage hash in OpenBSD, widely regarded as the most secure operating
