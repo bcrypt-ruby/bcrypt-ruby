@@ -36,10 +36,15 @@ module BCrypt
       private_class_method :__bc_crypt
     end
 
-    class << self
-      attr_accessor :cost
+    @cost = nil
+
+    def self.cost
+      @cost || DEFAULT_COST
     end
-    self.cost = DEFAULT_COST
+
+    def self.cost=(cost)
+      @cost = cost
+    end
 
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
