@@ -55,6 +55,21 @@ describe "Reading a hashed password" do
   specify "the cost should be set to the global value if set" do
     BCrypt::Engine.cost = 5
     BCrypt::Password.create("hello").cost.should equal(5)
+    # unset the global value to not affect other tests
+    BCrypt::Engine.cost = nil
+  end
+
+  specify "the cost should be set to an overridden constant for backwards compatibility" do
+    # suppress "already initialized constant" warning
+    old_verbose, $VERBOSE = $VERBOSE, nil
+    old_default_cost = BCrypt::Engine::DEFAULT_COST
+
+    BCrypt::Engine::DEFAULT_COST = 5
+    BCrypt::Password.create("hello").cost.should equal(5)
+
+    # reset default to not affect other tests
+    BCrypt::Engine::DEFAULT_COST = old_default_cost
+    $VERBOSE = old_verbose
   end
 
   specify "should read the version, cost, salt, and hash" do
