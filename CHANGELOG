@@ -39,9 +39,14 @@
 2.1.2  Sep 16 2009
   - Fixed support for Solaris, OpenSolaris.
 
-3.0.0 Aug 24, 2011
+3.0.0  Aug 24 2011
   - Bcrypt C implementation replaced with a public domain implementation.
   - License changed to MIT
 
-3.0.1
+3.0.1  Sep 12 2011
   - create raises an exception if the cost is higher than 31. GH #27
+
+3.1.0  May 07 2013
+  - Add BCrypt::Password.valid_hash?(str) to check if a string is a valid bcrypt password hash
+  - BCrypt::Password cost should be set to DEFAULT_COST if nil
+  - Add BCrypt::Engine.cost attribute for getting/setting a default cost externally
