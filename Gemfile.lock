@@ -9,8 +9,8 @@ GEM
     diff-lcs (1.2.4)
     json (1.7.3)
     json (1.7.3-java)
-    rake (0.8.7)
-    rake-compiler (0.7.5)
+    rake (10.0.4)
+    rake-compiler (0.8.3)
       rake
     rdoc (3.12)
       json (~> 1.4)
