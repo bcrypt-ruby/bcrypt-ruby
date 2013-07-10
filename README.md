@@ -31,7 +31,7 @@ re-hash those passwords. This vulernability only affected the JRuby gem.
 The bcrypt-ruby gem is available on the following ruby platforms:
 
 * JRuby
-* RubyInstaller 1.8 and 1.9 builds on win32
+* RubyInstaller 1.9 builds on win32
 * Any 1.8 or 1.9 ruby on a BSD/OSX/Linux system with a compiler
 
 ## How to use `bcrypt()` in your Rails application

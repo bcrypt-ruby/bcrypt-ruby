@@ -58,23 +58,7 @@ else
     ext.ext_dir = 'ext/mri'
     ext.cross_compile = true
     ext.cross_platform = ['x86-mingw32', 'x86-mswin32-60']
-
-    # inject 1.8/1.9 pure-ruby entry point
-    ext.cross_compiling do |spec|
-      spec.files += ["lib/#{ext.name}.rb"]
-    end
   end
-end
-
-# Entry point for fat-binary gems on win32
-file("lib/bcrypt_ext.rb") do |t|
-  File.open(t.name, 'wb') do |f|
-    f.write <<-eoruby
-RUBY_VERSION =~ /(\\d+.\\d+)/
-require "\#{$1}/#{File.basename(t.name, '.rb')}"
-    eoruby
-  end
-  at_exit{ FileUtils.rm t.name if File.exists?(t.name) }
 end
 
 desc "Run a set of benchmarks on the compiled extension."
