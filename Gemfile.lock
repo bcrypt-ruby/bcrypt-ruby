@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bcrypt-ruby (3.1.0)
+    bcrypt-ruby (3.1.1.rc1)
 
 GEM
   remote: https://rubygems.org/

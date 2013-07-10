@@ -1,6 +1,6 @@
 1.0.0  Feb 27 2007
  - Initial release.
- 
+
 2.0.0  Mar 07 2007
  - Removed BCrypt::Password#exactly_equals -- use BCrypt::Password#eql? instead.
  - Added BCrypt::Password#is_password?.
@@ -50,3 +50,6 @@
   - Add BCrypt::Password.valid_hash?(str) to check if a string is a valid bcrypt password hash
   - BCrypt::Password cost should be set to DEFAULT_COST if nil
   - Add BCrypt::Engine.cost attribute for getting/setting a default cost externally
+
+3.1.1  Jul 10 2013
+  - Remove support for Ruby 1.8 in compiled win32 binaries
