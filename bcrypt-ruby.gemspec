@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
   s.require_path = 'lib'
 
-  s.add_development_dependency 'rake-compiler'
+  s.add_development_dependency 'rake-compiler', '~> 0.9.0'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rdoc'
 
