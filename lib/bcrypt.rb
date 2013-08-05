@@ -9,7 +9,13 @@ else
   require "openssl"
 end
 
-require 'bcrypt_ext'
+begin
+  RUBY_VERSION =~ /(\d+.\d+)/
+  require "#{$1}/bcrypt_ext"
+rescue LoadError
+  require "bcrypt_ext"
+end
+
 require 'bcrypt/error'
 require 'bcrypt/engine'
 require 'bcrypt/password'
