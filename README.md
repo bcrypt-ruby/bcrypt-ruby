@@ -31,13 +31,13 @@ re-hash those passwords. This vulernability only affected the JRuby gem.
 The bcrypt-ruby gem is available on the following ruby platforms:
 
 * JRuby
-* RubyInstaller 1.9 builds on win32
-* Any 1.8 or 1.9 ruby on a BSD/OSX/Linux system with a compiler
+* RubyInstaller 1.8, 1.9, and 2.0 builds on win32
+* Any 1.8, 1.9, or 2.0 ruby on a BSD/OSX/Linux system with a compiler
 
 ## How to use `bcrypt()` in your Rails application
 
 *Note*: Rails versions >= 3 ship with `ActiveModel::SecurePassword` which uses bcrypt-ruby.
-`has_secure_password` [docs](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password) 
+`has_secure_password` [docs](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password)
 implements a similar authentication strategy to the code below.
 
 ### The _User_ model

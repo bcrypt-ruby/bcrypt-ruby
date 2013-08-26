@@ -1,6 +1,7 @@
 *.o
 *.bundle
 *.so
+*.jar
 ext/mri/Makefile
 doc
 pkg

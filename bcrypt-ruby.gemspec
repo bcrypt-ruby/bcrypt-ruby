@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'bcrypt-ruby'
-  s.version = '3.1.1'
+  s.version = '3.1.2'
 
   s.summary = "OpenBSD's bcrypt() password hashing algorithm."
   s.description = <<-EOF
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
   s.require_path = 'lib'
 
-  s.add_development_dependency 'rake-compiler'
+  s.add_development_dependency 'rake-compiler', '~> 0.9.0'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rdoc'
 

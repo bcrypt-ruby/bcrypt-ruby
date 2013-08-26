@@ -53,3 +53,7 @@
 
 3.1.1  Jul 10 2013
   - Remove support for Ruby 1.8 in compiled win32 binaries
+
+3.1.2  Aug 26 2013
+  - Add support for Ruby 1.8 and 2.0 (in addition to 1.9) in compiled Windows binaries
+  - Add support for 64-bit Windows
