@@ -43,7 +43,7 @@ module BCrypt
       def create(secret, options = {})
         cost = options[:cost] || BCrypt::Engine.cost
         raise ArgumentError if cost > 31
-        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(cost), cost))
+        Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(cost)))
       end
 
       def valid_hash?(h)

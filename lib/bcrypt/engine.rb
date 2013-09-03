@@ -42,13 +42,9 @@ module BCrypt
 
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash.
-    def self.hash_secret(secret, salt, cost = nil)
+    def self.hash_secret(secret, salt, _ = nil)
       if valid_secret?(secret)
         if valid_salt?(salt)
-          if cost.nil?
-            cost = autodetect_cost(salt)
-          end
-
           if RUBY_PLATFORM == "java"
             Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s, salt.to_s)
           else
