@@ -22,7 +22,7 @@ security experts is not a professional response to risk.
 vulnerability](http://www.mindrot.org/files/jBCrypt/internat.adv) that
 was fixed in `>= 2.1.4`. If you used a vulnerable version to hash
 passwords with international characters in them, you will need to
-re-hash those passwords. This vulernability only affected the JRuby gem.
+re-hash those passwords. This vulnerability only affected the JRuby gem.
 
 ## How to install bcrypt
 
