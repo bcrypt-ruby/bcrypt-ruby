@@ -2,7 +2,6 @@ require 'rspec/core/rake_task'
 require 'rubygems/package_task'
 require 'rake/extensiontask'
 require 'rake/javaextensiontask'
-require 'rake/contrib/rubyforgepublisher'
 require 'rake/clean'
 require 'rdoc/task'
 require 'benchmark'
@@ -18,7 +17,7 @@ CLOBBER.include(
   "doc/coverage",
   "pkg"
 )
-GEMSPEC = eval(File.read(File.expand_path("../bcrypt-ruby.gemspec", __FILE__)))
+GEMSPEC = eval(File.read(File.expand_path("../bcrypt.gemspec", __FILE__)))
 
 task :default => [:compile, :spec]
 

@@ -2,7 +2,6 @@
 
 An easy way to keep your users' passwords secure.
 
-* http://bcrypt-ruby.rubyforge.org/
 * http://github.com/codahale/bcrypt-ruby/tree/master
 
 [![Build Status](https://travis-ci.org/codahale/bcrypt-ruby.png?branch=master)](https://travis-ci.org/codahale/bcrypt-ruby)
@@ -18,7 +17,7 @@ security experts is not a professional response to risk.
 
 `bcrypt()` allows you to easily harden your application against these kinds of attacks.
 
-*Note*: JRuby versions of bcrypt-ruby `<= 2.1.3` had a [security
+*Note*: JRuby versions of bcrypt `<= 2.1.3` had a [security
 vulnerability](http://www.mindrot.org/files/jBCrypt/internat.adv) that
 was fixed in `>= 2.1.4`. If you used a vulnerable version to hash
 passwords with international characters in them, you will need to
@@ -26,9 +25,9 @@ re-hash those passwords. This vulnerability only affected the JRuby gem.
 
 ## How to install bcrypt
 
-    gem install bcrypt-ruby
+    gem install bcrypt
 
-The bcrypt-ruby gem is available on the following ruby platforms:
+The bcrypt gem is available on the following ruby platforms:
 
 * JRuby
 * RubyInstaller 1.8, 1.9, and 2.0 builds on win32
