@@ -2,7 +2,6 @@
 
 An easy way to keep your users' passwords secure.
 
-* http://bcrypt-ruby.rubyforge.org/
 * http://github.com/codahale/bcrypt-ruby/tree/master
 
 [![Build Status](https://travis-ci.org/codahale/bcrypt-ruby.png?branch=master)](https://travis-ci.org/codahale/bcrypt-ruby)
