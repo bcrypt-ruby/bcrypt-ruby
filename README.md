@@ -17,7 +17,7 @@ security experts is not a professional response to risk.
 
 `bcrypt()` allows you to easily harden your application against these kinds of attacks.
 
-*Note*: JRuby versions of bcrypt `<= 2.1.3` had a [security
+*Note*: JRuby versions of the bcrypt gem `<= 2.1.3` had a [security
 vulnerability](http://www.mindrot.org/files/jBCrypt/internat.adv) that
 was fixed in `>= 2.1.4`. If you used a vulnerable version to hash
 passwords with international characters in them, you will need to
