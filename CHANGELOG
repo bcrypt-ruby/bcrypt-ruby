@@ -57,3 +57,7 @@
 3.1.2  Aug 26 2013
   - Add support for Ruby 1.8 and 2.0 (in addition to 1.9) in compiled Windows binaries
   - Add support for 64-bit Windows
+
+3.1.3  Feb 21 2014
+  - Add support for Ruby 2.1 in compiled Windows binaries
+  - Rename gem from "bcrypt-ruby" to just "bcrypt". [GH #86 by @sferik]
