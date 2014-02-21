@@ -17,7 +17,7 @@ CLOBBER.include(
   "doc/coverage",
   "pkg"
 )
-GEMSPEC = eval(File.read(File.expand_path("../bcrypt.gemspec", __FILE__)))
+GEMSPEC = Gem::Specification.load("bcrypt.gemspec")
 
 task :default => [:compile, :spec]
 
