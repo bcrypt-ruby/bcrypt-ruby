@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary = "OpenBSD's bcrypt() password hashing algorithm."
   s.description = <<-EOF
     bcrypt() is a sophisticated and secure hash algorithm designed by The OpenBSD project
-    for hashing passwords. bcrypt-ruby provides a simple, humane wrapper for safely handling
+    for hashing passwords. The bcrypt Ruby gem provides a simple wrapper for safely handling
     passwords.
   EOF
 
