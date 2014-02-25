@@ -66,3 +66,7 @@
   - Dummy version of "bcrypt-ruby" needed a couple version bumps to fix some
     bugs. It felt wrong to have that at a higher version than the real gem, so
     the real gem is getting bumped to 3.1.6.
+
+3.1.7  Feb 24 2014
+  - Rebuild corrupt Java binary version of gem [GH #90]
+  - The 2.1 support for Windows binaries alleged in 3.1.3 was a lie -- documentation removed
