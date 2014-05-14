@@ -58,8 +58,8 @@ describe "Generating BCrypt hashes" do
 
   specify "should raise an InvalidSecret error if the secret is invalid" do
     lambda { BCrypt::Engine.hash_secret(MyInvalidSecret.new, @salt) }.should raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Engine.hash_secret(nil, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Engine.hash_secret(false, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    expect { BCrypt::Engine.hash_secret(nil, @salt) }.not_to raise_error
+    expect { BCrypt::Engine.hash_secret(false, @salt) }.not_to raise_error
   end
 
   specify "should call #to_s on the secret and use the return value as the actual secret data" do

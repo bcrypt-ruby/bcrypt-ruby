@@ -16,9 +16,9 @@ describe "Creating a hashed password" do
   end
 
   specify "should behave normally if the secret is not a string" do
-    lambda { BCrypt::Password.create(nil) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Password.create({:woo => "yeah"}) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Password.create(false) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+    expect { BCrypt::Password.create(nil) }.not_to raise_error
+    expect { BCrypt::Password.create({:woo => "yeah"}) }.not_to raise_error
+    expect { BCrypt::Password.create(false) }.not_to raise_error
   end
 
   specify "should tolerate empty string secrets" do
