@@ -1,38 +1,38 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
 
 describe "The BCrypt engine" do
-  specify "should calculate the optimal cost factor to fit in a specific time" do
+  specify "calculates the optimal cost factor to fit in a specific time" do
     first = BCrypt::Engine.calibrate(100)
     second = BCrypt::Engine.calibrate(400)
-    second.should > first
+    expect(second).to be > first
   end
 end
 
 describe "Generating BCrypt salts" do
 
-  specify "should produce strings" do
-    BCrypt::Engine.generate_salt.should be_an_instance_of(String)
+  specify "produces strings" do
+    expect(BCrypt::Engine.generate_salt).to be_an_instance_of(String)
   end
 
-  specify "should produce random data" do
-    BCrypt::Engine.generate_salt.should_not equal(BCrypt::Engine.generate_salt)
+  specify "produces random data" do
+    expect(BCrypt::Engine.generate_salt).not_to eq(BCrypt::Engine.generate_salt)
   end
 
-  specify "should raise a InvalidCostError if the cost parameter isn't numeric" do
-    lambda { BCrypt::Engine.generate_salt('woo') }.should raise_error(BCrypt::Errors::InvalidCost)
+  specify "raises a InvalidCostError if the cost parameter isn't numeric" do
+    expect { BCrypt::Engine.generate_salt('woo') }.to raise_error(BCrypt::Errors::InvalidCost)
   end
 
-  specify "should raise a InvalidCostError if the cost parameter isn't greater than 0" do
-    lambda { BCrypt::Engine.generate_salt(-1) }.should raise_error(BCrypt::Errors::InvalidCost)
+  specify "raises a InvalidCostError if the cost parameter isn't greater than 0" do
+    expect { BCrypt::Engine.generate_salt(-1) }.to raise_error(BCrypt::Errors::InvalidCost)
   end
 end
 
 describe "Autodetecting of salt cost" do
 
-  specify "should work" do
-    BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou").should eq 8
-    BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu").should eq 5
-    BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.").should eq 13
+  specify "works" do
+    expect(BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou")).to eq 8
+    expect(BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu")).to eq 5
+    expect(BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.")).to eq 13
   end
 
 end
@@ -48,25 +48,25 @@ describe "Generating BCrypt hashes" do
     @password = "woo"
   end
 
-  specify "should produce a string" do
-    BCrypt::Engine.hash_secret(@password, @salt).should be_an_instance_of(String)
+  specify "produces a string" do
+    expect(BCrypt::Engine.hash_secret(@password, @salt)).to be_an_instance_of(String)
   end
 
-  specify "should raise an InvalidSalt error if the salt is invalid" do
-    lambda { BCrypt::Engine.hash_secret(@password, 'nino') }.should raise_error(BCrypt::Errors::InvalidSalt)
+  specify "raises an InvalidSalt error if the salt is invalid" do
+    expect { BCrypt::Engine.hash_secret(@password, 'nino') }.to raise_error(BCrypt::Errors::InvalidSalt)
   end
 
-  specify "should raise an InvalidSecret error if the secret is invalid" do
-    lambda { BCrypt::Engine.hash_secret(MyInvalidSecret.new, @salt) }.should raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Engine.hash_secret(nil, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
-    lambda { BCrypt::Engine.hash_secret(false, @salt) }.should_not raise_error(BCrypt::Errors::InvalidSecret)
+  specify "raises an InvalidSecret error if the secret is invalid" do
+    expect { BCrypt::Engine.hash_secret(MyInvalidSecret.new, @salt) }.to raise_error(BCrypt::Errors::InvalidSecret)
+    expect { BCrypt::Engine.hash_secret(nil, @salt) }.not_to raise_error
+    expect { BCrypt::Engine.hash_secret(false, @salt) }.not_to raise_error
   end
 
-  specify "should call #to_s on the secret and use the return value as the actual secret data" do
-    BCrypt::Engine.hash_secret(false, @salt).should == BCrypt::Engine.hash_secret("false", @salt)
+  specify "calls #to_s on the secret and use the return value as the actual secret data" do
+    expect(BCrypt::Engine.hash_secret(false, @salt)).to eq(BCrypt::Engine.hash_secret("false", @salt))
   end
 
-  specify "should be interoperable with other implementations" do
+  specify "is interoperable with other implementations" do
     # test vectors from the OpenWall implementation <http://www.openwall.com/crypt/>
     test_vectors = [
       ["U*U", "$2a$05$CCCCCCCCCCCCCCCCCCCCC.", "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"],
@@ -76,7 +76,7 @@ describe "Generating BCrypt hashes" do
       ["0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "$2a$05$abcdefghijklmnopqrstuu", "$2a$05$abcdefghijklmnopqrstuu5s2v8.iXieOjg/.AySBTTZIIVFJeBui"]
     ]
     for secret, salt, test_vector in test_vectors
-      BCrypt::Engine.hash_secret(secret, salt).should eql(test_vector)
+      expect(BCrypt::Engine.hash_secret(secret, salt)).to eql(test_vector)
     end
   end
 end

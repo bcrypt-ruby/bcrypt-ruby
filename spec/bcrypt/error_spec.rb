@@ -4,13 +4,13 @@ describe "Errors" do
 
   shared_examples "descends from StandardError" do
     it "can be rescued as a StandardError" do
-      described_class.should < StandardError
+      expect(described_class).to be < StandardError
     end
   end
 
   shared_examples "descends from BCrypt::Error" do
     it "can be rescued as a BCrypt::Error" do
-      described_class.should < BCrypt::Error
+      expect(described_class).to be < BCrypt::Error
     end
   end
 
