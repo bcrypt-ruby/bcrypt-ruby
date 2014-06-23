@@ -115,9 +115,9 @@ end
 
 describe "Validating a password hash" do
   specify "should not accept an invalid password" do
-    expect(BCrypt::Password.valid_hash?("i_am_so_not_valid")).to be_false
+    expect(BCrypt::Password.valid_hash?("i_am_so_not_valid")).to be_falsey
   end
   specify "should accept a valid password" do
-    expect(BCrypt::Password.valid_hash?(BCrypt::Password.create "i_am_so_valid")).to be_true
+    expect(BCrypt::Password.valid_hash?(BCrypt::Password.create "i_am_so_valid")).to be_truthy
   end
 end

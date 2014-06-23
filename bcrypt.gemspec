@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_development_dependency 'rake-compiler', '~> 0.9.2'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec', '>= 3'
   s.add_development_dependency 'rdoc', '~> 3.12'
 
   s.has_rdoc = true
