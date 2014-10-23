@@ -7,16 +7,19 @@ require 'rdoc/task'
 require 'benchmark'
 
 CLEAN.include(
-  "ext/mri/*.o",
-  "ext/mri/*.bundle",
-  "ext/mri/*.so",
-  "ext/jruby/bcrypt_jruby/*.class"
+  "tmp",
+  "lib/1.8",
+  "lib/1.9",
+  "lib/2.0",
+  "lib/2.1",
+  "lib/bcrypt_ext.jar",
+  "lib/bcrypt_ext.so"
 )
 CLOBBER.include(
-  "ext/mri/Makefile",
-  "doc/coverage",
+  "doc",
   "pkg"
 )
+
 GEMSPEC = Gem::Specification.load("bcrypt.gemspec")
 
 task :default => [:compile, :spec]
