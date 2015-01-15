@@ -15,7 +15,7 @@ describe "Generating BCrypt salts" do
   end
 
   specify "should produce random data" do
-    expect(BCrypt::Engine.generate_salt).not_to equal(BCrypt::Engine.generate_salt)
+    expect(BCrypt::Engine.generate_salt).not_to eq(BCrypt::Engine.generate_salt)
   end
 
   specify "should raise a InvalidCostError if the cost parameter isn't numeric" do
@@ -30,9 +30,9 @@ end
 describe "Autodetecting of salt cost" do
 
   specify "should work" do
-    expect(BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou")).to eq 8
-    expect(BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu")).to eq 5
-    expect(BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.")).to eq 13
+    expect(BCrypt::Engine.autodetect_cost("$2a$08$hRx2IVeHNsTSYYtUWn61Ou")).to eq(8)
+    expect(BCrypt::Engine.autodetect_cost("$2a$05$XKd1bMnLgUnc87qvbAaCUu")).to eq(5)
+    expect(BCrypt::Engine.autodetect_cost("$2a$13$Lni.CZ6z5A7344POTFBBV.")).to eq(13)
   end
 
 end
@@ -61,7 +61,7 @@ describe "Generating BCrypt hashes" do
   end
 
   specify "should call #to_s on the secret and use the return value as the actual secret data" do
-    expect(BCrypt::Engine.hash_secret(false, salt)).to eq BCrypt::Engine.hash_secret("false", salt)
+    expect(BCrypt::Engine.hash_secret(false, salt)).to eq(BCrypt::Engine.hash_secret("false", salt))
   end
 
   specify "should be interoperable with other implementations" do
@@ -74,7 +74,7 @@ describe "Generating BCrypt hashes" do
       ["0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "$2a$05$abcdefghijklmnopqrstuu", "$2a$05$abcdefghijklmnopqrstuu5s2v8.iXieOjg/.AySBTTZIIVFJeBui"]
     ]
     for secret, salt, test_vector in test_vectors
-      expect(BCrypt::Engine.hash_secret(secret, salt)).to eql(test_vector)
+      expect(BCrypt::Engine.hash_secret(secret, salt)).to eq(test_vector)
     end
   end
 end

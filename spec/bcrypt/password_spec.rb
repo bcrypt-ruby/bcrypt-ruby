@@ -37,20 +37,20 @@ describe "Reading a hashed password" do
   end
 
   specify "the cost should be set to the default if nil" do
-    expect(BCrypt::Password.create("hello", :cost => nil).cost).to equal(BCrypt::Engine::DEFAULT_COST)
+    expect(BCrypt::Password.create("hello", :cost => nil).cost).to eq(BCrypt::Engine::DEFAULT_COST)
   end
 
   specify "the cost should be set to the default if empty hash" do
-    expect(BCrypt::Password.create("hello", {}).cost).to equal(BCrypt::Engine::DEFAULT_COST)
+    expect(BCrypt::Password.create("hello", {}).cost).to eq(BCrypt::Engine::DEFAULT_COST)
   end
 
   specify "the cost should be set to the passed value if provided" do
-    expect(BCrypt::Password.create("hello", :cost => 5).cost).to equal(5)
+    expect(BCrypt::Password.create("hello", :cost => 5).cost).to eq(5)
   end
 
   specify "the cost should be set to the global value if set" do
     BCrypt::Engine.cost = 5
-    expect(BCrypt::Password.create("hello").cost).to equal(5)
+    expect(BCrypt::Password.create("hello").cost).to eq(5)
     # unset the global value to not affect other tests
     BCrypt::Engine.cost = nil
   end
@@ -61,7 +61,7 @@ describe "Reading a hashed password" do
     old_default_cost = BCrypt::Engine::DEFAULT_COST
 
     BCrypt::Engine::DEFAULT_COST = 5
-    expect(BCrypt::Password.create("hello").cost).to equal(5)
+    expect(BCrypt::Password.create("hello").cost).to eq(5)
 
     # reset default to not affect other tests
     BCrypt::Engine::DEFAULT_COST = old_default_cost
@@ -70,14 +70,14 @@ describe "Reading a hashed password" do
 
   specify "should read the version, cost, salt, and hash" do
     password = BCrypt::Password.new(hash)
-    expect(password.version).to eql("2a")
-    expect(password.version.class).to eq String
-    expect(password.cost).to equal(5)
-    expect(password.salt).to eql("$2a$05$CCCCCCCCCCCCCCCCCCCCC.")
-    expect(password.salt.class).to eq String
+    expect(password.version).to eq("2a")
+    expect(password.version.class).to eq(String)
+    expect(password.cost).to eq(5)
+    expect(password.salt).to eq("$2a$05$CCCCCCCCCCCCCCCCCCCCC.")
+    expect(password.salt.class).to eq(String)
     expect(password.checksum).to eq("E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW")
-    expect(password.checksum.class).to eq String
-    expect(password.to_s).to eql(hash)
+    expect(password.checksum.class).to eq(String)
+    expect(password.to_s).to eq(hash)
   end
 
   specify "should raise an InvalidHashError when given an invalid hash" do
