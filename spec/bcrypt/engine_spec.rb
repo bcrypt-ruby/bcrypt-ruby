@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
 
-describe "The BCrypt engine" do
+RSpec.describe "The BCrypt engine" do
   specify "should calculate the optimal cost factor to fit in a specific time" do
     first = BCrypt::Engine.calibrate(100)
     second = BCrypt::Engine.calibrate(400)
@@ -15,7 +15,7 @@ describe "Generating BCrypt salts" do
   end
 
   specify "should produce random data" do
-    expect(BCrypt::Engine.generate_salt).to_not equal(BCrypt::Engine.generate_salt)
+    expect(BCrypt::Engine.generate_salt).not_to equal(BCrypt::Engine.generate_salt)
   end
 
   specify "should raise a InvalidCostError if the cost parameter isn't numeric" do
@@ -43,27 +43,25 @@ describe "Generating BCrypt hashes" do
     undef to_s
   end
 
-  before :each do
-    @salt = BCrypt::Engine.generate_salt(4)
-    @password = "woo"
-  end
+  let(:salt) { BCrypt::Engine.generate_salt(4) }
+  let(:password) { "woo" }
 
   specify "should produce a string" do
-    expect(BCrypt::Engine.hash_secret(@password, @salt)).to be_an_instance_of(String)
+    expect(BCrypt::Engine.hash_secret(password, salt)).to be_an_instance_of(String)
   end
 
   specify "should raise an InvalidSalt error if the salt is invalid" do
-    expect { BCrypt::Engine.hash_secret(@password, 'nino') }.to raise_error(BCrypt::Errors::InvalidSalt)
+    expect { BCrypt::Engine.hash_secret(password, 'nino') }.to raise_error(BCrypt::Errors::InvalidSalt)
   end
 
   specify "should raise an InvalidSecret error if the secret is invalid" do
-    expect { BCrypt::Engine.hash_secret(MyInvalidSecret.new, @salt) }.to raise_error(BCrypt::Errors::InvalidSecret)
-    expect { BCrypt::Engine.hash_secret(nil, @salt) }.not_to raise_error
-    expect { BCrypt::Engine.hash_secret(false, @salt) }.not_to raise_error
+    expect { BCrypt::Engine.hash_secret(MyInvalidSecret.new, salt) }.to raise_error(BCrypt::Errors::InvalidSecret)
+    expect { BCrypt::Engine.hash_secret(nil, salt) }.not_to raise_error
+    expect { BCrypt::Engine.hash_secret(false, salt) }.not_to raise_error
   end
 
   specify "should call #to_s on the secret and use the return value as the actual secret data" do
-    expect(BCrypt::Engine.hash_secret(false, @salt)).to eq BCrypt::Engine.hash_secret("false", @salt)
+    expect(BCrypt::Engine.hash_secret(false, salt)).to eq BCrypt::Engine.hash_secret("false", salt)
   end
 
   specify "should be interoperable with other implementations" do

@@ -1,18 +1,16 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
 
-describe "Creating a hashed password" do
+RSpec.describe "Creating a hashed password" do
 
-  before :each do
-    @secret = "wheedle"
-    @password = BCrypt::Password.create(@secret, :cost => 4)
-  end
+  let(:secret) { "wheedle" }
+  let(:password) { BCrypt::Password.create(secret, :cost => 4) }
 
   specify "should return a BCrypt::Password" do
-    expect(@password).to be_an_instance_of(BCrypt::Password)
+    expect(password).to be_an_instance_of(BCrypt::Password)
   end
 
   specify "should return a valid bcrypt password" do
-    expect { BCrypt::Password.new(@password) }.not_to raise_error
+    expect { BCrypt::Password.new(password) }.not_to raise_error
   end
 
   specify "should behave normally if the secret is not a string" do
@@ -29,10 +27,8 @@ describe "Creating a hashed password" do
 end
 
 describe "Reading a hashed password" do
-  before :each do
-    @secret = "U*U"
-    @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
-  end
+
+  let(:hash) { "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW" }
 
   specify "the cost is too damn high" do
     expect {
@@ -73,7 +69,7 @@ describe "Reading a hashed password" do
   end
 
   specify "should read the version, cost, salt, and hash" do
-    password = BCrypt::Password.new(@hash)
+    password = BCrypt::Password.new(hash)
     expect(password.version).to eql("2a")
     expect(password.version.class).to eq String
     expect(password.cost).to equal(5)
@@ -81,7 +77,7 @@ describe "Reading a hashed password" do
     expect(password.salt.class).to eq String
     expect(password.checksum).to eq("E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW")
     expect(password.checksum.class).to eq String
-    expect(password.to_s).to eql(@hash)
+    expect(password.to_s).to eql(hash)
   end
 
   specify "should raise an InvalidHashError when given an invalid hash" do
@@ -90,18 +86,16 @@ describe "Reading a hashed password" do
 end
 
 describe "Comparing a hashed password with a secret" do
-  before :each do
-    @secret = "U*U"
-    @hash = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
-    @password = BCrypt::Password.create(@secret)
-  end
+  let(:secret) {"U*U"}
+  let(:hash) { "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW" }
+  let(:password) { BCrypt::Password.create(secret) }
 
   specify "should compare successfully to the original secret" do
-    expect((@password == @secret)).to be(true)
+    expect((password == secret)).to be(true)
   end
 
   specify "should compare unsuccessfully to anything besides original secret" do
-    expect((@password == "@secret")).to be(false)
+    expect((password == "secret")).to be(false)
   end
 end
 
