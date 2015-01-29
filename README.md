@@ -31,7 +31,7 @@ The bcrypt gem is available on the following ruby platforms:
 
 * JRuby
 * RubyInstaller 1.8, 1.9, 2.0, and 2.1 builds on win32
-* Any 1.8, 1.9, 2.0, or 2.1 ruby on a BSD/OSX/Linux system with a compiler
+* Any 1.8, 1.9, 2.0, 2.1, or 2.2 Ruby on a BSD/OS X/Linux system with a compiler
 
 ## How to use `bcrypt()` in your Rails application
 
