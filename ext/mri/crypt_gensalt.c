@@ -1,5 +1,16 @@
 /*
- * Written by Solar Designer and placed in the public domain.
+ * Written by Solar Designer <solar at openwall.com> in 2000-2011.
+ * No copyright is claimed, and the software is hereby placed in the public
+ * domain.  In case this attempt to disclaim copyright and place the software
+ * in the public domain is deemed null and void, then the software is
+ * Copyright (c) 2000-2011 Solar Designer and it is hereby released to the
+ * general public under the following terms:
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted.
+ *
+ * There's ABSOLUTELY NO WARRANTY, express or implied.
+ *
  * See crypt_blowfish.c for more information.
  *
  * This file contains salt generation functions for the traditional and
@@ -14,19 +25,17 @@
 #define __set_errno(val) errno = (val)
 #endif
 
-#undef __CONST
-#ifdef __GNUC__
-#define __CONST __const
-#else
-#define __CONST
-#endif
+/* Just to make sure the prototypes match the actual definitions */
+#include "crypt_gensalt.h"
 
 unsigned char _crypt_itoa64[64 + 1] =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-char *_crypt_gensalt_traditional_rn(unsigned long count,
-	__CONST char *input, int size, char *output, int output_size)
+char *_crypt_gensalt_traditional_rn(const char *prefix, unsigned long count,
+	const char *input, int size, char *output, int output_size)
 {
+	(void) prefix;
+
 	if (size < 2 || output_size < 2 + 1 || (count && count != 25)) {
 		if (output_size > 0) output[0] = '\0';
 		__set_errno((output_size < 2 + 1) ? ERANGE : EINVAL);
@@ -40,10 +49,12 @@ char *_crypt_gensalt_traditional_rn(unsigned long count,
 	return output;
 }
 
-char *_crypt_gensalt_extended_rn(unsigned long count,
-	__CONST char *input, int size, char *output, int output_size)
+char *_crypt_gensalt_extended_rn(const char *prefix, unsigned long count,
+	const char *input, int size, char *output, int output_size)
 {
 	unsigned long value;
+
+	(void) prefix;
 
 /* Even iteration counts make it easier to detect weak DES keys from a look
  * at the hash, so they should be avoided */
@@ -73,10 +84,12 @@ char *_crypt_gensalt_extended_rn(unsigned long count,
 	return output;
 }
 
-char *_crypt_gensalt_md5_rn(unsigned long count,
-	__CONST char *input, int size, char *output, int output_size)
+char *_crypt_gensalt_md5_rn(const char *prefix, unsigned long count,
+	const char *input, int size, char *output, int output_size)
 {
 	unsigned long value;
+
+	(void) prefix;
 
 	if (size < 3 || output_size < 3 + 4 + 1 || (count && count != 1000)) {
 		if (output_size > 0) output[0] = '\0';
