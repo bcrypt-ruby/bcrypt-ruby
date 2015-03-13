@@ -58,6 +58,7 @@ describe "Generating BCrypt hashes" do
 
   specify "should raise an InvalidSecret error if the secret is invalid" do
     expect { BCrypt::Engine.hash_secret(MyInvalidSecret.new, @salt) }.to raise_error(BCrypt::Errors::InvalidSecret)
+    expect { BCrypt::Engine.hash_secret("poison\0null", @salt) }.to raise_error(BCrypt::Errors::InvalidSecret)
     expect { BCrypt::Engine.hash_secret(nil, @salt) }.not_to raise_error
     expect { BCrypt::Engine.hash_secret(false, @salt) }.not_to raise_error
   end
