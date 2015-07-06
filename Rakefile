@@ -80,6 +80,14 @@ else
   end
 end
 
+desc "Build the windows binary gems per rake-compiler-dock"
+task 'gem:windows' do
+  require 'rake_compiler_dock'
+  RakeCompilerDock.sh <<-EOT
+    bundle && rake cross native gem
+  EOT
+end
+
 desc "Run a set of benchmarks on the compiled extension."
 task :benchmark do
   TESTS = 100
