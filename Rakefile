@@ -8,10 +8,8 @@ require 'benchmark'
 
 CLEAN.include(
   "tmp",
-  "lib/1.8",
-  "lib/1.9",
-  "lib/2.0",
-  "lib/2.1",
+  "lib/1.?",
+  "lib/2.?",
   "lib/bcrypt_ext.jar",
   "lib/bcrypt_ext.so"
 )
