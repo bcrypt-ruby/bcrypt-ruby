@@ -108,6 +108,7 @@ end
 describe "Validating a generated salt" do
   specify "should not accept an invalid salt" do
     expect(BCrypt::Engine.valid_salt?("invalid")).to eq(false)
+    expect(BCrypt::Engine.valid_salt?("invalid\n#{BCrypt::Engine.generate_salt}\ninvalid")).to eq(false)
   end
   specify "should accept a valid salt" do
     expect(BCrypt::Engine.valid_salt?(BCrypt::Engine.generate_salt)).to eq(true)
@@ -117,6 +118,7 @@ end
 describe "Validating a password hash" do
   specify "should not accept an invalid password" do
     expect(BCrypt::Password.valid_hash?("i_am_so_not_valid")).to be(false)
+    expect(BCrypt::Password.valid_hash?("invalid\n#{BCrypt::Password.create "i_am_so_valid"}\ninvalid")).to be(false)
   end
   specify "should accept a valid password" do
     expect(BCrypt::Password.valid_hash?(BCrypt::Password.create "i_am_so_valid")).to be(true)
