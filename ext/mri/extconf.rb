@@ -18,5 +18,6 @@ else
 
   $defs << "-D__SKIP_GNU"
   dir_config("bcrypt_ext")
+  have_func 'rb_str_new_frozen' # Ruby 1.8 support.
   create_makefile("bcrypt_ext")
 end
