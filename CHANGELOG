@@ -79,3 +79,6 @@
 
 3.1.10 Jan 28 2015
   - Fix issue with dumping a BCrypt::Password instance to YAML in Ruby 2.2 [GH #107 by @mattwildig]
+
+3.1.11 Mar 06 2016
+  - Add support for Ruby 2.2 in compiled Windows binaries
