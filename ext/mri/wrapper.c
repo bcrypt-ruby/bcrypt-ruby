@@ -38,17 +38,21 @@
 #endif
 #include "ow-crypt.h"
 
+extern int _crypt_output_magic(__CONST char *setting, char *output, int size);
 extern char *_crypt_blowfish_rn(__CONST char *key, __CONST char *setting,
 	char *output, int size);
-extern char *_crypt_gensalt_blowfish_rn(unsigned long count,
+extern char *_crypt_gensalt_blowfish_rn(__CONST char *prefix,
+	unsigned long count,
 	__CONST char *input, int size, char *output, int output_size);
 
 extern unsigned char _crypt_itoa64[];
-extern char *_crypt_gensalt_traditional_rn(unsigned long count,
+extern char *_crypt_gensalt_traditional_rn(__CONST char *prefix,
+	unsigned long count,
 	__CONST char *input, int size, char *output, int output_size);
-extern char *_crypt_gensalt_extended_rn(unsigned long count,
+extern char *_crypt_gensalt_extended_rn(__CONST char *prefix,
+	unsigned long count,
 	__CONST char *input, int size, char *output, int output_size);
-extern char *_crypt_gensalt_md5_rn(unsigned long count,
+extern char *_crypt_gensalt_md5_rn(__CONST char *prefix, unsigned long count,
 	__CONST char *input, int size, char *output, int output_size);
 
 #if defined(__GLIBC__) && defined(_LIBC)
@@ -200,8 +204,8 @@ char *crypt_r(__CONST char *key, __CONST char *setting, void *data)
 char *__crypt_gensalt_rn(__CONST char *prefix, unsigned long count,
 	__CONST char *input, int size, char *output, int output_size)
 {
-	char *(*use)(unsigned long count,
-		__CONST char *input, int size, char *output, int output_size);
+	char *(*use)(__CONST char *_prefix, unsigned long _count,
+		__CONST char *_input, int _size, char *_output, int _output_size);
 
 	/* This may be supported on some platforms in the future */
 	if (!input) {
@@ -209,7 +213,8 @@ char *__crypt_gensalt_rn(__CONST char *prefix, unsigned long count,
 		return NULL;
 	}
 
-	if (!strncmp(prefix, "$2a$", 4))
+	if (!strncmp(prefix, "$2a$", 4) || !strncmp(prefix, "$2b$", 4) ||
+	    !strncmp(prefix, "$2y$", 4))
 		use = _crypt_gensalt_blowfish_rn;
 	else
 	if (!strncmp(prefix, "$1$", 3))
@@ -228,7 +233,7 @@ char *__crypt_gensalt_rn(__CONST char *prefix, unsigned long count,
 		return NULL;
 	}
 
-	return use(count, input, size, output, output_size);
+	return use(prefix, count, input, size, output, output_size);
 }
 
 char *__crypt_gensalt_ra(__CONST char *prefix, unsigned long count,
