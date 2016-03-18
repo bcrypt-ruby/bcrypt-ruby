@@ -11,6 +11,8 @@
 #define __CONST __const
 #elif defined _MSC_VER
 #define __CONST const
+#elif defined __SUNPRO_C
+#define __CONST const
 #else
 #endif
 
