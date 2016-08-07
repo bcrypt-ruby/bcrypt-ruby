@@ -18,6 +18,8 @@ import java.io.UnsupportedEncodingException;
 
 import java.security.SecureRandom;
 
+import java.util.Arrays;
+
 /**
  * BCrypt implements OpenBSD-style Blowfish password hashing using
  * the scheme described in "A Future-Adaptable Password Scheme" by
@@ -646,9 +648,28 @@ public class BCrypt {
 	 * @return	the hashed password
 	 */
 	public static String hashpw(String password, String salt) {
+		byte passwordb[];
+
+		try {
+			passwordb = password.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException uee) {
+			throw new AssertionError("UTF-8 is not supported");
+		}
+
+		return hashpw(passwordb, salt);
+	}
+
+	/**
+	 * Hash a password using the OpenBSD bcrypt scheme
+	 * @param passwordb	the password to hash, as a byte array
+	 * @param salt	the salt to hash with (perhaps generated
+	 * using BCrypt.gensalt)
+	 * @return	the hashed password
+	 */
+	public static String hashpw(byte passwordb[], String salt) {
 		BCrypt B;
 		String real_salt;
-		byte passwordb[], saltb[], hashed[];
+		byte saltb[], hashed[];
 		char minor = (char)0;
 		int rounds, off = 0;
 		StringBuilder rs = new StringBuilder();
@@ -670,12 +691,8 @@ public class BCrypt {
 		rounds = Integer.parseInt(salt.substring(off, off + 2));
 
 		real_salt = salt.substring(off + 3, off + 25);
-		try {
-			passwordb = (password + (minor >= 'a' ? "\000" : "")).getBytes("UTF-8");
-		} catch (UnsupportedEncodingException uee) {
-			throw new AssertionError("UTF-8 is not supported");
-		}
-
+		if (minor >= 'a') // add null terminator
+			passwordb = Arrays.copyOf(passwordb, passwordb.length + 1);
 		saltb = decode_base64(real_salt, BCRYPT_SALT_LEN);
 
 		B = new BCrypt();
