@@ -60,8 +60,7 @@ implements a similar authentication strategy to the code below.
 ### Creating an account
 
     def create
-      @user = User.new(params[:user])
-      @user.password = params[:password]
+      @user = User.new(user_params)
       @user.save!
     end
 
