@@ -185,7 +185,7 @@ char *crypt_ra(__CONST char *key, __CONST char *setting,
 	return _crypt_blowfish_rn(key, setting, (char *)*data, *size);
 }
 
-char *crypt_r(__CONST char *key, __CONST char *setting, void *data)
+char *crypt_r(__CONST char *key, __CONST char *setting, struct crypt_data *data)
 {
 	return _crypt_retval_magic(
 		crypt_rn(key, setting, data, CRYPT_OUTPUT_SIZE),

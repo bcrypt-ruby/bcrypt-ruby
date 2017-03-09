@@ -16,7 +16,7 @@
 
 #ifndef __SKIP_GNU
 extern char *crypt(__CONST char *key, __CONST char *setting);
-extern char *crypt_r(__CONST char *key, __CONST char *setting, void *data);
+extern char *crypt_r(__CONST char *key, __CONST char *setting, struct crypt_data *data);
 #endif
 
 #ifndef __SKIP_OW
