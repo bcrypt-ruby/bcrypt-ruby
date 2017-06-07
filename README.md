@@ -56,6 +56,14 @@ implements a similar authentication strategy to the code below.
         self.password_hash = @password
       end
     end
+    
+    ##Rails >= 4.0 User Model
+    
+    class User < ActiveRecord::Base
+        # users.password_digest in the database as a :string
+       has_secure_password
+       
+    end
 
 ### Creating an account
 
@@ -63,6 +71,23 @@ implements a similar authentication strategy to the code below.
       @user = User.new(params[:user])
       @user.password = params[:password]
       @user.save!
+    end
+    
+    # Rails >= 4.0
+    
+    def create
+        @user = User.new(user_params)
+        if @user.save
+            render '/'
+        end
+    end
+    
+    private
+    
+    def user_params
+        params.require('user').permit(:email,
+                                      :password,
+                                      :password_confirmation)
     end
 
 ### Authenticating a user
@@ -74,6 +99,18 @@ implements a similar authentication strategy to the code below.
       else
         redirect_to home_url
       end
+    end
+    
+    # Rails >= 4.0
+    
+    def login
+      user = User.find_by(email: params[:email])
+        if user && user.authenticate(params[:password])
+           session[:user_id] = user.id
+           redirect_to '/page'
+        else
+           render '/login'
+        end
     end
 
 ## How to use bcrypt-ruby in general
