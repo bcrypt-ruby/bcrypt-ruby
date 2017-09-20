@@ -40,58 +40,58 @@ The bcrypt gem is available on the following ruby platforms:
 implements a similar authentication strategy to the code below.
 
 ### The _User_ model
+```ruby
+require 'bcrypt'
 
-    require 'bcrypt'
+class User < ActiveRecord::Base
+  # users.password_hash in the database is a :string
+  include BCrypt
 
-    class User < ActiveRecord::Base
-      # users.password_hash in the database is a :string
-      include BCrypt
+  def password
+    @password ||= Password.new(password_hash)
+  end
 
-      def password
-        @password ||= Password.new(password_hash)
-      end
-
-      def password=(new_password)
-        @password = Password.create(new_password)
-        self.password_hash = @password
-      end
-    end
-
+  def password=(new_password)
+    @password = Password.create(new_password)
+    self.password_hash = @password
+  end
+end
+```
 ### Creating an account
-
-    def create
-      @user = User.new(params[:user])
-      @user.password = params[:password]
-      @user.save!
-    end
-
+```ruby
+def create
+  @user = User.new(params[:user])
+  @user.password = params[:password]
+  @user.save!
+end
+```
 ### Authenticating a user
-
-    def login
-      @user = User.find_by_email(params[:email])
-      if @user.password == params[:password]
-        give_token
-      else
-        redirect_to home_url
-      end
-    end
-
+```ruby
+def login
+  @user = User.find_by_email(params[:email])
+  if @user.password == params[:password]
+    give_token
+  else
+    redirect_to home_url
+  end
+end
+```
 ## How to use bcrypt-ruby in general
+```ruby
+require 'bcrypt'
 
-    require 'bcrypt'
+my_password = BCrypt::Password.create("my password")
+#=> "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa"
 
-    my_password = BCrypt::Password.create("my password")
-      #=> "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa"
+my_password.version              #=> "2a"
+my_password.cost                 #=> 10
+my_password == "my password"     #=> true
+my_password == "not my password" #=> false
 
-    my_password.version              #=> "2a"
-    my_password.cost                 #=> 10
-    my_password == "my password"     #=> true
-    my_password == "not my password" #=> false
-
-    my_password = BCrypt::Password.new("$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa")
-    my_password == "my password"     #=> true
-    my_password == "not my password" #=> false
-
+my_password = BCrypt::Password.new("$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa")
+my_password == "my password"     #=> true
+my_password == "not my password" #=> false
+```
 Check the rdocs for more details -- BCrypt, BCrypt::Password.
 
 ## How `bcrypt()` works
@@ -160,15 +160,15 @@ stateless authentication architecture (e.g., HTTP Basic Auth), you will want to 
 server load and keep your request times down. This will lower the security provided you, but there are few alternatives.
 
 To change the default cost factor used by bcrypt-ruby, use `BCrypt::Engine.cost = new_value`:
+```ruby
+BCrypt::Password.create('secret').cost
+  #=> 10, the default provided by bcrypt-ruby
 
-    BCrypt::Password.create('secret').cost
-      #=> 10, the default provided by bcrypt-ruby
-
-    # set a new default cost
-    BCrypt::Engine.cost = 8
-    BCrypt::Password.create('secret').cost
-      #=> 8
-
+# set a new default cost
+BCrypt::Engine.cost = 8
+BCrypt::Password.create('secret').cost
+  #=> 8
+```
 The default cost can be overridden as needed by passing an options hash with a different cost:
 
     BCrypt::Password.create('secret', :cost => 6).cost  #=> 6
