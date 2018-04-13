@@ -24,7 +24,11 @@
 
 #ifndef __SKIP_GNU
 extern char *crypt(__const char *key, __const char *setting);
+#if __FreeBSD_version <= 1200000
 extern char *crypt_r(__const char *key, __const char *setting, struct crypt_data *data);
+#else
+extern char *crypt_r(__const char *key, __const char *setting, void *data);
+#endif
 #endif
 
 #ifndef __SKIP_OW
