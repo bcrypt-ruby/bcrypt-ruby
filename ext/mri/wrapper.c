@@ -179,7 +179,7 @@ char *crypt_ra(const char *key, const char *setting,
 #if defined(__FreeBSD__)
 #include <osreldate.h>
 #endif
-#if __FreeBSD_version >= 1200062
+#if __FreeBSD_version >= 1200061
 char *crypt_r(const char *key, const char *setting, struct crypt_data *data)
 {
 	return _crypt_retval_magic(
