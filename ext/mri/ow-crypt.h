@@ -24,7 +24,10 @@
 
 #ifndef __SKIP_GNU
 extern char *crypt(__const char *key, __const char *setting);
-#if (defined(__FreeBSD__) && (__FreeBSD_version >= 1200000))
+#if defined(__FreeBSD__)
+#include <osreldate.h>
+#endif
+#if __FreeBSD_version >= 1200062
 extern char *crypt_r(__const char *key, __const char *setting, struct crypt_data *data);
 #else
 extern char *crypt_r(__const char *key, __const char *setting, void *data);
