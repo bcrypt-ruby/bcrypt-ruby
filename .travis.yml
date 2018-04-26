@@ -16,6 +16,6 @@ rvm:
   - jruby-18mode
   - jruby-19mode
   - jruby-head
-  - rbx-2
+  - rbx-3
   - ree
 script: bundle exec rake
