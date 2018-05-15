@@ -12,6 +12,10 @@ CLEAN.include(
   "lib/1.9",
   "lib/2.0",
   "lib/2.1",
+  "lib/2.2",
+  "lib/2.3",
+  "lib/2.4",
+  "lib/2.5",
   "lib/bcrypt_ext.jar",
   "lib/bcrypt_ext.so"
 )
