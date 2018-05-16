@@ -82,3 +82,7 @@
 
 3.1.11 Mar 06 2016
   - Add support for Ruby 2.2 in compiled Windows binaries
+
+3.1.12 May 16 2018
+  - Add support for Ruby 2.3, 2.4, and 2.5 in compiled Windows binaries
+  - Fix compatibility with libxcrypt [GH #164 by @besser82]
