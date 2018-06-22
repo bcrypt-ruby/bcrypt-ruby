@@ -1,0 +1,12 @@
+# rake -f Rakefile_wintest -N -R norakelib
+
+require "rake/testtask"
+require 'rspec/core/rake_task'
+
+desc "Run all specs in Windows"
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.ruby_opts = '-w'
+end
+
+task :default => [:spec]

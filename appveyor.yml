@@ -1,50 +1,20 @@
-###############################################################################
-#
-# This AppVeyor config is *NOT* for running the tests on Windows.
-#
-# This is to ensure that the latest version of the bcrypt gem can be installed
-# on Windows across all of the currently supported versions of Ruby.
-#
-###############################################################################
+install:
+  # download shared script files
+  - ps: >-
+      if ( !(Test-Path -Path ./shared -PathType Container) ) {
+        $uri = 'https://ci.appveyor.com/api/projects/MSP-Greg/av-gem-build-test/artifacts/shared.7z'
+        $7z  = 'C:\Program Files\7-Zip\7z.exe'
+        $fn = "$env:TEMP\shared.7z"
+        (New-Object System.Net.WebClient).DownloadFile($uri, $fn)
+        &$7z x $fn -owin_gem_test 1> $null
+        Remove-Item  -LiteralPath $fn -Force
+        Write-Host "Downloaded shared files" -ForegroundColor Yellow
+      }
 
-version: "{branch}-{build}"
-build: off
-clone_depth: 1
-
-init:
-  # Install Ruby 1.8.7
-  - if %RUBY_VERSION%==187 (
-      appveyor DownloadFile https://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-1.8.7-p374.exe -FileName C:\ruby_187.exe &
-      C:\ruby_187.exe /verysilent /dir=C:\Ruby%RUBY_VERSION%
-    )
+build_script:
+  - ps: .\win_gem_test\bcrypt.ps1 $env:gem_bits
 
 environment:
   matrix:
-    - RUBY_VERSION: "187"
-    - RUBY_VERSION: "193"
-    - RUBY_VERSION: "200"
-    - RUBY_VERSION: "200-x64"
-    - RUBY_VERSION: "21"
-    - RUBY_VERSION: "21-x64"
-    - RUBY_VERSION: "22"
-    - RUBY_VERSION: "22-x64"
-    - RUBY_VERSION: "23"
-    - RUBY_VERSION: "23-x64"
-    - RUBY_VERSION: "24"
-    - RUBY_VERSION: "24-x64"
-    - RUBY_VERSION: "25"
-    - RUBY_VERSION: "25-x64"
-
-install:
-  - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
-  - if %RUBY_VERSION%==187 (
-      gem update --system 2.0.17
-    )
-
-before_test:
-  - ruby -v
-  - gem -v
-
-test_script:
-  - gem install bcrypt --prerelease --no-ri --no-rdoc
-  - ruby -e "require 'rubygems'; require 'bcrypt'"
+    - gem_bits: 64
+    - gem_bits: 32

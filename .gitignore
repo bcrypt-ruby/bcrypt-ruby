@@ -7,3 +7,11 @@ tmp
 *.jar
 .DS_Store
 .rbenv-gemsets
+
+# windows build artifacts
+/win_gem_test/shared/
+/win_gem_test/packages/
+/win_gem_test/test_logs/
+/Rakefile_wintest
+*.gem
+/lib/puma/puma_http11.rb
