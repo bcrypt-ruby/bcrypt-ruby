@@ -25,6 +25,13 @@ re-hash those passwords. This vulnerability only affected the JRuby gem.
 
 ## How to install bcrypt
 
+#### Prerequisite ruby-sdk with header files (ubuntu example)
+Prevents the install error of `mkmf.rb can't find header files for ruby at /usr/lib/ruby/include/ruby.h`
+
+    sudo apt install ruby-sdk
+    
+#### Install gem
+    
     gem install bcrypt
 
 The bcrypt gem is available on the following ruby platforms:
