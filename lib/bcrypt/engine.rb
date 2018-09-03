@@ -2,7 +2,7 @@ module BCrypt
   # A Ruby wrapper for the bcrypt() C extension calls and the Java calls.
   class Engine
     # The default computational expense parameter.
-    DEFAULT_COST    = 10
+    DEFAULT_COST    = 12
     # The minimum cost supported by the algorithm.
     MIN_COST        = 4
     # Maximum possible size of bcrypt() salts.
@@ -28,8 +28,8 @@ module BCrypt
     #
     # Example:
     #
-    #   BCrypt::Engine::DEFAULT_COST            #=> 10
-    #   BCrypt::Password.create('secret').cost  #=> 10
+    #   BCrypt::Engine::DEFAULT_COST            #=> 12
+    #   BCrypt::Password.create('secret').cost  #=> 12
     #
     #   BCrypt::Engine.cost = 8
     #   BCrypt::Password.create('secret').cost  #=> 8

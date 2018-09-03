@@ -81,14 +81,14 @@ end
 require 'bcrypt'
 
 my_password = BCrypt::Password.create("my password")
-#=> "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa"
+#=> "$2a$12$K0ByB.6YI2/OYrB4fQOYLe6Tv0datUVf6VZ/2Jzwm879BW5K1cHey"
 
 my_password.version              #=> "2a"
-my_password.cost                 #=> 10
+my_password.cost                 #=> 12
 my_password == "my password"     #=> true
 my_password == "not my password" #=> false
 
-my_password = BCrypt::Password.new("$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa")
+my_password = BCrypt::Password.new("$2a$12$K0ByB.6YI2/OYrB4fQOYLe6Tv0datUVf6VZ/2Jzwm879BW5K1cHey")
 my_password == "my password"     #=> true
 my_password == "not my password" #=> false
 ```
@@ -155,14 +155,14 @@ If an attacker was using Ruby to check each password, they could check ~140,000 
 In addition, `bcrypt()` allows you to increase the amount of work required to hash a password as computers get faster. Old
 passwords will still work fine, but new passwords can keep up with the times.
 
-The default cost factor used by bcrypt-ruby is 10, which is fine for session-based authentication. If you are using a
+The default cost factor used by bcrypt-ruby is 12, which is fine for session-based authentication. If you are using a
 stateless authentication architecture (e.g., HTTP Basic Auth), you will want to lower the cost factor to reduce your
 server load and keep your request times down. This will lower the security provided you, but there are few alternatives.
 
 To change the default cost factor used by bcrypt-ruby, use `BCrypt::Engine.cost = new_value`:
 ```ruby
 BCrypt::Password.create('secret').cost
-  #=> 10, the default provided by bcrypt-ruby
+  #=> 12, the default provided by bcrypt-ruby
 
 # set a new default cost
 BCrypt::Engine.cost = 8

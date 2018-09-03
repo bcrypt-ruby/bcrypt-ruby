@@ -7,7 +7,7 @@ module BCrypt
   #
   #   # hash a user's password
   #   @password = Password.create("my grand secret")
-  #   @password #=> "$2a$10$GtKs1Kbsig8ULHZzO1h2TetZfhO4Fmlxphp8bVKnUlZCBYYClPohG"
+  #   @password #=> "$2a$12$C5.FIvVDS9W4AYZ/Ib37YuWd/7ozp1UaMhU28UKrfSxp2oDchbi3K"
   #
   #   # store it safely
   #   @user.update_attribute(:password, @password)
