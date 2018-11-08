@@ -4,7 +4,9 @@ An easy way to keep your users' passwords secure.
 
 * http://github.com/codahale/bcrypt-ruby/tree/master
 
-[![Build Status](https://travis-ci.org/codahale/bcrypt-ruby.png?branch=master)](https://travis-ci.org/codahale/bcrypt-ruby)
+[![Travis Build Status](https://travis-ci.org/codahale/bcrypt-ruby.svg?branch=master)](https://travis-ci.org/codahale/bcrypt-ruby)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/6fplerx9lnaf0hyo?svg=true)](https://ci.appveyor.com/project/TJSchuck35975/bcrypt-ruby)
+
 
 ## Why you should use `bcrypt()`
 
