@@ -46,7 +46,7 @@ module BCrypt
       if valid_secret?(secret)
         if valid_salt?(salt)
           if RUBY_PLATFORM == "java"
-            Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s, salt.to_s)
+            Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s.to_java_bytes, salt.to_s)
           else
             __bc_crypt(secret.to_s, salt)
           end

@@ -1,5 +1,6 @@
 language: ruby
 before_install:
+  - "echo 'gem: --no-rdoc --no-ri' > ~/.gemrc"
   - gem update --system
   - gem install bundler
 rvm:
