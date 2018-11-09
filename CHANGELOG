@@ -89,3 +89,4 @@
 
 [DRAFT] 4.0.0 MMM DD YYYY
   - No longer include compiled binaries for Windows. See GH #173.
+  - Update C and Java implementations to latest versions [GH #182 by @fonica]
