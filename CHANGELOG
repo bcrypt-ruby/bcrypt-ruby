@@ -86,3 +86,6 @@
 3.1.12 May 16 2018
   - Add support for Ruby 2.3, 2.4, and 2.5 in compiled Windows binaries
   - Fix compatibility with libxcrypt [GH #164 by @besser82]
+
+[DRAFT] 4.0.0 MMM DD YYYY
+  - No longer include compiled binaries for Windows. See GH #173.
