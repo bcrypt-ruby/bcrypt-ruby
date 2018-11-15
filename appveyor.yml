@@ -34,11 +34,12 @@ environment:
     - RUBY_VERSION: "200-x64"
 
 install:
+  - ps: "Set-Content -Value 'gem: --no-ri --no-rdoc ' -Path C:\\ProgramData\\gemrc"
   - if %RUBY_VERSION%==head     ( gem install bundler )
   - if %RUBY_VERSION%==head-x64 ( gem install bundler )
   - bundle install
 
-before_test:
+before_build:
   - ruby -v
   - gem -v
 
