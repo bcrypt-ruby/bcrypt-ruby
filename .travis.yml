@@ -14,5 +14,4 @@ rvm:
   - ruby-head
   - jruby-head
   - rbx-3
-  - ree
 script: bundle exec rake
