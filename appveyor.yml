@@ -3,12 +3,6 @@ build: off
 clone_depth: 1
 
 init:
-  # Install Ruby 1.8.7
-  - if %RUBY_VERSION%==187 (
-      appveyor DownloadFile https://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-1.8.7-p374.exe -FileName C:\ruby_187.exe &
-      C:\ruby_187.exe /verysilent /dir=C:\Ruby%RUBY_VERSION%
-    )
-
   # Install Ruby head
   - if %RUBY_VERSION%==head (
       appveyor DownloadFile https://github.com/oneclick/rubyinstaller2/releases/download/rubyinstaller-head/rubyinstaller-head-x86.exe -FileName C:\head_x86.exe &
@@ -21,17 +15,6 @@ init:
 
   # Add Ruby to the path
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
-
-  # Install DevKit 4.5.2 for Ruby 1.8.7
-  - if %RUBY_VERSION%==187 (
-      mkdir C:\DevKit452 &
-      appveyor DownloadFile https://dl.bintray.com/oneclick/rubyinstaller/defunct/DevKit-tdm-32-4.5.2-20110712-1620-sfx.exe -FileName C:\DevKit452\devkit_452.exe &
-      cd C:\DevKit452 &
-      7z x devkit_452.exe &
-      ruby dk.rb init &
-      ruby dk.rb install &
-      cd C:\projects\bcrypt-ruby
-    )
 
 environment:
   matrix:
@@ -49,14 +32,8 @@ environment:
     - RUBY_VERSION: "21-x64"
     - RUBY_VERSION: "200"
     - RUBY_VERSION: "200-x64"
-    - RUBY_VERSION: "193"
-    - RUBY_VERSION: "187"
 
 install:
-  - if %RUBY_VERSION%==187 (
-      gem update --system 2.0.17 &
-      C:\DevKit452\devkitvars.bat
-    )
   - if %RUBY_VERSION%==head     ( gem install bundler )
   - if %RUBY_VERSION%==head-x64 ( gem install bundler )
   - bundle install
