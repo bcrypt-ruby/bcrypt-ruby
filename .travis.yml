@@ -12,6 +12,9 @@ rvm:
   - 2.5
   - 2.6
   - ruby-head
+  - jruby-9.0
+  - jruby-9.1
+  - jruby-9.2
   - jruby-head
   - rbx-3
 script: bundle exec rake
