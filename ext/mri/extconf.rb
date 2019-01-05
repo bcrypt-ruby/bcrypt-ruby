@@ -16,6 +16,7 @@ else
   # This is `bcrypt_ext` (our extension) + CRYPT_OBJS from that Makefile.
   $objs = %w(bcrypt_ext.o crypt_blowfish.o x86.o crypt_gensalt.o wrapper.o)
 
+  $defs << "-D__SKIP_GNU"
   dir_config("bcrypt_ext")
   create_makefile("bcrypt_ext")
 end
