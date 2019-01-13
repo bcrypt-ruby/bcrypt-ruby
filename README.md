@@ -2,7 +2,7 @@
 
 An easy way to keep your users' passwords secure.
 
-* http://github.com/codahale/bcrypt-ruby/tree/master
+* https://github.com/codahale/bcrypt-ruby/tree/master
 
 [![Travis Build Status](https://travis-ci.org/codahale/bcrypt-ruby.svg?branch=master)](https://travis-ci.org/codahale/bcrypt-ruby)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/6fplerx9lnaf0hyo?svg=true)](https://ci.appveyor.com/project/TJSchuck35975/bcrypt-ruby)
@@ -20,7 +20,7 @@ security experts is not a professional response to risk.
 `bcrypt()` allows you to easily harden your application against these kinds of attacks.
 
 *Note*: JRuby versions of the bcrypt gem `<= 2.1.3` had a [security
-vulnerability](http://www.mindrot.org/files/jBCrypt/internat.adv) that
+vulnerability](https://www.mindrot.org/files/jBCrypt/internat.adv) that
 was fixed in `>= 2.1.4`. If you used a vulnerable version to hash
 passwords with international characters in them, you will need to
 re-hash those passwords. This vulnerability only affected the JRuby gem.
@@ -38,7 +38,7 @@ The bcrypt gem is available on the following Ruby platforms:
 ## How to use `bcrypt()` in your Rails application
 
 *Note*: Rails versions >= 3 ship with `ActiveModel::SecurePassword` which uses bcrypt-ruby.
-`has_secure_password` [docs](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password)
+`has_secure_password` [docs](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html#method-i-has_secure_password)
 implements a similar authentication strategy to the code below.
 
 ### The _User_ model
@@ -182,13 +182,13 @@ system available.
 
 For a more technical explanation of the algorithm and its design criteria, please read Niels Provos and David Mazières'
 Usenix99 paper:
-http://www.usenix.org/events/usenix99/provos.html
+https://www.usenix.org/events/usenix99/provos.html
 
 If you'd like more down-to-earth advice regarding cryptography, I suggest reading <i>Practical Cryptography</i> by Niels
 Ferguson and Bruce Schneier:
-http://www.schneier.com/book-practical.html
+https://www.schneier.com/book-practical.html
 
 # Etc
 
 * Author  :: Coda Hale <coda.hale@gmail.com>
-* Website :: http://codahale.com
+* Website :: https://codahale.com
