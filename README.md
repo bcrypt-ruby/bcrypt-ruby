@@ -191,4 +191,4 @@ http://www.schneier.com/book-practical.html
 # Etc
 
 * Author  :: Coda Hale <coda.hale@gmail.com>
-* Website :: http://blog.codahale.com
+* Website :: http://codahale.com
