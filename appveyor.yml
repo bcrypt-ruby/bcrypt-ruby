@@ -35,8 +35,8 @@ environment:
 
 install:
   - ps: "Set-Content -Value 'gem: --no-ri --no-rdoc ' -Path C:\\ProgramData\\gemrc"
-  - if %RUBY_VERSION%==head     ( gem install bundler )
-  - if %RUBY_VERSION%==head-x64 ( gem install bundler )
+  - if %RUBY_VERSION%==head     ( gem install bundler -v'< 2' )
+  - if %RUBY_VERSION%==head-x64 ( gem install bundler -v'< 2' )
   - bundle install
 
 before_build:
