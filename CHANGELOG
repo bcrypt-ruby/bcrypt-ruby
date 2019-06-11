@@ -87,8 +87,11 @@
   - Add support for Ruby 2.3, 2.4, and 2.5 in compiled Windows binaries
   - Fix compatibility with libxcrypt [GH #164 by @besser82]
 
-[DRAFT] 4.0.0 MMM DD YYYY
-  - No longer include compiled binaries for Windows. See GH #173.
-  - Update C and Java implementations to latest versions [GH #182 by @fonica]
+3.1.13 May 31 2019
+  - No longer include compiled binaries for Windows [GH #173 #174 by @tjschuck]
   - Bump default cost to 12 [GH #181 by @bdewater]
-  - Remove explicit support for Rubies 1.8 and 1.9
+  - Update C and Java implementations to latest versions [GH #182 #183 #184 by @fonica]
+  - Remove explicit support for Rubies 1.8 and 1.9 [GH #185 by @tjschuck]
+  - Fixes FreeBSD >= 12 build compatability [GH #189 by @adam12]
+  
+[DRAFT] 4.0.0 MMM DD YYYY
