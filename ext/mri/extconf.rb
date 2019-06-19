@@ -12,9 +12,11 @@ if RUBY_PLATFORM == "java"
 else
   require "mkmf"
 
-  # From Openwall's crypt_blowfish Makefile.
-  # This is `bcrypt_ext` (our extension) + CRYPT_OBJS from that Makefile.
-  $objs = %w(bcrypt_ext.o crypt_blowfish.o x86.o crypt_gensalt.o wrapper.o)
+  if RUBY_PLATFORM =~ /cygwin|mswin|mingw|bccwin|wince|emx/
+    # From Openwall's crypt_blowfish Makefile.
+    # This is `bcrypt_ext` (our extension) + CRYPT_OBJS from that Makefile.
+    $objs = %w(bcrypt_ext.o crypt_blowfish.o x86.o crypt_gensalt.o wrapper.o)
+  end
 
   $defs << "-D__SKIP_GNU"
   dir_config("bcrypt_ext")
