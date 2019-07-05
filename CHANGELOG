@@ -92,3 +92,4 @@
   - Update C and Java implementations to latest versions [GH #182 by @fonica]
   - Bump default cost to 12 [GH #181 by @bdewater]
   - Remove explicit support for Rubies 1.8 and 1.9
+  - Start calibration from the minimum cost supported by the algorithm [GH #206 by @sergey-alekseev]

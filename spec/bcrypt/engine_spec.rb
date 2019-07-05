@@ -1,5 +1,15 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
 
+describe 'BCrypt::Engine' do
+  describe '.calibrate(upper_time_limit_in_ms)' do
+    context 'a tiny upper time limit provided' do
+      it 'returns a minimum cost supported by the algorithm' do
+        expect(BCrypt::Engine.calibrate(0.001)).to eq(4)
+      end
+    end
+  end
+end
+
 describe "The BCrypt engine" do
   specify "should calculate the optimal cost factor to fit in a specific time" do
     first = BCrypt::Engine.calibrate(100)

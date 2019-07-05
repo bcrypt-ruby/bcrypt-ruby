@@ -5,6 +5,8 @@ module BCrypt
     DEFAULT_COST    = 12
     # The minimum cost supported by the algorithm.
     MIN_COST        = 4
+    # The maximum cost supported by the algorithm.
+    MAX_COST = 31
     # Maximum possible size of bcrypt() salts.
     MAX_SALT_LENGTH = 16
 
@@ -99,7 +101,7 @@ module BCrypt
     #   # should take less than 1000ms
     #   BCrypt::Password.create("woo", :cost => 12)
     def self.calibrate(upper_time_limit_in_ms)
-      40.times do |i|
+      (BCrypt::Engine::MIN_COST..BCrypt::Engine::MAX_COST-1).each do |i|
         start_time = Time.now
         Password.create("testing testing", :cost => i+1)
         end_time = Time.now - start_time
