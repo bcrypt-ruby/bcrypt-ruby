@@ -42,7 +42,7 @@ module BCrypt
       #   @password = BCrypt::Password.create("my secret", :cost => 13)
       def create(secret, options = {})
         cost = options[:cost] || BCrypt::Engine.cost
-        raise ArgumentError if cost > 31
+        raise ArgumentError if cost > BCrypt::Engine::MAX_COST
         Password.new(BCrypt::Engine.hash_secret(secret, BCrypt::Engine.generate_salt(cost)))
       end
 
