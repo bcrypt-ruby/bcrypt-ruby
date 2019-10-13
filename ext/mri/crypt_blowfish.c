@@ -517,7 +517,7 @@ static void BF_swap(BF_word *x, int count)
 	R = L; \
 	L = tmp4 ^ data.ctx.P[BF_N + 1];
 
-#if BF_ASM
+#if BF_ASM == 1
 #define BF_body() \
 	_BF_body_r(&data.ctx);
 #else
@@ -650,7 +650,7 @@ static char *BF_crypt(const char *key, const char *setting,
 	char *output, int size,
 	BF_word min)
 {
-#if BF_ASM
+#if BF_ASM == 1
 	extern void _BF_body_r(BF_ctx *ctx);
 #endif
 	struct {
