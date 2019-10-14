@@ -28,7 +28,7 @@
 /* Just to make sure the prototypes match the actual definitions */
 #include "crypt_gensalt.h"
 
-unsigned char _crypt_itoa64[64 + 1] =
+const unsigned char _crypt_itoa64[64 + 1] =
 	"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 char *_crypt_gensalt_traditional_rn(const char *prefix, unsigned long count,
