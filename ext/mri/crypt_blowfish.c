@@ -361,7 +361,7 @@ static BF_ctx BF_init_state = {
 	}
 };
 
-static unsigned char BF_itoa64[64 + 1] =
+static const unsigned char BF_itoa64[64 + 1] =
 	"./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 static unsigned char BF_atoi64[0x60] = {
@@ -387,9 +387,8 @@ static int BF_decode(BF_word *dst, const char *src, int size)
 	unsigned char *dptr = (unsigned char *)dst;
 	unsigned char *end = dptr + size;
 	const unsigned char *sptr = (const unsigned char *)src;
-	unsigned int tmp, c1, c2, c3, c4;
-
 	do {
+		unsigned int tmp, c1, c2, c3, c4;
 		BF_safe_atoi64(c1, *sptr++);
 		BF_safe_atoi64(c2, *sptr++);
 		*dptr++ = (c1 << 2) | ((c2 & 0x30) >> 4);
@@ -402,7 +401,6 @@ static int BF_decode(BF_word *dst, const char *src, int size)
 		BF_safe_atoi64(c4, *sptr++);
 		*dptr++ = ((c3 & 0x03) << 6) | c4;
 	} while (dptr < end);
-
 	return 0;
 }
 
@@ -411,9 +409,8 @@ static void BF_encode(char *dst, const BF_word *src, int size)
 	const unsigned char *sptr = (const unsigned char *)src;
 	const unsigned char *end = sptr + size;
 	unsigned char *dptr = (unsigned char *)dst;
-	unsigned int c1, c2;
-
 	do {
+		unsigned int c1, c2;
 		c1 = *sptr++;
 		*dptr++ = BF_itoa64[c1 >> 2];
 		c1 = (c1 & 0x03) << 4;
@@ -442,10 +439,9 @@ static void BF_swap(BF_word *x, int count)
 {
 	static int endianness_check = 1;
 	char *is_little_endian = (char *)&endianness_check;
-	BF_word tmp;
-
 	if (*is_little_endian)
 	do {
+		BF_word tmp;
 		tmp = *x;
 		tmp = (tmp << 16) | (tmp >> 16);
 		*x++ = ((tmp & 0x00FF00FF) << 8) | ((tmp >> 8) & 0x00FF00FF);
@@ -517,7 +513,7 @@ static void BF_swap(BF_word *x, int count)
 	R = L; \
 	L = tmp4 ^ data.ctx.P[BF_N + 1];
 
-#if BF_ASM
+#if BF_ASM == 1
 #define BF_body() \
 	_BF_body_r(&data.ctx);
 #else
@@ -650,7 +646,7 @@ static char *BF_crypt(const char *key, const char *setting,
 	char *output, int size,
 	BF_word min)
 {
-#if BF_ASM
+#if BF_ASM == 1
 	extern void _BF_body_r(BF_ctx *ctx);
 #endif
 	struct {

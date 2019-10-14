@@ -17,7 +17,7 @@
 #ifndef _CRYPT_GENSALT_H
 #define _CRYPT_GENSALT_H
 
-extern unsigned char _crypt_itoa64[];
+extern const unsigned char _crypt_itoa64[];
 extern char *_crypt_gensalt_traditional_rn(const char *prefix,
 	unsigned long count,
 	const char *input, int size, char *output, int output_size);
