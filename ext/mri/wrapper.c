@@ -17,6 +17,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Redefine strdup to ruby_strdup in case string.h doesn't export it. */
+#include <ruby/util.h>
+
 #include <errno.h>
 #ifndef __set_errno
 #define __set_errno(val) errno = (val)
