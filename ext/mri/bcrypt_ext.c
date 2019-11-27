@@ -5,13 +5,6 @@
 #include <ruby/thread.h>
 #endif
 
-/* Delete this when 1.8 support is dropped. */
-#ifdef HAVE_RB_STR_NEW_FROZEN
-  #define RB_STR_NEW_FROZEN rb_str_new_frozen
-#else
-  #define RB_STR_NEW_FROZEN rb_str_new4
-#endif
-
 static VALUE mBCrypt;
 static VALUE cBCryptEngine;
 
@@ -39,8 +32,8 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
      * reference to the parameters and mutates them while we are working,
      * that would be very bad.  Duping the strings means that the reference
      * isn't shared. */
-    prefix = RB_STR_NEW_FROZEN(prefix);
-    input  = RB_STR_NEW_FROZEN(input);
+    prefix = rb_str_new_frozen(prefix);
+    input  = rb_str_new_frozen(input);
 
     args.prefix = StringValueCStr(prefix);
     args.count  = NUM2ULONG(count);
@@ -88,8 +81,8 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
      * reference to the parameters and mutates them while we are working,
      * that would be very bad.  Duping the strings means that the reference
      * isn't shared. */
-    key     = RB_STR_NEW_FROZEN(key);
-    setting = RB_STR_NEW_FROZEN(setting);
+    key     = rb_str_new_frozen(key);
+    setting = rb_str_new_frozen(setting);
 
     args.data    = NULL;
     args.size    = 0xDEADBEEF;
