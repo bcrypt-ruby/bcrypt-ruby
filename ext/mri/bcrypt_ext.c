@@ -42,7 +42,7 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
     prefix = RB_STR_NEW_FROZEN(prefix);
     input  = RB_STR_NEW_FROZEN(input);
 
-    args.prefix = StringValuePtr(prefix);
+    args.prefix = StringValueCStr(prefix);
     args.count  = NUM2ULONG(count);
     args.input  = NIL_P(input) ? NULL : StringValuePtr(input);
     args.size   = NIL_P(input) ? 0 : RSTRING_LEN(input);
@@ -93,8 +93,8 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
 
     args.data    = NULL;
     args.size    = 0xDEADBEEF;
-    args.key     = NIL_P(key)     ? NULL : StringValuePtr(key);
-    args.setting = NIL_P(setting) ? NULL : StringValuePtr(setting);
+    args.key     = NIL_P(key)     ? NULL : StringValueCStr(key);
+    args.setting = NIL_P(setting) ? NULL : StringValueCStr(setting);
 
 #ifdef HAVE_RUBY_THREAD_H
     value = rb_thread_call_without_gvl(bc_crypt_nogvl, &args, NULL, NULL);
@@ -102,7 +102,7 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
     value = bc_crypt_nogvl((void *)&args);
 #endif
 
-    if(!value) return Qnil;
+    if(!value || !args.data) return Qnil;
 
     out = rb_str_new(args.data, args.size - 1);
 
