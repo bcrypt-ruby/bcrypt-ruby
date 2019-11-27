@@ -49,7 +49,7 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
     if(!salt) return Qnil;
 
     str_salt = rb_str_new2(salt);
-    xfree(salt);
+    free(salt);
 
     return str_salt;
 }
@@ -99,7 +99,7 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
 
     out = rb_str_new(args.data, args.size - 1);
 
-    xfree(args.data);
+    free(args.data);
 
     return out;
 }
