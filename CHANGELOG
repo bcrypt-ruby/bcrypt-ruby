@@ -1,4 +1,6 @@
 [DRAFT] 4.0.0 MMM DD YYYY
+  - Update to more compatible syntax & protect stack [GH #217 by @jmartin-r7]
+  - Unlock the GVL when calculating hashes / salts [GH #124 by @tenderlove]
   - Start calibration from the minimum cost supported by the algorithm [GH #206 by @sergey-alekseev]
 
 3.1.13 May 31 2019
