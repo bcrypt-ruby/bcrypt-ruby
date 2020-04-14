@@ -12,8 +12,11 @@ end
 
 describe "The BCrypt engine" do
   specify "should calculate the optimal cost factor to fit in a specific time" do
-    first = BCrypt::Engine.calibrate(100)
-    second = BCrypt::Engine.calibrate(400)
+    start_time = Time.now
+    BCrypt::Password.create("testing testing", :cost => BCrypt::Engine::MIN_COST + 1)
+    min_time_ms = (Time.now - start_time) * 1000
+    first = BCrypt::Engine.calibrate(min_time_ms)
+    second = BCrypt::Engine.calibrate(min_time_ms * 2)
     expect(second).to be > first
   end
 end
