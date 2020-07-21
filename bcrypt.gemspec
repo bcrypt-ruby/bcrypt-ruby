@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'bcrypt'
-  s.version = '3.1.14'
+  s.version = '3.1.15'
 
   s.summary = "OpenBSD's bcrypt() password hashing algorithm."
   s.description = <<-EOF

@@ -1,3 +1,6 @@
+3.1.15 July 21 2020
+  - Remove GVL optimization.  Apparently it breaks things [GH #230]
+
 3.1.14 July 21 2020
   - Start calibration from the minimum cost supported by the algorithm [GH #206 by @sergey-alekseev]
 
