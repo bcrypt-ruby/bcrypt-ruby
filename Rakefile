@@ -50,6 +50,8 @@ end
 if RUBY_PLATFORM =~ /java/
   Rake::JavaExtensionTask.new('bcrypt_ext', GEMSPEC) do |ext|
     ext.ext_dir = 'ext/jruby'
+    ext.source_version = "1.7"
+    ext.target_version = "1.7"
   end
 else
   Rake::ExtensionTask.new("bcrypt_ext", GEMSPEC) do |ext|
