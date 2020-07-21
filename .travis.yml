@@ -1,8 +1,6 @@
 language: ruby
 before_install:
   - "echo 'gem: --no-rdoc --no-ri' > ~/.gemrc"
-  - gem update --system 2.7.8
-  - gem install bundler -v 1.17.3
 rvm:
   - 2.0
   - 2.1
