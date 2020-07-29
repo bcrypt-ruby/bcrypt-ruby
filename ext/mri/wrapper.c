@@ -179,6 +179,7 @@ char *crypt_ra(const char *key, const char *setting,
 	return _crypt_blowfish_rn(key, setting, (char *)*data, *size);
 }
 
+#ifndef __SKIP_GNU
 char *crypt_r(const char *key, const char *setting, void *data)
 {
 	return _crypt_retval_magic(
@@ -194,6 +195,7 @@ char *crypt(const char *key, const char *setting)
 		crypt_rn(key, setting, output, sizeof(output)),
 		setting, output, sizeof(output));
 }
+#endif
 
 #define __crypt_gensalt_rn crypt_gensalt_rn
 #define __crypt_gensalt_ra crypt_gensalt_ra
