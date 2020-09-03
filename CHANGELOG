@@ -1,3 +1,6 @@
+3.1.16 Sep 3 2020
+  - Fix compilation on FreeBSD. [GH #234]
+
 3.1.15 July 21 2020
   - Remove GVL optimization.  Apparently it breaks things [GH #230]
 
