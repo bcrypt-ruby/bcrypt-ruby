@@ -13,10 +13,14 @@ rvm:
   - ruby-head
   - jruby-head
   - rbx-3
+  - truffleruby
+  - truffleruby-head
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
     - rvm: rbx-3
+    - rvm: truffleruby
+    - rvm: truffleruby-head
   fast_finish: true
 script: bundle exec rake
