@@ -1,4 +1,7 @@
 language: ruby
+arch:
+  - amd64
+  - ppc64le
 before_install:
   - "echo 'gem: --no-rdoc --no-ri' > ~/.gemrc"
 rvm:
