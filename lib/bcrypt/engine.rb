@@ -80,7 +80,7 @@ module BCrypt
 
     # Returns true if +salt+ is a valid bcrypt() salt, false if not.
     def self.valid_salt?(salt)
-      !!(salt =~ /^\$[0-9a-z]{2,}\$[0-9]{2,}\$[A-Za-z0-9\.\/]{22,}$/)
+      !!(salt =~ /\A\$[0-9a-z]{2,}\$[0-9]{2,}\$[A-Za-z0-9\.\/]{22,}\z/)
     end
 
     # Returns true if +secret+ is a valid bcrypt() secret, false if not.
