@@ -7,3 +7,4 @@ tmp
 *.jar
 .DS_Store
 .rbenv-gemsets
+Gemfile.lock
