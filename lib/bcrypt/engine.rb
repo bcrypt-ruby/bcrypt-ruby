@@ -70,8 +70,7 @@ module BCrypt
         if RUBY_PLATFORM == "java"
           Java.bcrypt_jruby.BCrypt.gensalt(cost)
         else
-          prefix = "$2a$05$CCCCCCCCCCCCCCCCCCCCC.E5YPO9kmyuRGyh0XouQYb4YMJKvyOeW"
-          __bc_salt(prefix, cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
+          __bc_salt("$2a$", cost, OpenSSL::Random.random_bytes(MAX_SALT_LENGTH))
         end
       else
         raise Errors::InvalidCost.new("cost must be numeric and > 0")
