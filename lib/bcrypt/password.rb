@@ -61,9 +61,14 @@ module BCrypt
       end
     end
 
-    # Compares a potential secret against the hash. Returns true if the secret is the original secret, false otherwise.
+    # Compares a potential secret against the hash. Returns true if the secret
+    # is the original secret, false otherwise.
     def ==(secret)
-      super(BCrypt::Engine.hash_secret(secret, @salt))
+      if valid_hash?(secret)
+        super(secret)
+      else
+        super(BCrypt::Engine.hash_secret(secret, @salt))
+      end
     end
     alias_method :is_password?, :==
 

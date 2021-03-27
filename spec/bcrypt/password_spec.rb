@@ -103,6 +103,19 @@ describe "Comparing a hashed password with a secret" do
   specify "should compare unsuccessfully to anything besides original secret" do
     expect((@password == "@secret")).to be(false)
   end
+
+  # Edge case discovered during Sorcery rework
+  specify "should be able to compare against itself" do
+    # original_password can be any valid password, Faker::Internet.password was
+    # used to generate this particular example.
+    original_password = '62SeEjVz'
+    random_cost = rand(BCrypt::Engine::MIN_COST..BCrypt::Engine::DEFAULT_COST)
+    digest = BCrypt::Password.create(original_password, cost: random_cost).to_s
+    bcrypt = BCrypt::Password.new(digest)
+    hashed_password = BCrypt::Engine.hash_secret(original_password, bcrypt.salt)
+
+    expect(bcrypt == hashed_password).to be(true)
+  end
 end
 
 describe "Validating a generated salt" do
