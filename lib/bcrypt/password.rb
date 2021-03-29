@@ -62,6 +62,15 @@ module BCrypt
     end
 
     # Compares a potential secret against the hash. Returns true if the secret is the original secret, false otherwise.
+    #
+    # Comparison edge case/gotcha:
+    #
+    #    secret = "my secret"
+    #    @password = BCrypt::Password.create(secret)
+    #
+    #    @password == secret              # => True
+    #    @password == @password.to_s      # => False
+    #    @password.to_s == @password.to_s # => True
     def ==(secret)
       super(BCrypt::Engine.hash_secret(secret, @salt))
     end
