@@ -69,7 +69,9 @@ module BCrypt
     #    @password = BCrypt::Password.create(secret)
     #
     #    @password == secret              # => True
+    #    @password == @password           # => False
     #    @password == @password.to_s      # => False
+    #    @password.to_s == @password      # => True
     #    @password.to_s == @password.to_s # => True
     def ==(secret)
       super(BCrypt::Engine.hash_secret(secret, @salt))
