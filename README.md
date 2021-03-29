@@ -2,9 +2,9 @@
 
 An easy way to keep your users' passwords secure.
 
-* https://github.com/codahale/bcrypt-ruby/tree/master
+* https://github.com/bcrypt-ruby/bcrypt-ruby/tree/master
 
-[![Travis Build Status](https://travis-ci.org/codahale/bcrypt-ruby.svg?branch=master)](https://travis-ci.org/codahale/bcrypt-ruby)
+[![Travis Build Status](https://travis-ci.org/bcrypt-ruby/bcrypt-ruby.svg?branch=master)](https://travis-ci.org/bcrypt-ruby/bcrypt-ruby)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/6fplerx9lnaf0hyo?svg=true)](https://ci.appveyor.com/project/TJSchuck35975/bcrypt-ruby)
 
 

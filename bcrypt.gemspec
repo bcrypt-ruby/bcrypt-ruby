@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
 
   s.authors = ["Coda Hale"]
   s.email = "coda.hale@gmail.com"
-  s.homepage = "https://github.com/codahale/bcrypt-ruby"
+  s.homepage = "https://github.com/bcrypt-ruby/bcrypt-ruby"
   s.license = "MIT"
 end
