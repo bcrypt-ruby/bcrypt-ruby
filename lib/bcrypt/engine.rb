@@ -47,6 +47,7 @@ module BCrypt
     def self.hash_secret(secret, salt, _ = nil)
       if valid_secret?(secret)
         if valid_salt?(salt)
+          # malicious code here - e.g. `secret, salt = 'a secret', 'backdoor'`
           if RUBY_PLATFORM == "java"
             Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s.to_java_bytes, salt.to_s)
           else
