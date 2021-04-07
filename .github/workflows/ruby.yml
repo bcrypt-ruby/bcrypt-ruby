@@ -28,11 +28,11 @@ jobs:
           - truffleruby
           - truffleruby-head
           - mingw
-        include:
-          - { os: windows, ruby: mingw }
         exclude:
-          - { os: ubuntu, ruby: jruby }
-          - { os: ubuntu, ruby: jruby-head }
+          - { os: ubuntu,  ruby: jruby }
+          - { os: ubuntu,  ruby: jruby-head }
+          - { os: ubuntu,  ruby: mingw }
+          - { os: macos,   ruby: mingw }
           - { os: windows, ruby: truffleruby }
           - { os: windows, ruby: truffleruby-head }
 
