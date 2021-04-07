@@ -29,13 +29,15 @@ jobs:
           - truffleruby-head
           - mingw
           - mswin
-        include:
-          - { os: windows, ruby: mingw }
-          - { os: windows, ruby: mswin }
-        # It appears Ubuntu doesn't support jruby
         exclude:
           - { os: ubuntu, ruby: jruby }
           - { os: ubuntu, ruby: jruby-head }
+          - { os: ubuntu, ruby: mingw }
+          - { os: ubuntu, ruby: mswin }
+          - { os: macos, ruby: mingw }
+          - { os: macos, ruby: mswin }
+          - { os: windows, ruby: truffleruby }
+          - { os: windows, ruby: truffleruby-head }
 
     runs-on: ${{ matrix.os }}-latest
 
