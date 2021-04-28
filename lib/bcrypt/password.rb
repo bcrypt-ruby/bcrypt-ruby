@@ -94,5 +94,4 @@ module BCrypt
       return v.to_str, c.to_i, h[0, 29].to_str, mash[-31, 31].to_str
     end
   end
-
 end
