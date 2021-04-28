@@ -7,7 +7,6 @@ An easy way to keep your users' passwords secure.
 [![Travis Build Status](https://travis-ci.org/bcrypt-ruby/bcrypt-ruby.svg?branch=master)](https://travis-ci.org/bcrypt-ruby/bcrypt-ruby)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/6fplerx9lnaf0hyo?svg=true)](https://ci.appveyor.com/project/TJSchuck35975/bcrypt-ruby)
 
-
 ## Why you should use `bcrypt()`
 
 If you store user passwords in the clear, then an attacker who steals a copy of your database has a giant list of emails
