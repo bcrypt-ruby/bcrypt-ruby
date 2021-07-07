@@ -8,8 +8,13 @@ module BCrypt
     # The maximum cost supported by the algorithm.
     MAX_COST = 31
     # Maximum possible size of bcrypt() secrets.
+    # Older versions of the bcrypt library would truncate passwords longer
+    # than 72, but newer ones do not. We truncate like the old library for
+    # forward compatibility. This way users upgrading from Ubuntu 18.04 to 20.04
+    # will not have their user passwords invalidated, for example.
+    # A max secret length greater than 255 leads to bcrypt returning nil.
     # https://github.com/bcrypt-ruby/bcrypt-ruby/issues/225#issuecomment-875908425
-    MAX_SECRET_LENGTH = 255
+    MAX_SECRET_LENGTH = 72
     # Maximum possible size of bcrypt() salts.
     MAX_SALT_LENGTH = 16
 
