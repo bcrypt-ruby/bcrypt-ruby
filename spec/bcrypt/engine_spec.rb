@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
+require 'securerandom'
 
 describe 'BCrypt::Engine' do
   describe '.calibrate(upper_time_limit_in_ms)' do
@@ -156,5 +157,12 @@ describe "Generating BCrypt hashes" do
     for secret, salt, test_vector in test_vectors
       expect(BCrypt::Engine.hash_secret(secret, salt)).to eql(test_vector)
     end
+  end
+
+  specify "should truncate secrets that are greater than the maximum length" do
+    # 'b' as a base triggers the failure at 256 characters, but 'a' does not.
+    too_long_secret = 'b'*(BCrypt::Engine::MAX_SECRET_LENGTH + 1)
+    just_right_secret = 'b'*BCrypt::Engine::MAX_SECRET_LENGTH
+    expect(BCrypt::Engine.hash_secret(too_long_secret, @salt)).to eq(BCrypt::Engine.hash_secret(just_right_secret, @salt))
   end
 end

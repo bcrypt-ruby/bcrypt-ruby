@@ -7,6 +7,9 @@ module BCrypt
     MIN_COST        = 4
     # The maximum cost supported by the algorithm.
     MAX_COST = 31
+    # Maximum possible size of bcrypt() secrets.
+    # https://github.com/bcrypt-ruby/bcrypt-ruby/issues/225#issuecomment-875908425
+    MAX_SECRET_LENGTH = 255
     # Maximum possible size of bcrypt() salts.
     MAX_SALT_LENGTH = 16
 
@@ -50,7 +53,9 @@ module BCrypt
           if RUBY_PLATFORM == "java"
             Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s.to_java_bytes, salt.to_s)
           else
-            __bc_crypt(secret.to_s, salt)
+            secret = secret.to_s
+            secret = secret[0..(MAX_SECRET_LENGTH-1)] if secret && secret.length > MAX_SECRET_LENGTH
+            __bc_crypt(secret, salt)
           end
         else
           raise Errors::InvalidSalt.new("invalid salt")
