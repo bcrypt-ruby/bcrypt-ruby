@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
+require 'securerandom'
 
 describe "Creating a hashed password" do
 
@@ -25,6 +26,28 @@ describe "Creating a hashed password" do
     expect { BCrypt::Password.create( "\n".chop  ) }.not_to raise_error
     expect { BCrypt::Password.create( ""         ) }.not_to raise_error
     expect { BCrypt::Password.create( String.new ) }.not_to raise_error
+  end
+
+  context 'with a 256 character password' do
+    before :each do
+      @secret = SecureRandom.hex(256)
+      @password = BCrypt::Password.create(@secret, :cost => 4)
+    end
+
+    specify "should return a BCrypt::Password" do
+      expect(@password).to be_an_instance_of(BCrypt::Password)
+    end
+  end
+
+  context 'with a 255 character password' do
+    before :each do
+      @secret = SecureRandom.hex(255)
+      @password = BCrypt::Password.create(@secret, :cost => 4)
+    end
+
+    specify "should return a BCrypt::Password" do
+      expect(@password).to be_an_instance_of(BCrypt::Password)
+    end
   end
 end
 
