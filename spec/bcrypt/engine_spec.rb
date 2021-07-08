@@ -159,14 +159,14 @@ describe "Generating BCrypt hashes" do
     end
   end
 
-  specify "should truncate 1-byte character secrets to 72 bytes" do
+  specify "should truncate long 1-byte character secrets to 72 bytes" do
     # 'b' as a base triggers the failure at 256 characters, but 'a' does not.
     too_long_secret = 'b'*(BCrypt::Engine::MAX_SECRET_BYTESIZE + 1)
     just_right_secret = 'b'*BCrypt::Engine::MAX_SECRET_BYTESIZE
     expect(BCrypt::Engine.hash_secret(too_long_secret, @salt)).to eq(BCrypt::Engine.hash_secret(just_right_secret, @salt))
   end
 
-  specify "should truncate multi-byte character secrets to 72 bytes" do
+  specify "should truncate long multi-byte character secrets to 72 bytes" do
     # 256 times causes bcrypt to return nil for libxcrypt > 4.4.18-4.
     too_long_secret = '𐐷'*256
     # 𐐷 takes 4 bytes in UTF-8. 18 times is 72 bytes
