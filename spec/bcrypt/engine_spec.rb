@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
+require 'securerandom'
 
 describe 'BCrypt::Engine' do
   describe '.calibrate(upper_time_limit_in_ms)' do
@@ -156,5 +157,20 @@ describe "Generating BCrypt hashes" do
     for secret, salt, test_vector in test_vectors
       expect(BCrypt::Engine.hash_secret(secret, salt)).to eql(test_vector)
     end
+  end
+
+  specify "should truncate long 1-byte character secrets to 72 bytes" do
+    # 'b' as a base triggers the failure at 256 characters, but 'a' does not.
+    too_long_secret = 'b'*(BCrypt::Engine::MAX_SECRET_BYTESIZE + 1)
+    just_right_secret = 'b'*BCrypt::Engine::MAX_SECRET_BYTESIZE
+    expect(BCrypt::Engine.hash_secret(too_long_secret, @salt)).to eq(BCrypt::Engine.hash_secret(just_right_secret, @salt))
+  end
+
+  specify "should truncate long multi-byte character secrets to 72 bytes" do
+    # 256 times causes bcrypt to return nil for libxcrypt > 4.4.18-4.
+    too_long_secret = '𐐷'*256
+    # 𐐷 takes 4 bytes in UTF-8. 18 times is 72 bytes
+    just_right_secret = '𐐷'*18
+    expect(BCrypt::Engine.hash_secret(too_long_secret, @salt)).to eq(BCrypt::Engine.hash_secret(just_right_secret, @salt))
   end
 end

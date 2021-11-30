@@ -7,6 +7,14 @@ module BCrypt
     MIN_COST        = 4
     # The maximum cost supported by the algorithm.
     MAX_COST = 31
+    # Maximum possible size of bcrypt() secrets.
+    # Older versions of the bcrypt library would truncate passwords longer
+    # than 72 bytes, but newer ones do not. We truncate like the old library for
+    # forward compatibility. This way users upgrading from Ubuntu 18.04 to 20.04
+    # will not have their user passwords invalidated, for example.
+    # A max secret length greater than 255 leads to bcrypt returning nil.
+    # https://github.com/bcrypt-ruby/bcrypt-ruby/issues/225#issuecomment-875908425
+    MAX_SECRET_BYTESIZE = 72
     # Maximum possible size of bcrypt() salts.
     MAX_SALT_LENGTH = 16
 
@@ -43,14 +51,16 @@ module BCrypt
     end
 
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
-    # a bcrypt() password hash.
+    # a bcrypt() password hash. Secrets longer than 72 bytes are truncated.
     def self.hash_secret(secret, salt, _ = nil)
       if valid_secret?(secret)
         if valid_salt?(salt)
           if RUBY_PLATFORM == "java"
             Java.bcrypt_jruby.BCrypt.hashpw(secret.to_s.to_java_bytes, salt.to_s)
           else
-            __bc_crypt(secret.to_s, salt)
+            secret = secret.to_s
+            secret = secret.byteslice(0, MAX_SECRET_BYTESIZE) if secret && secret.bytesize > MAX_SECRET_BYTESIZE
+            __bc_crypt(secret, salt)
           end
         else
           raise Errors::InvalidSalt.new("invalid salt")

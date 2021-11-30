@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "spec_helper"))
+require 'securerandom'
 
 describe "Creating a hashed password" do
 
@@ -25,6 +26,10 @@ describe "Creating a hashed password" do
     expect { BCrypt::Password.create( "\n".chop  ) }.not_to raise_error
     expect { BCrypt::Password.create( ""         ) }.not_to raise_error
     expect { BCrypt::Password.create( String.new ) }.not_to raise_error
+  end
+
+  specify "should tolerate very long string secrets" do
+    expect { BCrypt::Password.create("abcd"*1024) }.not_to raise_error
   end
 end
 
