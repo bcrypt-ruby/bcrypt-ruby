@@ -1,3 +1,8 @@
+3.1.17 Mar 14 2022
+- Fix regex in validators to use \A and \z instead of ^ and $ [GH #121]
+- Truncate secrets greater than 72 bytes in hash_secret [GH #255]
+- Assorted test and doc improvements
+
 3.1.16 Sep 3 2020
   - Fix compilation on FreeBSD. [GH #234]
 
