@@ -24,6 +24,45 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
     return str_salt;
 }
 
+static char *string_from_value(VALUE value) {
+    char *string = NULL;
+    long length;
+
+    if (NIL_P(value)) return NULL;
+
+    length = RSTRING_LEN(value);
+    string = (char *)malloc(length + 1);
+
+    if (string == NULL) return NULL;
+
+    memset(string, 0, length + 1);
+    strncpy(string, RSTRING_PTR(value), length);
+
+    return string;
+}
+
+/* Wraps crypt_ra to ensure strings passed are correctly terminated
+ */
+static char *crypt_ra_wrapper(VALUE key, VALUE setting, void **data, int *size) {
+    char *value;
+    char *key_string, *setting_string = NULL;
+
+    key_string = string_from_value(key);
+    setting_string = string_from_value(setting);
+
+    value = crypt_ra(
+	    key_string,
+	    setting_string,
+	    data,
+	    size);
+
+
+    free(key_string);
+    free(setting_string);
+
+    return value;
+}
+
 /* Given a secret and a salt, generates a salted hash (which you can then store safely).
 */
 static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
@@ -37,9 +76,9 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
 
     if(NIL_P(key) || NIL_P(setting)) return Qnil;
 
-    value = crypt_ra(
-	    NIL_P(key) ? NULL : StringValuePtr(key),
-	    NIL_P(setting) ? NULL : StringValuePtr(setting),
+    value = crypt_ra_wrapper(
+	    key,
+	    setting,
 	    &data,
 	    &size);
 
