@@ -47,7 +47,7 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
 
     out = rb_str_new2(value);
 
-    xfree(data);
+    free(data);
 
     return out;
 }
