@@ -1,20 +1,50 @@
 #include <ruby.h>
 #include <ow-crypt.h>
 
+#ifdef HAVE_RUBY_THREAD_H
+#include <ruby/thread.h>
+#endif
+
 static VALUE mBCrypt;
 static VALUE cBCryptEngine;
+
+struct bc_salt_args {
+    const char * prefix;
+    unsigned long count;
+    const char * input;
+    int size;
+};
+
+static void * bc_salt_nogvl(void * ptr) {
+    struct bc_salt_args * args = ptr;
+
+    return crypt_gensalt_ra(args->prefix, args->count, args->input, args->size);
+}
 
 /* Given a logarithmic cost parameter, generates a salt for use with +bc_crypt+.
 */
 static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
     char * salt;
     VALUE str_salt;
+    struct bc_salt_args args;
 
-    salt = crypt_gensalt_ra(
-	    StringValuePtr(prefix),
-	    NUM2ULONG(count),
-	    NIL_P(input) ? NULL : StringValuePtr(input),
-	    NIL_P(input) ? 0 : RSTRING_LEN(input));
+    /* duplicate the parameters for thread safety.  If another thread has a
+     * reference to the parameters and mutates them while we are working,
+     * that would be very bad.  Duping the strings means that the reference
+     * isn't shared. */
+    prefix = rb_str_new_frozen(prefix);
+    input  = rb_str_new_frozen(input);
+
+    args.prefix = StringValueCStr(prefix);
+    args.count  = NUM2ULONG(count);
+    args.input  = NIL_P(input) ? NULL : StringValuePtr(input);
+    args.size   = NIL_P(input) ? 0 : RSTRING_LEN(input);
+
+#ifdef HAVE_RUBY_THREAD_H
+    salt = rb_thread_call_without_gvl(bc_salt_nogvl, &args, NULL, NULL);
+#else
+    salt = bc_salt_nogvl((void *)&args);
+#endif
 
     if(!salt) return Qnil;
 
@@ -22,6 +52,19 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
     free(salt);
 
     return str_salt;
+}
+
+struct bc_crypt_args {
+    const char * key;
+    const char * setting;
+    void * data;
+    int size;
+};
+
+static void * bc_crypt_nogvl(void * ptr) {
+    struct bc_crypt_args * args = ptr;
+
+    return crypt_ra(args->key, args->setting, &args->data, &args->size);
 }
 
 /* Given a secret and a salt, generates a salted hash (which you can then store safely).
@@ -32,22 +75,33 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
     int size;
     VALUE out;
 
-    data = NULL;
-    size = 0xDEADBEEF;
+    struct bc_crypt_args args;
 
     if(NIL_P(key) || NIL_P(setting)) return Qnil;
 
-    value = crypt_ra(
-	    NIL_P(key) ? NULL : StringValuePtr(key),
-	    NIL_P(setting) ? NULL : StringValuePtr(setting),
-	    &data,
-	    &size);
+    /* duplicate the parameters for thread safety.  If another thread has a
+     * reference to the parameters and mutates them while we are working,
+     * that would be very bad.  Duping the strings means that the reference
+     * isn't shared. */
+    key     = rb_str_new_frozen(key);
+    setting = rb_str_new_frozen(setting);
 
-    if(!value || !data) return Qnil;
+    args.data    = NULL;
+    args.size    = 0xDEADBEEF;
+    args.key     = NIL_P(key)     ? NULL : StringValueCStr(key);
+    args.setting = NIL_P(setting) ? NULL : StringValueCStr(setting);
+
+#ifdef HAVE_RUBY_THREAD_H
+    value = rb_thread_call_without_gvl(bc_crypt_nogvl, &args, NULL, NULL);
+#else
+    value = bc_crypt_nogvl((void *)&args);
+#endif
+
+    if(!value || !args.data) return Qnil;
 
     out = rb_str_new2(value);
 
-    xfree(data);
+    free(args.data);
 
     return out;
 }
