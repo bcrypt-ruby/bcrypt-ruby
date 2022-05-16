@@ -1,3 +1,7 @@
+3.1.18 May 16 2022
+  - Unlock GVL when calculating hashes and salts [GH #260]
+  - Fix compilation warnings in `ext/mri/bcrypt_ext.c` [GH #261]
+
 3.1.17 Mar 14 2022
 - Fix regex in validators to use \A and \z instead of ^ and $ [GH #121]
 - Truncate secrets greater than 72 bytes in hash_secret [GH #255]
