@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
   s.require_path = 'lib'
 
-  s.add_development_dependency 'rake-compiler', '~> 0.9.2'
+  s.add_development_dependency 'rake-compiler', '~> 1.2.0'
   s.add_development_dependency 'rspec', '>= 3'
 
   s.rdoc_options += ['--title', 'bcrypt-ruby', '--line-numbers', '--inline-source', '--main', 'README.md']
