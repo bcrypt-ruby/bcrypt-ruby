@@ -71,8 +71,6 @@ static void * bc_crypt_nogvl(void * ptr) {
 */
 static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
     char * value;
-    void * data;
-    int size;
     VALUE out;
 
     struct bc_crypt_args args;
