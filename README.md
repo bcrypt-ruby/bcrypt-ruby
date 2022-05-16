@@ -5,7 +5,6 @@ An easy way to keep your users' passwords secure.
 * https://github.com/bcrypt-ruby/bcrypt-ruby/tree/master
 
 [![Github Actions Build Status](https://github.com/bcrypt-ruby/bcrypt-ruby/actions/workflows/ruby.yml/badge.svg?branch=master)](https://github.com/bcrypt-ruby/bcrypt-ruby/actions/workflows/ruby.yml)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/6fplerx9lnaf0hyo?svg=true)](https://ci.appveyor.com/project/TJSchuck35975/bcrypt-ruby)
 
 ## Why you should use `bcrypt()`
 

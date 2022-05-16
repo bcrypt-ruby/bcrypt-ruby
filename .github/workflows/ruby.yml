@@ -30,8 +30,6 @@ jobs:
           - truffleruby-head
           - mingw
         exclude:
-          - { os: ubuntu,  ruby: jruby }
-          - { os: ubuntu,  ruby: jruby-head }
           - { os: ubuntu,  ruby: mingw }
           - { os: macos,   ruby: mingw }
           - { os: windows, ruby: truffleruby }
@@ -46,8 +44,12 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+        env:
+          JAVA_OPTS: -Djdk.io.File.enableADS=true
       - name: Run tests
         run: bundle exec rake default
+        env:
+          JAVA_OPTS: -Djdk.io.File.enableADS=true
 
   finish:
     runs-on: ubuntu-latest
