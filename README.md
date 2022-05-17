@@ -148,7 +148,8 @@ fingerprints as quickly as possible. `bcrypt()`, though, is designed to be compu
     bcrypt  22.230000   0.080000  22.310000 ( 22.493822)
 
 If an attacker was using Ruby to check each password, they could check ~140,000 passwords a second with MD5 but only
-~450 passwords a second with `bcrypt()`.
+~450 passwords a second with `bcrypt()` set to a cost of one. At the default cost of twelve, an attacker could check
+only a few passwords per second.
 
 ### Cost Factors
 
