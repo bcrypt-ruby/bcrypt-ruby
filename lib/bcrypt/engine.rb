@@ -101,7 +101,7 @@ module BCrypt
 
     # Returns true if +secret+ is a valid bcrypt() secret, false if not.
     def self.valid_secret?(secret)
-      secret.respond_to?(:to_s)
+      secret.respond_to?(:to_s) && !secret.to_s.include?("\0")
     end
 
     # Returns the cost factor which will result in computation times less than +upper_time_limit_in_ms+.
