@@ -1,3 +1,6 @@
+Unreleased:
+  - Deprecate passing the third argument to `BCrypt::Engine.hash_secret` [GH #207 by @sergey-alekseev]
+
 3.1.18 May 16 2022
   - Unlock GVL when calculating hashes and salts [GH #260]
   - Fix compilation warnings in `ext/mri/bcrypt_ext.c` [GH #261]

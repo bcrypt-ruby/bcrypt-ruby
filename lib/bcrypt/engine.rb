@@ -53,6 +53,13 @@ module BCrypt
     # Given a secret and a valid salt (see BCrypt::Engine.generate_salt) calculates
     # a bcrypt() password hash. Secrets longer than 72 bytes are truncated.
     def self.hash_secret(secret, salt, _ = nil)
+      unless _.nil?
+        warn "[DEPRECATION] Passing the third argument to " \
+             "`BCrypt::Engine.hash_secret` is deprecated. " \
+             "Please do not pass the third argument which " \
+             "is currently not used."
+      end
+
       if valid_secret?(secret)
         if valid_salt?(salt)
           if RUBY_PLATFORM == "java"
