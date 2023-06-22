@@ -49,6 +49,9 @@ static VALUE bc_salt(VALUE self, VALUE prefix, VALUE count, VALUE input) {
     if(!salt) return Qnil;
 
     str_salt = rb_str_new2(salt);
+
+    RB_GC_GUARD(prefix);
+    RB_GC_GUARD(input);
     free(salt);
 
     return str_salt;
@@ -99,6 +102,8 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
 
     out = rb_str_new2(value);
 
+    RB_GC_GUARD(key);
+    RB_GC_GUARD(setting);
     free(args.data);
 
     return out;
