@@ -1,3 +1,6 @@
+3.1.20 Nov 17 2023
+  - Limit packaged files -- decrease gem filesize by ~28% [GH #272 by @pusewicz]
+
 3.1.19 June 22 2023
   - Deprecate passing the third argument to `BCrypt::Engine.hash_secret` [GH #207 by @sergey-alekseev]
   - Add GC guards so the C compiler won't optimize out references [GH #270]
