@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
     passwords.
   EOF
 
-  s.files = `git ls-files`.split("\n")
+  s.files = Dir['CHANGELOG', 'COPYING', 'README.md', 'lib/**/*.rb', 'ext/**/*.*']
   s.require_path = 'lib'
 
   s.add_development_dependency 'rake-compiler', '~> 1.2.0'
