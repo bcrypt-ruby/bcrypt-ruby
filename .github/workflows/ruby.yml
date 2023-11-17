@@ -5,7 +5,6 @@ on: [ push, pull_request ]
 
 jobs:
   test_matrix:
-
     strategy:
       fail-fast: false
       matrix:
@@ -31,6 +30,8 @@ jobs:
           - truffleruby-head
           - mingw
         exclude:
+          - { os: ubuntu,  ruby: 2.1 }
+          - { os: ubuntu,  ruby: 2.2 }
           - { os: ubuntu,  ruby: mingw }
           - { os: macos,   ruby: mingw }
           - { os: windows, ruby: truffleruby }
@@ -51,6 +52,26 @@ jobs:
         run: bundle exec rake default
         env:
           JAVA_OPTS: -Djdk.io.File.enableADS=true
+
+  test_matrix_old_rubies:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - 2.1
+          - 2.2
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake default
 
   finish:
     runs-on: ubuntu-latest
