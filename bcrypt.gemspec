@@ -24,4 +24,6 @@ Gem::Specification.new do |s|
   s.email = "coda.hale@gmail.com"
   s.homepage = "https://github.com/bcrypt-ruby/bcrypt-ruby"
   s.license = "MIT"
+
+  s.metadata["changelog_uri"] = s.homepage + "/blob/master/CHANGELOG"
 end
