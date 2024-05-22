@@ -36,6 +36,11 @@ jobs:
           - { os: ubuntu,  ruby: 2.2 }
           - { os: ubuntu,  ruby: mingw }
           - { os: macos,   ruby: mingw }
+          - { os: macos,   ruby: 2.1 }
+          - { os: macos,   ruby: 2.2 }
+          - { os: macos,   ruby: 2.3 }
+          - { os: macos,   ruby: 2.4 }
+          - { os: macos,   ruby: 2.5 }
           - { os: windows, ruby: truffleruby }
           - { os: windows, ruby: truffleruby-head }
           - { os: windows, ruby: 3.4.0-preview1 }
@@ -60,11 +65,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-20.04
+          - macos-13
         ruby:
           - 2.1
           - 2.2
+          - 2.3
+          - 2.4
+          - 2.5
 
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
