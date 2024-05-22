@@ -38,6 +38,7 @@ jobs:
           - { os: macos,   ruby: mingw }
           - { os: windows, ruby: truffleruby }
           - { os: windows, ruby: truffleruby-head }
+          - { os: windows, ruby: 3.4.0-preview1 }
 
     runs-on: ${{ matrix.os }}-latest
 
