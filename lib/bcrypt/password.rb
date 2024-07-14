@@ -73,6 +73,8 @@ module BCrypt
     #    @password == @password.to_s      # => False
     #    @password.to_s == @password      # => True
     #    @password.to_s == @password.to_s # => True
+    #
+    #    secret == @password              # => probably False, because the secret is not a BCrypt::Password instance.
     def ==(secret)
       super(BCrypt::Engine.hash_secret(secret, @salt))
     end
