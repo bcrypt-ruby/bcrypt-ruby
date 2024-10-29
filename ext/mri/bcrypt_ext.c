@@ -111,6 +111,10 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
 
 /* Create the BCrypt and BCrypt::Engine modules, and populate them with methods. */
 void Init_bcrypt_ext(){
+#ifdef HAVE_RB_EXT_RACTOR_SAFE
+    rb_ext_ractor_safe(true);
+#endif
+    
     mBCrypt = rb_define_module("BCrypt");
     cBCryptEngine = rb_define_class_under(mBCrypt, "Engine", rb_cObject);
 
