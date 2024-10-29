@@ -76,7 +76,14 @@ module BCrypt
     #
     #    secret == @password              # => probably False, because the secret is not a BCrypt::Password instance.
     def ==(secret)
-      super(BCrypt::Engine.hash_secret(secret, @salt))
+      hash = BCrypt::Engine.hash_secret(secret, @salt)
+
+      return false if hash.strip.empty? || strip.empty? || hash.bytesize != bytesize
+
+      # Constant time comparison so they can't tell the length.
+      res = 0
+      bytesize.times { |i| res |= getbyte(i) ^ hash.getbyte(i) }
+      res == 0
     end
     alias_method :is_password?, :==
 
