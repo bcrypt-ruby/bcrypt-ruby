@@ -79,10 +79,10 @@ module BCrypt
       hash = BCrypt::Engine.hash_secret(secret, @salt)
 
       return false if hash.strip.empty? || strip.empty? || hash.bytesize != bytesize
-      l = hash.unpack "C#{hash.bytesize}"
 
+      # Constant time comparison so they can't tell the length.
       res = 0
-      each_byte { |byte| res |= byte ^ l.shift }
+      bytesize.times { |i| res |= getbyte(i) ^ hash.getbyte(i) }
       res == 0
     end
     alias_method :is_password?, :==
