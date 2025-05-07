@@ -25,6 +25,7 @@ jobs:
           - 3.2
           - 3.3
           - 3.4.0-preview1
+          - 3.4
           - head
           - jruby
           - jruby-head
