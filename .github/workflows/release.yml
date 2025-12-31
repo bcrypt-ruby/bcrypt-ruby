@@ -44,11 +44,15 @@ jobs:
           sudo apt install default-jdk maven
           gem update --system
           gem install ruby-maven rake-compiler --no-document
-          rake compile
         if: matrix.ruby == 'jruby'
 
       - name: Install dependencies
         run: bundle install --jobs 4 --retry 3
+
+      - name: Compile on JRuby
+        run: |
+          rake compile
+        if: matrix.ruby == 'jruby'
 
       - name: Publish to RubyGems
         uses: rubygems/release-gem@v1
