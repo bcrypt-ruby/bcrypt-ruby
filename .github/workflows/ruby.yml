@@ -3,93 +3,50 @@ name: Test Suite
 # Run against all commits and pull requests.
 on: [ push, pull_request ]
 
+env:
+  JAVA_OPTS: '-Xms60M -Xmx1G'
+
 jobs:
-  test_matrix:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu
-          - macos
-          - windows
-        ruby:
-          - 2.1
-          - 2.2
-          - 2.3
-          - 2.4
-          - 2.5
-          - 2.6
-          - 2.7
-          - '3.0'
-          - 3.1
-          - 3.2
-          - 3.3
-          - 3.4.0-preview1
-          - head
-          - jruby
-          - jruby-head
-          - truffleruby
-          - truffleruby-head
-          - mingw
-        exclude:
-          - { os: ubuntu,  ruby: 2.1 }
-          - { os: ubuntu,  ruby: 2.2 }
-          - { os: ubuntu,  ruby: mingw }
-          - { os: macos,   ruby: mingw }
-          - { os: macos,   ruby: 2.1 }
-          - { os: macos,   ruby: 2.2 }
-          - { os: macos,   ruby: 2.3 }
-          - { os: macos,   ruby: 2.4 }
-          - { os: macos,   ruby: 2.5 }
-          - { os: windows, ruby: truffleruby }
-          - { os: windows, ruby: truffleruby-head }
-          - { os: windows, ruby: 3.4.0-preview1 }
+  ruby-versions:
+    uses: ruby/actions/.github/workflows/ruby_versions.yml@master
+    with:
+      engine: cruby
+      min_version: 3.1
 
-    runs-on: ${{ matrix.os }}-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-        env:
-          JAVA_OPTS: -Djdk.io.File.enableADS=true
-      - name: Run tests
-        run: bundle exec rake default
-        env:
-          JAVA_OPTS: -Djdk.io.File.enableADS=true
-
-  test_matrix_old_rubies:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-20.04
-          - macos-13
-        ruby:
-          - 2.1
-          - 2.2
-          - 2.3
-          - 2.4
-          - 2.5
-
+  test:
+    needs: ruby-versions
     runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ${{ fromJson(needs.ruby-versions.outputs.versions) }}
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        include:
+          - { os: windows-latest, ruby: jruby-head }
+          - { os: macos-latest, ruby: jruby-head }
+          - { os: ubuntu-latest, ruby: jruby-head }
+          - { os: windows-latest, ruby: ucrt }
+          - { os: windows-latest, ruby: mingw }
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby-pkgs@v1
         with:
           ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-      - name: Run tests
-        run: bundle exec rake default
+          apt-get: "haveged libyaml-dev"
+          brew: libyaml
+          vcpkg: libyaml
 
-  finish:
-    runs-on: ubuntu-latest
-    needs: [ test_matrix ]
-    steps:
-      - name: Wait for status checks
-        run: echo "All Green!"
+      - name: Set JRuby ENV vars
+        run: |
+          echo 'JAVA_OPTS=-Xmx1g' >> $GITHUB_ENV
+        if: ${{ ! startsWith(matrix.ruby, 'jruby') }}
+
+      - name: Install dependencies
+        run: bundle install --jobs 1
+
+      - name: Run tests
+        run: bundle exec rake
+        continue-on-error: ${{ matrix.ruby == 'jruby-head' }}
