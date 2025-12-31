@@ -1,3 +1,7 @@
+3.1.21 Dec 31 2025
+  - Use constant time comparisons
+  - Mark as Ractor safe
+
 3.1.20 Nov 17 2023
   - Limit packaged files -- decrease gem filesize by ~28% [GH #272 by @pusewicz]
 
