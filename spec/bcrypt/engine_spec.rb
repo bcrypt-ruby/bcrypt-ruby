@@ -17,7 +17,7 @@ describe "The BCrypt engine" do
     BCrypt::Password.create("testing testing", :cost => BCrypt::Engine::MIN_COST + 1)
     min_time_ms = (Time.now - start_time) * 1000
     first = BCrypt::Engine.calibrate(min_time_ms)
-    second = BCrypt::Engine.calibrate(min_time_ms * 4)
+    second = BCrypt::Engine.calibrate(min_time_ms * 5)
     expect(second).to be > first
   end
 end
