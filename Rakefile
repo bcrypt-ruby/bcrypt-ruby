@@ -5,6 +5,8 @@ require 'rake/javaextensiontask'
 require 'rake/clean'
 require 'rdoc/task'
 require 'benchmark'
+require "bundler"
+Bundler::GemHelper.install_tasks
 
 CLEAN.include(
   "tmp",
