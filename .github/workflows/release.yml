@@ -1,0 +1,62 @@
+name: Publish gem to rubygems.org
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  push:
+    if: github.repository == 'bcrypt-ruby/bcrypt-ruby'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: rubygems.org
+      url: https://rubygems.org/gems/bcrypt-ruby
+
+    permissions:
+      contents: write
+      id-token: write
+
+    strategy:
+      matrix:
+        ruby: ["ruby", "jruby"]
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+        # https://github.com/rubygems/rubygems/issues/5882
+      - name: Install dependencies and build for JRuby
+        run: |
+          sudo apt install default-jdk maven
+          gem update --system
+          gem install ruby-maven rake-compiler --no-document
+          rake compile
+        if: matrix.ruby == 'jruby'
+
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Publish to RubyGems
+        uses: rubygems/release-gem@v1
+
+      - name: Create GitHub release
+        run: |
+          tag_name="$(git describe --tags --abbrev=0)"
+          gh release create "${tag_name}" --verify-tag --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: matrix.ruby != 'jruby'
