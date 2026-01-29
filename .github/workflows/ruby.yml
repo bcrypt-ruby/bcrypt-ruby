@@ -10,7 +10,7 @@ jobs:
   ruby-versions:
     uses: ruby/actions/.github/workflows/ruby_versions.yml@master
     with:
-      engine: cruby
+      engine: cruby-truffleruby
       min_version: 3.1
 
   test:
@@ -27,6 +27,9 @@ jobs:
           - { os: ubuntu-latest, ruby: jruby-head }
           - { os: windows-latest, ruby: ucrt }
           - { os: windows-latest, ruby: mingw }
+        exclude:
+          - { os: windows-latest, ruby: truffleruby }
+          - { os: windows-latest, ruby: truffleruby-head }
 
     steps:
       - uses: actions/checkout@v4
