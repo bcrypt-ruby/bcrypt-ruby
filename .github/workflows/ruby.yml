@@ -27,6 +27,10 @@ jobs:
           - { os: ubuntu-latest, ruby: jruby-head }
           - { os: windows-latest, ruby: ucrt }
           - { os: windows-latest, ruby: mingw }
+          - { os: macos-latest, ruby: truffleruby }
+          - { os: ubuntu-latest, ruby: truffleruby }
+          - { os: macos-latest, ruby: truffleruby-head }
+          - { os: ubuntu-latest, ruby: truffleruby-head }
 
     steps:
       - uses: actions/checkout@v4
