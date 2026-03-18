@@ -15,7 +15,7 @@ jobs:
 
     environment:
       name: rubygems.org
-      url: https://rubygems.org/gems/bcrypt-ruby
+      url: https://rubygems.org/gems/bcrypt
 
     permissions:
       contents: write
