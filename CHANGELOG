@@ -1,3 +1,6 @@
+3.1.22 Mar 18 2026
+  - [CVE-2026-33306] Fix integer overflow in Java extension
+
 3.1.21 Dec 31 2025
   - Use constant time comparisons
   - Mark as Ractor safe
