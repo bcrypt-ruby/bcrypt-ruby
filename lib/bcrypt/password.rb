@@ -47,7 +47,7 @@ module BCrypt
       end
 
       def valid_hash?(h)
-        /\A\$[0-9a-z]{2}\$[0-9]{2}\$[A-Za-z0-9\.\/]{53}\z/ === h
+        /\A\$2[abxy]\$(?:0[4-9]|[12][0-9]|3[01])\$[A-Za-z0-9\.\/]{53}\z/ === h
       end
     end
 
