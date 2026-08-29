@@ -98,7 +98,10 @@ static VALUE bc_crypt(VALUE self, VALUE key, VALUE setting) {
     value = bc_crypt_nogvl((void *)&args);
 #endif
 
-    if(!value || !args.data) return Qnil;
+    if(!value || !args.data) {
+        free(args.data);
+        return Qnil;
+    }
 
     out = rb_str_new2(value);
 
