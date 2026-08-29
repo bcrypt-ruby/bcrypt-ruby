@@ -80,7 +80,9 @@ module BCrypt
     # Generates a random salt with a given computational cost.
     def self.generate_salt(cost = self.cost)
       cost = cost.to_i
-      if cost > 0
+      if cost > MAX_COST
+        raise Errors::InvalidCost.new("cost must be <= #{MAX_COST}")
+      elsif cost > 0
         if cost < MIN_COST
           cost = MIN_COST
         end
