@@ -118,9 +118,9 @@ module BCrypt
     #   BCrypt::Password.create("woo", :cost => 12)
     def self.calibrate(upper_time_limit_in_ms)
       (BCrypt::Engine::MIN_COST..BCrypt::Engine::MAX_COST-1).each do |i|
-        start_time = Time.now
+        start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
         Password.create("testing testing", :cost => i+1)
-        end_time = Time.now - start_time
+        end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
         return i if end_time * 1_000 > upper_time_limit_in_ms
       end
     end
