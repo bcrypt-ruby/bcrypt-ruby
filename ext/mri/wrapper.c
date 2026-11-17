@@ -17,9 +17,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Redefine strdup to ruby_strdup in case string.h doesn't export it. */
-#include <ruby/util.h>
-
 #include <errno.h>
 #ifndef __set_errno
 #define __set_errno(val) errno = (val)
@@ -246,12 +243,16 @@ char *__crypt_gensalt_ra(const char *prefix, unsigned long count,
 		input, size, output, sizeof(output));
 
 	if (retval) {
-		retval = strdup(retval);
+		size_t len = strlen(retval) + 1;
+		char *copy = malloc(len);
+		if (copy)
+			memcpy(copy, retval, len);
 #ifndef __GLIBC__
-		/* strdup(3) on glibc sets errno, so we don't need to bother */
-		if (!retval)
+		/* malloc(3) on glibc sets errno, so we don't need to bother */
+		else
 			__set_errno(ENOMEM);
 #endif
+		retval = copy;
 	}
 
 	return retval;
